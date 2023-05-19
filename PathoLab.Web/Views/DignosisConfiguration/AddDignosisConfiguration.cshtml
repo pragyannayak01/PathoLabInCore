@@ -1,0 +1,358 @@
+﻿@model PathoLab.Domain.DignosisConfigurationMaster.DignosisConfiguration
+@{
+    ViewData["Title"] = "AddDignosisConfiguration";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+}
+
+<style>
+
+    table td {
+        border: 1px solid black;
+        padding: 4px 12px;
+    }
+</style>
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active" asp-controller="DignosisConfiguration" asp-action="AddDignosisConfiguration">Add Dignosis Configuration</a>
+                    <a class="nav-item nav-link  " asp-controller="DignosisConfiguration" asp-action="ViewDignosisConfiguration">View Dignosis Configuration</a>
+
+                </ul>
+            </div>
+            <!--===================================================-->
+            <!-- BASIC FORM ELEMENTS 1 -->
+            <!--===================================================-->
+            <div class="card-body">
+                <!--Static-->
+                <div class="form-group row">
+                    <input type="hidden" value="0" id="hdnDignosisConfigId" />
+                    <div class="col-xs-12 col-md-6 col-xl-6">
+                        <label class="control-label"><b>Dignosis Value</b><span class="text-danger">*</span></label>
+                        <select id="ddlDignosisValue" class="form-control" asp-items="@(new SelectList(ViewBag.Name,"DignosisID","Name"))" asp-for="DignosisID">
+                            <option value="0">--Select--</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <input type="hidden" id="hdnPatientID" />
+                    <div class="col-xs-12 col-md-6 col-xl-6">
+                        <label class="control-label"><b>Lab Test Methodology</b><span class="text-danger">*</span></label>
+                        <select id="ddlLabTestMethodology" class="form-control" asp-items="@(new SelectList(ViewBag.LabTestName,"LabTestId","LabTestName"))" asp-for="LabTestId">
+                            <option value="0">--Select--</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+            <!--===================================================-->
+            <!-- END BASIC FORM ELEMENTS 1-->
+            <!--==============================================================================================================================================-->
+            <!-- BASIC FORM ELEMENTS 2 -->
+            <!--===================================================-->
+            <div class="card-body">
+
+                <div class="col-12 col-md-12 col-xl-12">
+                    @*<label class=" control-label" id="txtPrescribeMedicine"> <b>Prescribe Medicine </b> </label>*@
+                    <div>
+                        <table id="tblDignosisConfiguration">
+                            <tr>
+                                <td rowspan="2"><b>Investigation Name</b></td>
+                                <td colspan="2"><b>Biological Reference Interval</b></td>
+                                <td rowspan="2"><b>Unit</b></td>
+                                <td rowspan="2"><b>Action</b></td>
+                            </tr>
+                            <tr>
+                                <td><b>Minimum Percentage</b></td>
+                                <td><b>Maximum Percentage</b></td>
+                            </tr>
+                            <tbody id="tbody"></tbody>
+                        </table><br />
+                        <div class="form-group row">
+                            <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                            <div class="col-12 col-md-6 col-xl-4">
+                                <button class="btn btn-md btn-primary pull-right" id="addBtn" type="button"> Add </button>
+                            </div>
+                        </div>
+                    </div><br />
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                        <button class="btn btn-danger mb-1" onclick="reset()" id="btnReset">Reset</button>
+                    </div>
+                </div>
+                <div class="modal fade" id="SubmitModal" tabindex="1" role="dialog"
+                     aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 style="color:aquamarine"> Dignosis Configuration Details</h5>
+                            </div>
+                            <div class="modal-body">
+                                <h6 class="modalMsg"></h6>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-info btn-sm submitConfirm hbtn" value="Yes" styk="display:none" />
+                                <button type="button" class="btn btn-danger btn-sm No hbtn" data-dismiss="modal" aria-label="Close">No</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="SuccessModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="resultMsg" style="color:blue"></h5>
+                            </div>
+                            <div class="modal-body">
+                                <h5 class="msgsuccess"></h5>
+                            </div>
+                            <div class="modal-footer">
+                                <a class="btn btn-danger btnok" asp-controller="DignosisConfiguration" asp-action="ViewDignosisConfiguration">Close</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="UnSuccessModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="resultMsg" style="color:blue"></h5>
+                            </div>
+                            <div class="modal-body">
+                                <h5 class="msgunsuccess"></h5>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger btn-sm No hbtn" data-dismiss="modal" @*aria-label="Close"*@>Close</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--===================================================-->
+                <!-- END BASIC FORM ELEMENTS 2 -->
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        //breadcumb
+        var DignosisID = getUrlVars()["DignosisID"];
+        var LabTestId = getUrlVars()["LabTestId"];
+        if (DignosisID != undefined && LabTestId != undefined) {
+            $("#btnSubmit").html("Update");
+            $("#btnReset").html("Cancel");
+            Edit(DignosisID, LabTestId);
+
+        }
+    });
+  //< !--=================================================== -->
+    function validate() {
+        if ($('#ddlDignosisValue').val() == 0) {
+            alert("Please Select Dignosis!");
+            $('#ddlDignosisValue').focus();
+            return false;
+
+        }
+        else if ($('#ddlLabTestMethodology').val() == 0) {
+            alert("Please Select TestMethodology!");
+            $('#ddlLabTestMethodology').focus();
+            return false;
+
+        }
+        else if ($('#tblDignosisConfiguration').val() == "") {
+            alert("Please Enter Data!");
+            $('#tblDignosisConfiguration').focus();
+            return false;
+        }
+        else
+            return true;
+    }
+    //< !--=================================================== -->
+    //UPDATE
+    function Edit(DignosisID, LabTestId) {
+        $.ajax({
+            url: "/DignosisConfiguration/GetDignosisConfigurationById?DignosisID=" + DignosisID + "&LabTestId=" + LabTestId,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (data) {
+                $('#hdnDignosisConfigId').val(data[0].DignosisConfigId);
+                $('#ddlDignosisValue').val(data[0].DignosisID);
+                $('#ddlLabTestMethodology').val(data[0].LabTestId);
+                $.each(data, function (i, item) {
+                    $('#tbody').append(`<tr id="R${++rowIdx}">
+                    <td class="row-index text-center">
+                    <input id="txtInvestigationName" value="${item.InvestigationName}" class="inputs form-control m-input">
+                    </td>
+                     <td class="row-index text-center">
+                     <input id="txtMinimumPercentage" value="${item.MinimumPercentage}" type="text" maxlength = "100" size = "10"class="form-control m-input">
+                    </td>
+                     <td class="row-index text-center">
+                     <input id="txtMaximumPercentage" value="${item.MaximumPercentage}" type="text" maxlength = "100" size = "10"class="form-control m-input">
+                    </td>
+                    <td class="row-index text-center">
+                     <input id="txtUnit" type="text" value="${item.Unit}" maxlength = "100" size = "10"class="form-control m-input">
+                    </td>
+                      
+                       <td class="text-center">
+                        <button class="btn btn-danger" remove id="action"
+                         type="button">Remove</button>
+                       </td>
+                    </tr>`
+                    );
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+    //< !--=================================================== -->
+    //< !--=================================================== -->
+
+    function reset() {
+        window.location.href = "/DignosisConfiguration/AddDignosisConfiguration";
+    }
+    //< !--=================================================== -->
+
+    //Create
+    $("#btnSubmit").click(function () {
+        var selected = [];
+        $('#newinput option:selected').each(function () {
+            selected.push($(this).attr('value'));
+        });
+
+        // Array of data we'll retu
+        var entity = []; //array declaring to store the records to send it to controller
+        //var entity = {};
+
+        var tbl = document.getElementById('tbody');
+        for (var i = 0; i < tbl.rows.length; i++) {
+            var item1 = {};
+            item1.DignosisConfigId = parseInt($("#hdnDignosisConfigId").val());
+            item1.DignosisID = parseInt($("#ddlDignosisValue").val());
+            item1.LabTestId = parseInt($("#ddlLabTestMethodology").val());
+            item1.InvestigationName = tbl.rows[i].children[0].children[0].value;
+            item1.MinimumPercentage = parseFloat(tbl.rows[i].children[1].children[0].value);
+            item1.MaximumPercentage = parseFloat(tbl.rows[i].children[2].children[0].value);
+            item1.Unit = tbl.rows[i].children[3].children[0].value;
+            entity.push(item1);
+        }
+        if (validate()) {
+            if (confirm("Are you sure you want to Submit ?")) {
+                $.ajax({
+                    url: "/DignosisConfiguration/CreateDignosisConfiguration",
+                    data: JSON.stringify(entity),
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+                        if (getUrlVars()["DignosisConfigId"] != undefined) {
+                            alert(result)
+                            location.href = "/DignosisConfiguration/ViewDignosisConfiguration";
+                        }
+                        else {
+                            alert(result);
+                            location.href = "/DignosisConfiguration/ViewDignosisConfiguration";
+                            reset();
+
+                        }
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+            }
+        }
+    });
+    //< !--=================================================== -->
+
+    //Cancle
+    $("#btnCancel").click(function () {
+        reset();
+        if (getUrlVars()["DignosisConfigId"] != undefined) {
+            window.location.href = "/DignosisConfiguration/ViewDignosisConfiguration";
+        }
+    })
+    //< !--=================================================== -->
+    //Update
+    //Add Textbox Inside The Table Cells(Dynamic)
+
+    // Denotes total number of rows
+    var rowIdx = "";
+    // jQuery button click event to add a row
+    $('#addBtn').on('click', function () {
+        // Adding a row inside the tbody.
+        $('#tbody').append(`<tr id="R${++rowIdx}">
+             <td class="row-index text-center">
+             <input id="txtInvestigationName" class="inputs form-control m-input">
+             </td>
+              <td class="row-index text-center">
+              <input id="txtMinimumPercentage" type="text" maxlength = "100" size = "10"class="form-control m-input">
+             </td>
+              <td class="row-index text-center">
+              <input id="txtMaximumPercentage" type="text" maxlength = "100" size = "10"class="form-control m-input">
+             </td>
+             <td class="row-index text-center">
+              <input id="txtUnit" type="text" maxlength = "100" size = "10"class="form-control m-input">
+             </td>
+              <td class="text-center">
+                <button class="btn btn-danger" remove id="action"
+                  type="button">Remove</button>
+                </td>
+              </tr>`
+        );
+    });
+
+    // jQuery button click event to remove a row.
+    $('#tbody').on('click', '.remove', function () {
+
+        // Getting all the rows next to the row
+        // containing the clicked button
+        var child = $(this).closest('tr').nextAll();
+
+        // Iterating across all the rows
+        // obtained to change the index
+        child.each(function () {
+
+            // Getting <tr> id.
+            var id = $(this).attr('id');
+
+            // Getting the <p> inside the .row-index class.
+            var idx = $(this).children('.row-index').children('p');
+
+            // Gets the row number from <tr> id.
+            var dig = parseInt(id.substring(1));
+
+            // Modifying row index.
+            idx.html(`Row ${dig - 1}`);
+
+            // Modifying row id.
+            $(this).attr('id', `R${dig - 1}`);
+        });
+
+        // Removing the current row.
+        $(this).closest('tr').remove();
+
+        // Decreasing total number of rows by 1.
+        rowIdx--;
+    });
+
+    //< !--=================================================== -->
+</script>

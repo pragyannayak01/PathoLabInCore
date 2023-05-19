@@ -1,0 +1,15 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/PathoLab.Domain/obj
+/PathoLab.Domain/bin/Debug/netcoreapp3.1
+/.vs/PathoLab/FileContentIndex
+/PathoLab.IRepository/obj
+/PathoLab.IRepository/bin/Debug/netcoreapp3.1
+/PathoLab.Repository/obj
+/PathoLab.Repository/bin/Debug/netcoreapp3.1
+/PathoLab.Web/obj
+/PathoLab.Web/bin/Debug/netcoreapp3.1
+/.vs
+/PathoLab.Domain/bin/Release/netcoreapp3.1

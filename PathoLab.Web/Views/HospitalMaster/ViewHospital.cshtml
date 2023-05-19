@@ -1,0 +1,244 @@
+﻿@model PathoLab.Domain.HospitalMaster.HospitalEntity
+@{
+    ViewData["Title"] = "ViewHospital";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+    var ResultData = ViewBag.Result as List<PathoLab.Domain.HospitalMaster.HospitalEntity>;
+}
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+
+                    <a class="nav-item nav-link " asp-controller="HospitalMaster" asp-action="AddHospital">Add</a>
+                    <a class="nav-item nav-link active " asp-controller="HospitalMaster" asp-action="ViewHospital">View</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            <!-- Search Panel-->
+            <div class="search-container">
+                <div class="search-sec" style="display: block;">
+                    <form method="post" id="indsearch">
+                        <div class="form-group form-row">
+                            <div class="col-12 col-md-6 col-xl-3">
+                                <label class="control-label">State</label>
+                                <select class="form-control" id="ddlState" asp-for="State">
+                                    <option value="0">Select</option>
+                                    <option value="Odisha">Odisha</option>
+                                    <option value="Bihar">Bihar</option>
+                                    <option value="WestBengal">WestBengal</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-6 col-xl-3">
+                                <label class="control-label">City</label>
+                                <input class="form-control" id="txtCity" asp-for="City" />
+                            </div>
+
+                            <div class="col-12 col-md-6 col-xl-3">
+                                <label class="control-label">Hospital Name</label>
+                                <input class="form-control" id="txtName" asp-for="HospitalName" />
+                            </div>
+                            <div class="col-lg-2 ">
+                                <button id="btnSearch" class="btn btn-primary mt-xl-4 mt-2"> <i class="fa fa-search"></i> Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="text-center"> <a class="searchopen" title="Search" data-toggle="tooltip" data-placement="bottom"> <i class="icon-angle-arrow-down"></i> </a></div>
+            </div>
+
+            <!-- Search Panel -->
+
+            <div class="card-body ">
+                @if (ResultData != null && ResultData.ToList().Count > 0)
+                {
+                    <div class="table-responsive">
+                        <table data-toggle="table" id="tblHospital" class="table">
+                            <thead>
+                                <tr>
+                                    <th width="60px" class="align-top text-center">Sl#</th>
+                                    <th width="150px" class="align-top">
+                                        Hospital Name
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        RegstrationNo
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        LandlineNo
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Address
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        City
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        State
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        PinCode
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        ContactPerson
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        MobielNo
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        GSTNo
+                                    </th>
+
+                                    <th width="150px" class="align-top">Action</th>
+                                </tr>
+                            </thead>
+                            @*// HospitalID,HospitalName,RegstrationNo,LandlineNo,Address,City,State,PinCode,ContactPerson,MobielNo,GSTNo*@
+                            <tbody>
+                                @{
+                                    int count = 1;
+                                }
+                                @foreach (var list in ResultData)
+                                {
+                                    <tr>
+                                        <td class="text-center">@count</td>
+                                        <td>
+                                            @list.HospitalName
+                                        </td>
+                                        <td>
+                                            @list.RegstrationNo
+                                        </td>
+                                        <td>
+                                            @list.LandlineNo
+                                        </td>
+                                        <td>
+                                            @list.Address
+                                        </td>
+
+                                        <td>
+                                            @list.City
+                                        </td>
+                                        <td>
+                                            @list.State
+                                        </td>
+                                        <td>
+                                            @list.PinCode
+                                        </td>
+                                        <td>
+                                            @list.ContactPerson
+                                        </td>
+                                        <td>
+                                            @list.MobielNo
+                                        </td>
+                                        <td>
+                                            @list.GSTNo
+                                        </td>
+
+
+                                        <td>
+                                            @*<a href="/HospitalMaster/AddHospital?HospitalID=@Convert.ToString(list.HospitalID)" class="text-primary mr-3" title="" data-original-title="Edit"><i class="icon-edit1"></i></a>*@
+                                            <a onclick="updateDepartment('@list.HospitalID');" class="text-primary mr-3" title="" data-original-title="Edit"><i class="icon-edit1"></i><b>Edit</b></a><br />
+                                            <a onclick="deleteDoctor('@list.HospitalID');" class="text-danger" title="" data-original-title="Delete"><i class="icon-trash-21"></i><b>Delete</b></a>
+                                        </td>
+                                    </tr>
+                                    count++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="norecord"> No Record Found</div>
+                }
+                <div class="clearfix col-sm-12"></div>
+            </div>
+            <!--===================================================-->
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        getDataTable();
+    })
+
+    function updateDepartment(HospitalID) {
+        if (confirm("Are you sure you want to update ?")) {
+            location.href = "/HospitalMaster/AddHospital?HospitalID=" + HospitalID;
+        }
+    }
+
+    function deleteDoctor(HospitalID) {
+        if (confirm("Are you sure you want to delete ?")) {
+            $.ajax({
+                url: "/HospitalMaster/Delete?HospitalID=" + HospitalID,
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json;charset=UTF-8",
+                success: function (data) {
+                    if (data == "3") {
+                        alert(" Deleted Successfully");
+
+                        window.location.href = "/HospitalMaster/ViewHospital";
+
+                    }
+                    else if (data == "4") {
+                        alert(" Already In Use!");
+
+                        window.location.href = "/HospitalMaster/ViewHospital";
+
+
+                    }
+                    else { }
+                },
+                error: function (error) {
+                    jsonValue = jQuery.parseJSON(error.responseText);
+                    bootbox.alert("Error : " + jsonValue);
+                }
+            });
+        }
+    }
+
+    //Pagination
+    function getDataTable() {
+        $('#tblHospital').DataTable({
+            "searching": true,
+            //"bStateSave": true,
+            "dom": 'Bfrtip',
+            "autoWidth": false,
+            "buttons": [
+                //{
+                //    extend: 'print',
+                //    title: 'Manage Block',
+                //    exportOptions: {
+                //        columns: [0, 1, 2, 3, 4]
+                //    },
+                //    customize: function (win) { $(win.document.body).css('font-size', '10pt').prepend('<img src="' + origin + '/images/t5-logo-white.png"  style="position:absolute; top:0; left:0;" />'); $(win.document.body).find('table').addClass('compact').css('font-size', 'inherit'); }
+
+                //}
+             
+                {
+                    extend: 'pageLength'
+                }
+            ],
+            "lengthMenu": [
+                [10, 25, 50, 100, 1000 - 1],
+                ['10 rows', '25 rows', '50 rows', '100 rows', '1000 rows', 'Show all']
+            ]
+        });
+    }
+
+</script>
+
+
+

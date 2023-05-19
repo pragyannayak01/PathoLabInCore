@@ -1,0 +1,189 @@
+﻿@model PathoLab.Domain.PatientAppointmentMaster.PatientAppointment
+
+@{
+    ViewData["Title"] = "ViewPatientAppointment";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+    var ResultData = ViewBag.Result as List<PathoLab.Domain.PatientAppointmentMaster.PatientAppointment>;
+
+}
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link " asp-controller="PatientAppointment" asp-action="AddPatientAppointment">Add</a>
+                    <a class="nav-item nav-link active " asp-controller="PatientAppointment" asp-action="ViewPatientAppointment">View</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                </div>
+            </div>
+            <div class="card-body ">
+                @if (ResultData != null && ResultData.ToList().Count > 0)
+                {
+                    <div class="table-responsive">
+                        <a href="/PatientAppointment/ExportToExcelPatientAppointment"><i class="fa fa-file-excel-o" style="font-size:24px"></i></a>
+                        <table data-toggle="table" id="tblHospital" class="table">
+                            <thead>
+                                <tr>
+                                    <th width="60px" class="align-top text-center">Sl#</th>
+                                    <th width="150px" class="align-top">
+                                        RegdNo
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        DateOfAppointment
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        HospitalName
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        SlotName
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        SlotTimeFrom
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        SlotTimeTo
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        PatientName
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int count = 1;
+                                }
+                                @foreach (var list in ResultData)
+                                {
+                                    <tr>
+                                        <td class="text-center">@count</td>
+                                        <td>
+                                            @list.RegdNo
+                                        </td>
+                                        <td>
+                                            @list.DateOfAppointment
+                                        </td>
+                                        <td>
+                                            @list.HospitalName
+                                        </td>
+                                        <td>
+                                            @list.SlotName
+                                        </td>
+                                        <td>
+                                            @list.Slot_TimeFrom
+                                        </td>
+                                        <td>
+                                            @list.Slot_TimeTo
+                                        </td>
+
+                                        <td>
+                                            @list.FullName
+                                        </td>
+                                        <td>
+                                            @*<a onclick="updatePatientAppointment('@list.AppointmentId');" class="text-primary mr-3" title="" data-original-title="Edit"><i class="icon-edit1"></i></a><b>Edit</b><br />*@
+                                            <a onclick="deletePatientAppointment('@list.AppointmentId');" class="text-danger" title="" data-original-title="Delete"><i class="icon-trash-21"></i></a><b>Delete</b><br />
+                                        </td>
+                                    </tr>
+                                    count++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="norecord"> No Record Found</div>
+                }
+                <div class="clearfix col-sm-12"></div>
+            </div>
+
+            @* ----------------------- *@
+        </div>
+    </div>
+</div>
+<script>
+    //Delete Prescription
+    function deletePatientAppointment(AppointmentId) {
+        if (confirm("Are you sure you want to delete ?")) {
+            $.ajax({
+                url: "/PatientAppointment/DeleteAppointment?AppointmentId=" + AppointmentId,
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json;charset=UTF-8",
+                success: function (data) {
+                    if (data == "3") {
+                        alert("PatientAppointment Deleted Successfully");
+                        window.location.reload();
+                    }
+                    else if (data == "4") {
+                        alert("PatientAppointment Already In Use!");
+                        window.location.reload();
+                    }
+                    else { }
+                },
+                error: function (error) {
+                    jsonValue = jQuery.parseJSON(error.responseText);
+                    bootbox.alert("Error : " + jsonValue);
+                }
+            });
+        }
+    }
+    //< !--=================================================== -->
+    //Edit PatientAppointment
+    function updatePatientAppointment(AppointmentId) {
+        if (confirm("Are you sure you want to update ?")) {
+            location.href = "/PatientAppointment/AddPatientAppointment?AppointmentId=" + AppointmentId;
+        }
+    }
+    //< !--=================================================== -->
+
+    //Pagination
+    function getDataTable() {
+        $('#tblHospital').DataTable({
+            "searching": true,
+            //"bStateSave": true,
+            "dom": 'Bfrtip',
+            "autoWidth": false,
+            "buttons": [
+                //{
+                //    extend: 'print',
+                //    title: 'Manage Block',
+                //    exportOptions: {
+                //        columns: [0, 1, 2, 3, 4]
+                //    },
+                //    customize: function (win) { $(win.document.body).css('font-size', '10pt').prepend('<img src="' + origin + '/images/t5-logo-white.png"  style="position:absolute; top:0; left:0;" />'); $(win.document.body).find('table').addClass('compact').css('font-size', 'inherit'); }
+
+                //}
+                ,
+                {
+                    extend: 'pageLength'
+                }
+            ],
+            "lengthMenu": [
+                [10, 25, 50, 100, 1000 - 1],
+                ['10 rows', '25 rows', '50 rows', '100 rows', '1000 rows', 'Show all']
+            ]
+        });
+    }
+        //< !--=================================================== -->
+
+
+</script>
+
+
+
+
+

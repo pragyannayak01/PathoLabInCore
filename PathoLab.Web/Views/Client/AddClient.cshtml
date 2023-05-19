@@ -1,0 +1,261 @@
+﻿
+@{
+    ViewData["Title"] = "AddClient";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active" asp-controller="Client" asp-action="AddClient">Add</a>
+                    <a class="nav-item nav-link " asp-controller="Client" asp-action="ViewClient">View</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            <!-- BASIC FORM ELEMENTS -->
+            <!--===================================================-->
+            <div class="card-body">
+                <!--Static-->
+                <div class="form-group row">
+                    <input type="hidden" id="hdnClintID" />
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="Name"> Name <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input type="text" id="txtName" class="form-control" onchange="Namevalidation('txtName','lblErrorName')" />
+                        <span id="lblErrorName" style="color:red"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="Address"> Address<span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input type="text" id="txtAddress" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="City"> City<span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+
+                        <select class="form-control" id="ddlcity">
+                            <option value="0">---Select---</option>
+                            <option value="Bhubaneswar">Bhubaneswar</option>
+                            <option value="Cuttuck">Cuttuck</option>
+                            <option value="Rourkela">Rourkela</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="phoneno">Phone No <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input type="text" id="txtphoneno" class="form-control" onchange="Phonevalidate('txtphoneno','lblErrorPhone')">
+                        <span id="lblErrorPhone" style="color:red"></span>
+                    </div>
+                </div>
+
+                @*<div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="WhatsAppNo">WhatsApp No </label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input type="text" id="txtWhatsAppNo" class="form-control" onchange="Phonevalidate('txtWhatsAppNo','lblErrorPhone')">
+                        <span id="lblErrorPhone" style="color:red"></span>
+                    </div>
+                </div>*@
+
+                @*<div class="form-group row">
+                        <label class="col-12 col-md-2 col-xl-2 control-label" for="ReferByClientId">Refer By Client Id <span class="text-danger">*</span></label>
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <input type="text" id="txtReferByClientId" class="form-control">
+                        </div>
+                    </div>*@
+
+                <!--<div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-readonly-input">EDate</label>
+                    <div class="col-12 col-md-6 col-xl-4">
+
+                        <div class="input-group">
+
+                            <input type="text" class="form-control datepicker" id="txtEdate" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="inputGroup-sizing-default"><i class="icon-calendar1"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input"> Status-->
+                @*<span class="text-danger">*</span>*@
+                <!--</label>
+                    <div class="col-12 col-md-6 col-xl-4">
+
+                        <select class="form-control" id="ddlstatus">
+                            <option value="0">---Select---</option>
+                            <option value="Active">Active</option>
+                            <option value="Pending">Pending</option>
+                        </select>
+                    </div>
+                </div>-->
+                @*BUTTONS*@
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                        <button class="btn btn-danger mb-1" id="btnCancel">Reset</button>
+                    </div>
+                </div>
+            </div>
+            <!--===================================================
+            <!-- END BASIC FORM ELEMENTS -->
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        //breadcumb
+        loadNavigation('AddClient', 'gldata', 'plsubmission', 'AddClient', '', 'AddClient');
+        var ClintID = getUrlVars()["ClintID"];
+        if (ClintID != undefined) {
+            $("#btnSubmit").html("Update");
+            $("#btnCancel").html("Cancel");
+            Edit(ClintID)
+        }
+
+    });
+
+</script>
+
+<script type="text/javascript">
+  
+
+    $("#btnSubmit").click(function () {
+        
+        
+        var doc = {
+            ClintID: $("#hdnClintID").val(),
+            Name: $("#txtName").val(),
+            Address: $("#txtAddress").val(),
+            City: $("#ddlcity").val(),
+            phoneno: $("#txtphoneno").val()
+            //WhatsAppNo: $("#txtWhatsAppNo").val()
+
+
+        };
+       // if (validate() && Namevalidation('txtName', 'lblErrorName') == true && Phonevalidate('txtphoneno', 'lblErrorName')) {
+
+            if (confirm("Are you sure you want to Submit ?")) {
+
+                $.ajax({
+                    url: "/Client/AddClient",
+                    data: doc,
+                    type: "POST",
+                    success: function (result) {
+                        alert(result);
+                        reset();
+
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+            }
+       // }
+    
+
+    });
+    //validation
+    function validate() {
+
+        if ($('#txtName').val() == "") {
+            alert("Please Enter Client Name!");
+            return false;
+            $('#txtName').focus();
+        }
+        else if ($('#txtAddress').val() == "") {
+            alert("Please Enter Address!");
+            return false;
+            $('#txtAddress').focus();
+        }
+        else if ($('#ddlcity').val() == "0") {
+            alert("Please Select One city");
+            $('#ddlcity').focus();
+            return false;
+        }
+
+        else if ($('#txtphoneno').val() == "") {
+            alert("Please Enter Mobile No!");
+            return false;
+            $('#txtphoneno').focus();
+        }
+        //else if ($('#txtWhatsAppNo').val() == "") {
+        //    alert("Please Enter Whatsapp No!");
+        //    return false;
+        //    $('#txtWhatsAppNo').focus();
+        //}
+        //else if ($('#txtReferByClientId').val() == "") {
+        //    alert("Please Enter ClientId!");
+        //    return false;
+        //    $('#txtReferByClientId').focus();
+        //}
+        else {
+            $("#btnCancel").hide();
+            return true;
+        }
+
+    }
+
+    //UPDATE
+    function Edit(ClintID) {
+
+        $.ajax({
+            url: "/Client/GetByClintID?ClintID=" + ClintID,
+            type: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (Result) {
+                $('#hdnClintID').val(Result.ClintID);
+                $("#txtName").val(Result.Name);
+                $("#txtAddress").val(Result.Address);
+                $("#ddlcity").val(Result.City);
+                $("#txtphoneno").val(Result.phoneno);
+              //  $("#txtWhatsAppNo").val(Result.WhatsAppNo);
+                //$("#txtReferByClientId").val(Result.ReferByClientId);
+                //$("#txtEdate").val(Result.EDate);
+                //$("#ddlstatus").val(Result.Status);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+        return false;
+    }
+    //Reset
+    function reset() {
+        $('#hdnClintID').val("");
+        $("#txtName").val("");
+        $("#txtAddress").val("");
+        $("#ddlcity").val("0");
+        $("#txtphoneno").val("");
+      //  $("#txtWhatsAppNo").val("");
+        // $("#txtReferByClientId").val("");
+
+    }
+</script>
+
+
+
+

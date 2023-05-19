@@ -1,0 +1,145 @@
+﻿
+@{
+    ViewData["Title"] = "ViewCollection";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+    var ResultData = ViewBag.Result as List<PathoLab.Domain.PathoBilMasterl.PathoBill>;
+
+}
+
+<h2>Collection Page</h2>
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active " asp-controller="PathoLab" asp-action="ViewCollection">Collection Page</a>
+                    <a class="nav-item nav-link  " asp-controller="PathoLab" asp-action="CollectSample"> Sample Collection</a>
+                </ul>
+            </div>
+            <div class="card-body ">
+                @if (ResultData != null && ResultData.ToList().Count > 0)
+                {
+                    <div class="table-responsive">
+                        <table data-toggle="table" id="tblPathoBill" class="table">
+                            <thead>
+                                <tr>
+                                    <th width="60px" class="align-top text-center">
+                                        Sl#
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Bill No
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Patient Name
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Test Name
+                                    </th>
+                                    <th width="150px" class="align-top">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int count = 1;
+                                }
+                                @foreach (var list in ResultData)
+                                {
+                                    <tr>
+                                        <td class="text-center">@count</td>
+                                        <td>
+                                            @list.PathoBillId
+                                        </td>
+                                        <td>
+                                            @list.FullName
+                                        </td>
+                                        <td>
+                                            @list.LabTestName
+                                        </td>
+                                        <td>
+                                            @if (list.CollectionFlag == false)
+                                            {
+                                                <a onclick="Collect('@list.PathoBillId');" class="text-primary mr-3" title="" data-original-title="Add"><i class="fa fa-plus" aria-hidden="true"></i> <b>Uncollect</b></a><br />
+                                            }
+                                            else
+                                            {
+                                                <a><i class="fa fa-check-square" style="font-size:14px"></i> <b>Collected</b></a><br />
+                                            }
+                                            <a onclick="UpdateReport('@list.PathoBillId','@list.LabTestId');" class="text-primary mr-3" title="" data-original-title="Add"><i class="fa fa-file-text" style="font-size:16px"></i> <b>Update Report</b></a><br />
+                                        </td>
+                                    </tr>
+                                    count++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="norecord"> No Record Found</div>
+                }
+                <div class="clearfix col-sm-12"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        //breadcumb
+        var PathoBillId = getUrlVars()["PathoBillId"];
+        if (PathoBillId != undefined) {
+            getDataTable();
+            Collect(PathoBillId);
+            UpdateReport(PathoBillId);
+
+        }
+
+    });
+    //< !--=================================================== -->
+
+    //Uncollect Report
+    function Collect(PathoBillId) {
+        if (confirm) {
+            location.href = "/PathoLab/CollectSample?PathoBillId=" + PathoBillId;
+        }
+    }
+    //< !--=================================================== -->
+
+    //UpdateReport
+    function UpdateReport(PathoBillId, LabTestId) {
+        if (confirm) {
+            location.href = "/PathoLab/ViewsPathoLabReport?PathoBillId=" + PathoBillId + "&LabTestId=" + LabTestId;
+        }
+    }
+
+    //< !--=================================================== -->
+    //Pagination
+    function getDataTable() {
+        $('#tblPathoBill').DataTable({
+            "searching": true,
+            //"bStateSave": true,
+            "dom": 'Bfrtip',
+            "autoWidth": false,
+            "buttons": [
+                ,
+                {
+                    extend: 'pageLength'
+                }
+            ],
+            "lengthMenu": [
+                [5, 10, 25, 100, 1000 - 1],
+                ['5 rows', '10 rows', '25 rows', '100 rows', '1000 rows', 'Show all']
+            ]
+        });
+    }
+</script>
+
+
+

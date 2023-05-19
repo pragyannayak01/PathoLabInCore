@@ -1,0 +1,168 @@
+﻿@model PathoLab.Domain.SubMenuMaster.SubMenuClass
+
+@{
+    ViewData["Title"] = "ViewSubSubMenu";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+    var ResultData = ViewBag.Result as List<PathoLab.Domain.SubMenuMaster.SubMenuClass>;
+
+}
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link " asp-controller="SubMenu" asp-action="AddSubMenu">Add</a>
+                    <a class="nav-item nav-link active" asp-controller="SubMenu" asp-action="ViewSubMenu">View</a>
+                </ul>
+            </div>
+
+            <div class="card-body ">
+                @if (ResultData != null && ResultData.ToList().Count > 0)
+                {
+                    <div class="table-responsive">
+                        <table data-toggle="table" id="tblSubMenu" class="table">
+                            <thead>
+                                <tr>
+                                    <th width="60px" class="align-top text-center">Sl#</th>
+                                    <th width="150px" class="align-top">
+                                        Menu Name
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        SubMenu Name
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        SubMenu URL
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Sl.No
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        SubMenu Description
+                                    </th>
+                                    <th width="150px" class="align-top">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int count = 1;
+                                }
+                                @foreach (var list in ResultData)
+                                {
+                                    <tr>
+                                        <td class="text-center">@count</td>
+                                        <td>
+                                            @list.MenuName
+                                        </td>
+                                        <td>
+                                            @list.SubMenuName
+                                        </td>
+                                        <td>
+                                            @list.SubMenuURL
+                                        </td>
+                                        <td>
+                                            @list.SlNo
+                                        </td>
+                                        <td>
+                                            @list.SubMenuDescription
+                                        </td>
+                                        <td>
+                                            <a onclick="updateSubMenu('@list.SubMenuId');" class="text-primary mr-3" title="" data-original-title="Edit"><i class="icon-edit1"></i><b>Edit</b></a><br />
+                                            <a onclick="deleteSubMenu('@list.SubMenuId');" class="text-danger" title="" data-original-title="Delete"><i class="icon-trash-21"></i><b>Delete</b></a>
+                                        </td>
+                                    </tr>
+                                    count++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="norecord"> No Record Found </div>
+                }
+                <div class="clearfix col-sm-12"></div>
+            </div>
+            <!--===================================================-->
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        getDataTable();
+    })
+
+
+    //Update Department
+    function updateSubMenu(SubMenuId) {
+        if (confirm("Are you sure you want to update ?")) {
+            location.href = "/SubMenu/AddSubMenu?SubMenuId=" + SubMenuId;
+        }
+    }
+
+    //Delete Department
+    function deleteSubMenu(SubMenuId) {
+        if (confirm("Are you sure you want to delete ?")) {
+            $.ajax({
+                url: "/SubMenu/DeleteSubMenu?SubMenuId=" + SubMenuId,
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json;charset=UTF-8",
+                success: function (data) {
+                    if (data == "3") {
+                        alert("SubMenu Deleted Successfully");
+                        window.location.reload();
+                    }
+                    else if (data == "4") {
+                        alert("SubMenu Already In Use!");
+                        window.location.reload();
+                    }
+                    else { }
+                },
+                error: function (error) {
+                    jsonValue = jQuery.parseJSON(error.responseText);
+                    bootbox.alert("Error : " + jsonValue);
+                }
+            });
+        }
+    }
+
+    //Pagination
+    function getDataTable() {
+        $('#tblSubMenu').DataTable({
+            "searching": true,
+            //"bStateSave": true,
+            "dom": 'Bfrtip',
+            "autoWidth": false,
+            "buttons": [
+                //{
+                //    extend: 'print',
+                //    title: 'Manage Block',
+                //    exportOptions: {
+                //        columns: [0, 1, 2, 3, 4]
+                //    },
+                //    customize: function (win) { $(win.document.body).css('font-size', '10pt').prepend('<img src="' + origin + '/images/t5-logo-white.png"  style="position:absolute; top:0; left:0;" />'); $(win.document.body).find('table').addClass('compact').css('font-size', 'inherit'); }
+
+                //}
+                ,
+                {
+                    extend: 'pageLength'
+                }
+            ],
+            "lengthSubMenu": [
+                [10, 25, 50, 100, 1000 - 1],
+                ['10 rows', '25 rows', '50 rows', '100 rows', '1000 rows', 'Show all']
+            ]
+        });
+    }
+</script>
+

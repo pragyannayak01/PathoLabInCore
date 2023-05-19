@@ -1,0 +1,150 @@
+﻿@model PathoLab.Domain.DoctorMaster.DoctorSchedule
+@{
+    ViewData["Title"] = "Appointments";
+    Layout = "~/Views/Shared/_LayoutaDoctorDynamic.cshtml";
+    var ResultData = ViewBag.Result as List<PathoLab.Domain.DoctorMaster.DoctorSchedule>;
+}
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+
+                    <a class="nav-item nav-link active" asp-controller="DoctorSchdule" asp-action="Appointments">Appointments</a>
+                    <a class="nav-item nav-link  " asp-controller="DoctorSchdule" asp-action="ViewsPrescription">View Prescription</a>
+                    @*<a class="nav-item nav-link  " asp-controller="DoctorSchdule" asp-action="Prescription">Prescription</a>*@
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    @*<p class="ml-2">(*) Indicates mandatory </p>*@
+                </div>
+            </div>
+            <div class="card-body ">
+                @if (ResultData != null && ResultData.ToList().Count > 0)
+                {
+                    <div class="table-responsive">
+                        <table data-toggle="table" id="tblHospital" class="table">
+                            <thead>
+                                <tr>
+                                    <th width="60px" class="align-top text-center">Sl#</th>
+                                    <th width="150px" class="align-top">
+                                        DateOfAppointment
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Hospital Name
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Registration No
+                                    </th>
+
+                                    <th width="150px" class="align-top">
+                                        SlotName
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        SlotTimeFrom
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        SlotTimeTo
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        PatientName
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @{
+                                    int count = 1;
+                                }
+                                @foreach (var list in ResultData)
+                                {
+                                    <tr>
+                                        <td class="text-center">@count</td>
+                                        <td>
+                                            @list.DateOfAppointment.ToString("dd/MM/yyyy")
+                                        </td>
+                                        <td>
+                                            @list.HospitalName
+                                        </td>
+                                        <td>
+                                            @list.RegdNo
+                                        </td>
+
+                                        <td>
+                                            @list.SlotName
+                                        </td>
+
+                                        <td>
+                                            @list.Slot_TimeFrom
+                                        </td>
+                                        <td>
+                                            @list.Slot_TimeTo
+                                        </td>
+
+                                        <td>
+                                            @list.FullName
+                                        </td>
+                                        <td>
+                                            <a onclick="updateDepartment('@list.PatientID');" class="text-primary mr-3" title="" data-original-title="Edit"><i class="icon-edit1"></i><b>Fill Details</b></a><br />
+                                        </td>
+                                    </tr>
+                                    count++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="norecord"> No Record Found</div>
+                }
+                <div class="clearfix col-sm-12"></div>
+            </div>
+
+            @* ----------------------- *@
+        </div>
+        <div class="form-group row">
+            <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+            <div class="col-12 col-md-6 col-xl-4">
+                <button class="btn btn-primary mb-1" id="exportexcel"onclick="exportexcel()">Export to Excel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="src/jquery.table2excel.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        exportexcel();
+    })
+    $("exportexcel").click(function () {
+        $("#table2excel").table2excel({
+            // exclude CSS class
+            exclude: ".noExl",
+            name: "Worksheet Name",
+            filename: "SomeFile", //do not include extension
+            fileext: ".xls" // file extension
+        });
+    });
+    function updateDepartment(PatientID) {
+
+        location.href = "/DoctorSchdule/Prescription?PatientID=" + PatientID;
+
+    }
+
+</script>
+
+
+
+

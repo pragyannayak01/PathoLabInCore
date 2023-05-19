@@ -1,0 +1,530 @@
+﻿@model PathoLab.Domain.PathoBilMasterl.PathoBill;
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "PathoLabBill";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+}
+
+<style>
+    .logo {
+        flex: 1;
+    }
+
+        .logo img {
+            width: 175px;
+            height: 140px;
+            display: flex;
+        }
+
+    table td {
+        border: 1px solid black;
+        padding: 4px 12px;
+    }
+
+        table td.psn {
+            border: 1px white;
+            border-collapse: collapse;
+            padding: 4px 4px;
+            text-align: left;
+            font-size: 80%;
+        }
+
+    hr.new1 {
+        border-top: 1px solid black;
+    }
+</style>
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active " asp-controller="PathoLab" asp-action="PathoLabBill">PathoLab Bill</a>
+                    <a class="nav-item nav-link  " asp-controller="PathoLab" asp-action="ViewPathoLabCollection">View Bill Record </a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            <!--===================================================-->
+            <!-- BASIC FORM ELEMENTS 1 -->
+            <!--===================================================-->
+            @*<div class="header from-group row ">
+                    <table>
+                        <tr>
+                            <th class=" col-xs-12 col-md-2 col-xl-2 psn  logo ">
+                                <div class="form-group row">
+                                    <div>
+                                        <div class="logo " style="margin-left:20px">
+                                            <img src="https://seeklogo.com/images/H/hospital-clinic-plus-logo-7916383C7A-seeklogo.com.png" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <td class="col-xs-12 col-md-10 col-xl-10 psn ">
+                                <div class="form-group row " style="margin-left:30px">
+                                    <div style="font-size:15px">
+                                        <input type="hidden" id="hdnHospitalId" value="@HttpContextAccessor.HttpContext.Session.GetInt32("HospitalID")" />
+                                        <label id="txtHospitalName" class="control-label"><b>@HttpContextAccessor.HttpContext.Session.GetString("HospitalName")</b></label><br />
+                                        <label class="control-label">Near Axis Bank,PK Road,  BBSR-756003.</label><br />
+                                        <label class="control-label">Ph:</label>
+                                        <label class="control-label">0684-2516666,2518888</label> <b>||</b>
+                                        <label class="control-label">Fax:</label>
+                                        <label class="control-label">0684-2516666</label><br />
+                                        <label class="control-label">E-mail :</label>
+                                        <label class="control-label">customercare@sanjibani.com </label> <b>||</b>
+                                        <label class="control-label">Website:</label>
+                                        <label class="control-label">www.sanjibanihospital.com </label><br />
+                                        <label class="control-label">Visiting Hours :</label>
+                                        <label class="control-label">08:00AM-12:00PM</label><br />
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>*@
+            @*<hr class="new1" />*@
+
+            <div class="card-body">
+                <!--Static-->
+                <div class="form-group row">
+                    <div class="col-xs-12 col-md-3 col-xl-3">
+                        <label class="control-label"><b>Collection Id </b></label>
+                        <input id="txtCollectionId" class="form-control" value="@ViewBag.CollectionId" />
+                    </div>
+
+
+                    <div class="col-xs-12 col-md-3 col-xl-3">
+                        <label class="control-label" for="DateOfAppointment"><b>Reported On</b></label>
+                        <input id="txtDate" class="form-control" value="@ViewBag.ReportedOn" />
+                    </div>
+                </div>
+                <!--==============================================================================================================================================-->
+
+                <div class="form-group row">
+                    <div class="col-xs-12 col-md-2 col-xl-2">
+                        <label class="control-label"><b>Mobile No  </b><span class="text-danger">*</span></label>
+                        <input type="text" id="txtMobileNo" class="form-control" onchange="Phonevalidate('txtMobileNo','lblErrorPhone')" />
+                        <span id="lblErrorPhone" style="color:red"></span>
+                    </div>
+                    <div class="col-xs-12 col-md-3 col-xl-3">
+                        <label class="control-label"><b>Name</b><span class="text-danger">*</span></label>
+                        <input id="txtName" class="form-control" onchange="NamevalidationC('txtName','lblErrorName')" />
+                        <span id="lblErrorName" style="color:red"></span>
+                    </div>
+                    <div class="col-xs-12 col-md-3 col-xl-3">
+                        <label class="control-label" for=Email><b>Email</b><span class="text-danger">*</span></label>
+                        <input id="txtEmail" type="email" class="form-control" onchange="emailValidate('txtEmail','lblError')" />
+                        <span id="lblError" style="color:red"></span>
+                    </div>
+                    <div class="col-xs-12 col-md-1 col-xl-1">
+                        <label class="control-label" for="Age"><b>Age</b><span class="text-danger">*</span> </label>
+                        <input id="txtAge" class="form-control" onchange="OnlyNumber('txtAge','lblErrorAgeYear')" />
+                        <span id="lblErrorAgeYear" style="color:red"></span>
+
+                    </div>
+                    <div class="col-xs-12 col-md-2 col-xl-2">
+                        <label class="control-label" for="Gender"><b>Gender</b><span class="text-danger">*</span> </label>
+                        @*<input id="txtGender" class="form-control" />*@
+                        <select class="form-control" id="ddlGender">
+                            <option value="0">Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Others">Others</option>
+                        </select>
+                    </div>
+                </div>
+                <!--==============================================================================================================================================-->
+                <div class="form-group row">
+                    <div class="col-12 col-md-3 col-xl-3">
+                        <label class=" control-label" for="demo-email-input"><b>Reffered By</b><span class="text-danger">*</span></label>
+                        <select id="DoctorName" class="form-control"
+                                asp-items="@(new SelectList(ViewBag.DoctorName,"UserId","UserName"))" asp-for="DoctorId">
+                            <option value="0">--Select--</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="new1" />
+
+            <!--===================================================-->
+            <!-- END BASIC FORM ELEMENTS 1-->
+            <!--==============================================================================================================================================-->
+            <!-- BASIC FORM ELEMENTS 2 -->
+            <!--===================================================-->
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-12 col-md-12 col-xl-12">
+                        <div>
+                            <table id="tblTestBill" class="col-12 col-md-12 col-xl-12">
+                                <tr>
+                                    <td><b>Sl#</b></td>
+                                    <td><b>Test Name</b></td>
+                                    <td><b>Price</b></td>
+                                    <td><b>Action</b></td>
+                                </tr>
+                                <tbody id="tbody"></tbody>
+                            </table><br />
+                            <div class="form-group row">
+                                <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                                <div class="col-12 col-md-4 col-xl-4" style="margin-left:500px;">
+                                    <button class="btn btn-md btn-primary pull-right" id="addBtn" type="button"> Add </button>
+                                </div>
+                            </div>
+                        </div><br />
+                    </div>
+                </div>
+
+                <!--==============================================================================================================================================-->
+
+                <div class="form-group row">
+                    <div class="col-12 col-md-8 col-xl-8">
+                        <label class="control-label"><b> Pay Mode</b> <span class="text-danger">*</span></label><br />
+                        <input class="form-control" type="radio" id="Cash" value="Cash" checked="checked" name="paymode" />
+                        <label class="control-label" for="Cash"> Cash</label><br />
+                        <input class="form-control" type="radio" id="CreditCard" value="CreditCard" name="paymode" />
+                        <label class="control-label" for="CreditCard">Credit Card</label><br />
+                        <input class="form-control" type="radio" id="UPI" value="UPI" name="paymode" />
+                        <label class="control-label" for="UPI"> UPI</label><br />
+                        <input class="form-control" type="radio" id="DebitCard" value="DebitCard" name="paymode" />
+                        <label class="control-label" for="DebitCard">Debit Card</label>
+                    </div>
+                </div>
+                <!--==============================================================================================================================================-->
+
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                    <div class="col-12 col-md-4 col-xl-4">
+                        <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                        <button class="btn btn-danger mb-1" onclick="reset()" id="btnReset">Reset</button>
+                    </div>
+                </div>
+
+                <!--==============================================================================================================================================-->
+                <!-- END BASIC FORM ELEMENTS 2 -->
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" rel="stylesheet" type="text/css" />
+<script src="~/validation/validation.js"></script>
+
+<script>
+    //after giving Mobile no auto fill all the patient data 
+        $(document).ready(function () {
+            $('#txtMobileNo').blur(function () {
+                $.ajax({
+                    url: "/PathoLab/GetPatientByMobile?Mobile=" + $('#txtMobileNo').val(),
+                    typr: "GET",
+                    contentType: "application/json;charset=UTF-8",
+                    dataType: "json",
+                    success: function (result) {
+                        $('#txtName').val(result.FullName);
+                        $('#txtAge').val(result.Age);
+                        $('#ddlGender').val(result.Gender);
+                        $('#txtEmail').val(result.Email);
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+            })
+        });
+        //< !--=================================================== -->
+        function reset() {
+            window.location.href = "/PathoLab/PathoLabBill";
+        }
+        //< !--=================================================== -->
+        //Create
+        $("#btnSubmit").click(function () {
+            var selected = [];
+            $('#newinput option:selected').each(function () {
+                selected.push($(this).attr('value'));
+            });
+
+            // Array of data we'll retu
+            var Items = []; //array declaring to store the records to send it to controller
+            var entity = {};
+
+            var tbl = document.getElementById('tbody');
+            for (var i = 0; i < tbl.rows.length; i++) {
+                var item1 = {};
+                item1.LabTestId = tbl.rows[i].children[1].children[1].value;
+                //item1.LabTestName = tbl.rows[i].children[1].children[1].value;
+                item1.Price = tbl.rows[i].children[2].children[0].value;
+                Items.push(item1);
+            }
+            entity.Tests = Items;
+            entity.CollectionId= $("#txtCollectionId").val();
+            entity.DoctorName = $("#DoctorName").val();
+            entity.DateOfAppointment = $("#txtDate").val();
+            entity.Mobile = $("#txtMobileNo").val();
+            entity.FullName = $("#txtName").val();
+            entity.Email = $("#txtEmail").val();
+            entity.Age = $("#txtAge").val();
+            entity.Gender = $("#ddlGender").val();
+            entity.PayMode = $("input[name='paymode']:checked").val();
+
+            if (validate()) {
+                if (confirm("Are you sure you want to Submit ?")) {
+                    $.ajax({
+                        url: "/PathoLab/InsertPathoBill",
+                        data: entity,
+                        type: "POST",
+                        success: function (result) {
+                            if (result ="PathoBill Saved Successfully") {
+                                alert(result);
+                                
+                                location.href = "/PathoLab/ViewPathoLabCollection";
+                            }
+                            else {
+                                alert(result);
+                                reset();
+                            }
+                        },
+                        error: function (errormessage) {
+                            alert(errormessage.responseText);
+                        }
+                    });
+                }
+
+            }
+        });
+    //< !--=================================================== -->
+    //$("#btnSubmit").click(function () {
+    //    if (getUrlVars()["PathoBillId"] != undefined) {
+    //        window.location.href = "/PathoLab/ViewPathoLabCollection?PathoBillId=" + getUrlVars()["PathoBillId"];
+    //    }
+    //})
+        //< !--=================================================== -->
+        //Auto Generate 10 digit code
+                @*$(document).ready(function () {
+            var number = "@ViewBag.no";
+            $('#txtCollectionId').val(number);
+
+        });*@
+        //< !--=================================================== -->
+        //Add dynamic table
+        //Add Textbox Inside The Table Cells
+        // Denotes total number of rows
+        var rowIdx = "";
+        // jQuery button click event to add a row
+        $('#addBtn').on('click', function () {
+            // Adding a row inside the tbody.
+            //$("txtsl").val(parseFloat($("txtsl").val()+1))
+            $('#tbody').append(`<tr id="R${++rowIdx}">
+                 <td class="row-index text-center">
+                 <label  class="control-label">${+rowIdx}</label>
+                 </td>
+                  <td class="row-index text-center">
+                  <input id="txtTestName" type="text"  maxlength = "100" size = "10"class="form-control m-input inputs"><input type="hidden" id="hdnTestId" class="form-control m-input">
+                 </td>
+                  <td class="row-index text-center">
+                  <input id="txtPrice" type="text" maxlength = "100" size = "10"class="form-control m-input" readonly >
+                 </td>
+                  <td class="text-center">
+                    <button class="btn btn-danger remove"
+                      type="button">Remove</button>
+                    </td>
+                  </tr>`
+            );
+        });
+
+        // jQuery button click event to remove a row.
+        $('#tbody').on('click', '.remove', function () {
+
+            // Getting all the rows next to the row
+            // containing the clicked button
+            var child = $(this).closest('tr').nextAll();
+
+            // Iterating across all the rows
+            // obtained to change the index
+            child.each(function () {
+
+                // Getting <tr> id.
+                var id = $(this).attr('id');
+
+                // Getting the <p> inside the .row-index class.
+                var idx = $(this).children('.row-index').children('p');
+
+                // Gets the row number from <tr> id.
+                var dig = parseInt(id.substring(1));
+
+                // Modifying row index.
+                idx.html(`Row ${dig - 1}`);
+
+                // Modifying row id.
+                $(this).attr('id', `R${dig - 1}`);
+            });
+
+            // Removing the current row.
+            $(this).closest('tr').remove();
+
+            // Decreasing total number of rows by 1.
+            rowIdx--;
+        });
+
+
+       //< !--=================================================== -->
+        //Get Price By Test Id
+            $(document).on('change', '.inputs', function () {
+                $('#tblTestBill tbody tr').each(function (index) {
+                    var row = this;
+                    $(this).find("td").eq(1).find("#txtTestName").blur(function () {
+                        $.ajax({
+                            url: "/PathoLab/GetPriceByTestId?LabTestId=" + $(row).find('td').next('td').find("#hdnTestId").val(),
+                            type: "GET",
+                            success: function (result) {
+                                data = JSON.parse(result);
+                                $(row).find('td').next('td').find("#txtPrice").val(data);
+                            },
+                            error: function (error) {
+                                jsonValue = jQuery.parseJSON(error.responseText);
+                                alert("Error : " + jsonValue);
+                            }
+                        });
+                    });
+                });
+            });
+
+         //< !--=================================================== -->
+        //Test AutoFill
+        $(document).on('keypress', '.inputs', function () {
+            $('#tblTestBill tbody tr').each(function (index) {
+                var row = this;
+                $(this).find("td").eq(1).find("#txtTestName").autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: '/PathoLab/AutoComplete/',
+                            data: { "prefix": request.term },
+                            type: "POST",
+                            success: function (data) {
+                                response($.map(data, function (item) {
+                                    return item;
+                                }))
+                            },
+                            error: function (response) {
+                                alert(response.responseText);
+                            },
+                            failure: function (response) {
+                                alert(response.responseText);
+                            }
+                        });
+                    },
+                    select: function (e, i) {
+                        $(row).find('td').find("#hdnTestId").val(i.item.val);
+                    },
+                    minLength: 1
+                });
+            });
+        });
+    //< !--=================================================== -->
+    //Validation
+    function validate() {
+        if ($('#txtMobileNo').val() == "") {
+            alert("Please Enter Mobile!");
+            $('#txtMobileNo').focus();
+            return false;
+
+        }
+        else if ($('#txtName').val() == "") {
+            alert("Please Enter Name!");
+            $('#txtName').focus();
+            return false;
+
+        }
+        else if ($('#txtEmail').val() == "") {
+            alert("Please Enter Email!");
+            $('#txtEmail').focus();
+            return false;
+
+        }
+
+        else if ($('#txtAge').val() == "") {
+            alert("Please Enter Age !");
+            $('#txtAge').focus();
+            return false;
+
+        }
+
+        else if ($('#ddlGender').val() == "0") {
+            alert("Please Select Gender !");
+            $('#ddlGender').focus();
+            return false;
+
+        }
+        else if ($('#DoctorName').val() == "0") {
+            alert("Please Select Doctor Name !");
+            $('#DoctorName').focus();
+            return false;
+
+        }
+        //else if ($('#tblTestBill').val() == "") {
+        //    alert("Please Enter Test Name!");
+        //    $('#tblTestBill').focus();
+        //    return false;
+        //}
+        //else if ($('#DoctorName').val() == "") {
+        //    alert("Please Select Pay Mode !");
+        //    $('#DoctorName').focus();
+        //    return false;
+
+        //}
+
+        else {
+            $("#btnReset").hide();
+            return true;
+        }
+    }
+
+
+
+    //< !--=================================================== -->
+
+        //Using Mobile NO Get All Patient Details
+
+        //$('#txtMobileNo').keypress(function (event) {
+        //    var keycode = (event.keyCode ? event.keyCode : event.which);
+        //    if (keycode == '13') {
+        //        //alert('Already Registered');
+        //        $.ajax({
+        //            url: "/PathoLab/GetPatientByMobile?Mobile="+ $('#txtMobileNo').val(),
+        //            typr: "GET",
+        //            contentType: "application/json;charset=UTF-8",
+        //            dataType: "json",
+        //            success: function (result) {
+        //                $('#txtName').val(result.FullName);
+        //                $('#txtAge').val(result.Age);
+        //                $('#txtGender').val(result.Gender);
+        //                $('#txtEmail').val(result.Email);
+        //            },
+        //            error: function (errormessage) {
+        //                alert(errormessage.responseText);
+        //            }
+        //        });
+        //    }
+        //    //Stop the event from propogation to other handlers
+        //    //If this line will be removed, then keypress event handler attached
+        //    //at document level will also be triggered
+        //    event.stopPropagation();
+        //});
+
+
+</script>

@@ -1,0 +1,185 @@
+﻿@model PathoLab.Domain.MenuMaster.MenuClass
+@{
+    ViewData["Title"] = "AddSubMenu";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+}
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active" asp-controller="SubMenu" asp-action="AddSubMenu">Add</a>
+                    <a class="nav-item nav-link" asp-controller="SubMenu" asp-action="ViewSubMenu">View</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            <!-- BASIC FORM ELEMENTS -->
+            <!--===================================================-->
+            <div class="card-body">
+                <input type="hidden" value="0" id="hdnSubMenuId" />
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"><b>Menu Name</b><span class="text-danger">*</span></label>
+                    <div class="col-xs-12 col-md-4 col-xl-4">
+                        <select id="ddlMenuName" class="form-control" asp-items="@(new SelectList(ViewBag.Name,"MenuId","MenuName"))" asp-for="MenuId">
+                            <option value="0">--Select--</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input"><b>SubMenu Name</b> <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-4 col-xl-4">
+                        <input type="text" id="txtSubMenuName" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input"><b>SubMenu URL</b> <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-4 col-xl-4">
+                        <input type="text" id="txtSubMenuURL" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input"><b>Sl.No</b> <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-4 col-xl-4">
+                        <input type="text" id="txtSlNo" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input"><b>SubMenu Description</b> <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-4 col-xl-4">
+                        <input type="text" id="txtSubMenuDescription" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                        <button class="btn btn-danger mb-1" id="btnCancel">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--===================================================-->
+        <!-- END BASIC FORM ELEMENTS -->
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        //breadcumb
+        loadNavigation('Add SubMenu', 'gldata', 'plsubmission', 'Add SubMenu', '', 'Add SubMenu');
+        var SubMenuId = getUrlVars()["SubMenuId"];
+        if (SubMenuId != undefined) {
+            $("#btnSubmit").html("Update");
+            $("#btnCancel").html("Cancel");
+            Edit(SubMenuId);
+        }
+    });
+    function validate() {
+        if ($('#txtSubMenuName').val() == "") {
+            alert("Please Enter SubMenu!");
+            $('#txtSubMenuName').focus();
+            return false;
+        }
+        else if ($('#txtSlNo').val() == "") {
+            alert("Please Enter SlNo!");
+            $('#txtSlNo').focus();
+            return false;
+        }
+        else if ($('#txtSubMenuDescription').val() == "") {
+            alert("Please Enter SubMenu Description!");
+            $('#txtSubMenuDescription').focus();
+            return false;
+        }
+        else if ($('#txtSubMenuURL').val() == "") {
+            alert("Please Enter SubMenu URL!");
+            $('#txtSubMenuURL').focus();
+            return false;
+        }
+        else {
+            $("#btnCancel").hide();
+            return true;
+        }
+    }
+
+    $("#btnSubmit").click(function () {
+        var dept = {
+            MenuId: $("#ddlMenuName").val(),
+            SubMenuId: $("#hdnSubMenuId").val(),
+            SubMenuName: $("#txtSubMenuName").val(),
+            SubMenuURL: $("#txtSubMenuURL").val(),
+            SlNo: $("#txtSlNo").val(),
+            SubMenuDescription: $("#txtSubMenuDescription").val()
+        };
+        if (validate()) {
+            if (confirm("Are you sure you want to Submit ?")) {
+                $.ajax({
+                    url: "/SubMenu/AddSubMenu",
+                    data: dept,
+                    type: "POST",
+                    success: function (result) {
+                        if (getUrlVars()["SubMenuId"] != undefined) {
+                            alert(result)
+                            window.location.href ="/SubMenu/ViewSubMenu";
+                        }
+                        else {
+                            alert(result);
+                            reset();
+                        }
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+            }
+        }
+    });
+    //UPDATE
+    function Edit(SubMenuId) {
+        $.ajax({
+            url:"/SubMenu/SubMenuGetById?SubMenuId=" + SubMenuId,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (result) {
+                $("#ddlMenuName").val(result.MenuId),
+                $("#txtMenuName").val(result.MenuName),
+                $("#hdnSubMenuId").val(result.SubMenuId),
+                $("#txtSubMenuName").val(result.SubMenuName),
+                $("#txtSubMenuURL").val(result.SubMenuURL),
+                $("#txtSlNo").val(result.SlNo),
+                $("#txtSubMenuDescription").val(result.SubMenuDescription)
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    $("#btnCancel").click(function () {
+        if (getUrlVars()["MenuId"] != undefined) {
+            window.location.href ="/SubMenu/AddSubMenu";
+        }
+    })
+    //< !--=================================================== -->
+    function reset() {
+        window.location.href ="/SubMenu/AddSubMenu";
+    }
+        //< !--=================================================== -->
+
+</script>
+
+
+

@@ -1,0 +1,436 @@
+﻿@model PathoLab.Domain.PatientAppointmentMaster.PatientAppointment
+
+@{
+    ViewData["Title"] = "AddPatientAppointment";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+}
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active" asp-controller="PatientAppointment" asp-action="AddPatientAppointment">Add</a>
+                    <a class="nav-item nav-link " asp-controller="PatientAppointment" asp-action="ViewPatientAppointment">View</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            <!-- BASIC FORM ELEMENTS 1 -->
+            <!--===================================================-->
+            <div class="card-body">
+                <!--Static-->
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Date <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input type="date" onchange="GetSlotByHostIdAndDoctIdAndDOA()" name="date" id="txtAppointmentDate" class="form-control" >
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <input type="hidden" id="hdnAppointmentId" />
+                    <input type="hidden" id="hdnRegdNo" />
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Hospital Name<span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <select id="ddlHospitalName" class="form-control" onchange="GetSlotByHostIdAndDoctIdAndDOA()" asp-items="@(new SelectList(ViewBag.HospitalName,"HospitalID","HospitalName"))" asp-for="HospitalID">
+                            <option value="0">--Select--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Department <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <select id="ddlDepartmentName" class="form-control" onchange="GetDoctorNameByHAndDId()" asp-items="@(new SelectList(ViewBag.Department,"DepartmentId","Department"))" asp-for="DepartmentId">
+                            <option value="0">--Select--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Doctor Name<span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <select id="ddlDoctorName" class="form-control" onchange="GetSlotByHostIdAndDoctIdAndDOA()">
+                            <option value="0">--Select--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input"> Slots<span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <select id="ddlSlot"  class="form-control">
+                            <option value="0">--Select--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input"> Available Capacity</label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input type="text" id="txtAvailableCapacity"  readonly class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <!--===================================================-->
+            <!-- END BASIC FORM ELEMENTS 1-->
+            <!--==============================================================================================================================================-->
+            <!-- BASIC FORM ELEMENTS 2 -->
+            <!--===================================================-->
+            <h5>Patient Details</h5>
+            <div class="card-body">
+                <!--Static-->
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input"> Name <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input type="text" id="txtPatientName" class="form-control" onchange="Namevalidation('txtPatientName','lblErrorName')" />
+                        <span id="lblErrorName" style="color:red"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">MobileNo <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input type="text" id="txtMobileNo" class="form-control" onchange="Phonevalidate('txtMobileNo','lblErrorPhone')" />
+                        <span id="lblErrorPhone" style="color:red"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input"> Email <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input type="text" id="txtEmail" class="form-control" onchange="emailValidate('txtEmail','lblError')" />
+                        <span id="lblError" style="color:red"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Age <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input type="text" id="txtAge" class="form-control" onchange="OnlyNumber('txtAge','lblErrorAgeYear')" />
+                        <span id="lblErrorAgeYear" style="color:red"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Gender  <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <select class="form-control" id="ddlGender">
+                            <option value="0">Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">City  <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input type="text" id="txtCity" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Address  <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input type="text" id="txtAddress" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                        <button class="btn btn-danger mb-1" id="btnReset">Reset</button>
+                    </div>
+                </div>
+                <!--===================================================-->
+                <!-- END BASIC FORM ELEMENTS 2 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        //breadcumb
+        loadNavigation('Add PatientAppointment', 'gldata', 'plsubmission', 'Add PatientAppointment', '', 'Add PatientAppointment');
+        var SlotID = getUrlVars()["SlotID"];
+        var DoctorId = getUrlVars()["DoctorId"];
+        if (SlotID != undefined && DoctorId != undefined) {
+            $("#btnSubmit").html("Update");
+            $("#btnReset").html("Cancel");
+            Edit(AppointmentId);
+        }
+    });
+
+
+    //Validation
+    function validate() {
+        var currentDate = new Date();
+        currentDate.setDate(currentDate.getDate()-1);
+        var selectedDate = new Date(Date.parse($('#txtAppointmentDate').val()));
+        if ($('#txtAppointmentDate').val() == "0") {
+            alert("Please Enter Date  !");
+            return false;
+            $('#txtAppointmentDate').focus();
+        }
+        else if (selectedDate < currentDate) {
+            alert("Please Enter Date Greater Then Current Date  !");
+            return false;
+            $('#txtAppointmentDate').focus();
+        }
+        else if ($('#ddlHospitalName').val() == "0") {
+            alert("Please Select Hospital Name !");
+            return false;
+            $('#ddlHospitalName').focus();
+        }
+        else if ($('#ddlDepartmentName').val() == "0") {
+            alert("Please Select Department Name !");
+            $('#ddlDepartmentName').focus();
+            return false;
+        }
+        else if ($('#ddlDoctorName').val() == "0") {
+            alert("Please Select Doctor Name !");
+            $('#ddlDoctorName').focus();
+            return false;
+        }
+        else if ($('#ddlSlot').val() == "0") {
+            alert("Please Select Slot Name !");
+            return false;
+            $('#ddlSlot').focus();
+        }
+        else if ($('#txtPatientName').val() == "") {
+            alert("Enter Patient Name !");
+            return false;
+            $('#txtPatientName').focus();
+        }
+        else if ($('#txtMobileNo').val() == "") {
+            alert("Enter MobileNo  !");
+            return false;
+            $('#txtMobileNo').focus();
+        }
+        else if ($('#txtEmail').val() == "") {
+            alert("Enter Email !");
+            return false;
+            $('#txtEmail').focus();
+        }
+        else if ($('#txtAge').val() == "") {
+            alert("Enter Age  !");
+            return false;
+            $('#txtAge').focus();
+        }
+        else if ($('#ddlGender').val() == "0") {
+            alert("Please Select Gender  !");
+            return false;
+            $('#ddlGender').focus();
+        }
+        else if ($('#txtCity').val() == "") {
+            alert("Enter City  !");
+            return false;
+            $('#txtCity').focus();
+        }
+        else if ($('#txtAddress').val() == "") {
+            alert("Enter Address !");
+            return false;
+            $('#txtAddress').focus();
+        }
+        else {
+            $("#btnReset").hide();
+            return true;
+        }
+    }
+
+    //Create
+    $("#btnSubmit").click(function () {
+        var selected = [];
+        var dign = {
+            AppointmentId: $("#hdnAppointmentId").val(),
+            RegdNo: $("#hdnRegdNo").val(),
+            DateOfAppointment: $("#txtAppointmentDate").val(),
+            HospitalID: $("#ddlHospitalName").val(),
+            DepartmentId: $("#ddlDepartmentName").val(),
+            DoctorId: $("#ddlDoctorName").val(),
+            SlotID: $("#ddlSlot").val(),
+            AvailableCapacity:$("#txtAvailableCapacity").val(),
+            PatientId: $("#txtPatientId").val(),
+            PatientName: $("#txtPatientName").val(),
+            MobileNo: $("#txtMobileNo").val(),
+            Email: $("#txtEmail").val(),
+            Age: $("#txtAge").val(),
+            Gender: $("#ddlGender").val(),
+            City: $("#txtCity").val(),
+            Address: $("#txtAddress").val(),
+        };
+        if (validate()) {
+            if (confirm("Are you sure you want to Submit ?")) {
+                $.ajax({
+                    url: "/PatientAppointment/AddPatientAppointment",
+                    data: dign,
+                    type: "POST",
+                    success: function (result) {
+                        alert(result);
+                        reset();
+
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+
+            }
+        }
+    });
+
+    //Reset
+    function reset() {
+        $('#hdnAppointmentId').val("");
+        $('#hdnRegdNo').val("");
+        $("#txtAppointmentDate").val("");
+        $("#ddlHospitalName").val("0");
+        $("#ddlDepartmentName").val("0");
+        $("#ddlDoctorName").val("0");
+        $("#ddlSlot").val("0");
+        $("txtAvailableCapacity").val("");
+        $("#txtPatientName").val("");
+        $("#txtMobileNo").val("");
+        $("#txtEmail").val("");
+        $("#txtAge").val("");
+        $("#ddlGender").val("");
+        $("#txtCity").val("");
+        $("#txtAddress").val("");
+
+    }
+
+    //Cancle
+    $("#btnReset").click(function () {
+        reset();
+        if (getUrlVars()["AppointmentId"] != undefined) {
+        }
+    })
+
+    //Cascading Databind
+    //Get  Doctor By Department Id
+    //function GetDoctorByDepartmentId() {
+    //    $.ajax({
+    //        url: "/PatientAppointment/GetDoctorByDepartmentId?DepartmentId=" + $('#ddlDepartmentName').val(),
+    //        type: "GET",
+    //        success: function (result) {
+    //            data = JSON.parse(result);
+    //            var v = "<option value='0'>--Select--</option>";
+    //            $.each(data, function (i, item) {
+    //                v += "<option value=" + item.UserId + ">" + item.UserName + "</option>";
+    //            });
+    //            $("#ddlDoctorName").html(v);
+
+    //        },
+    //        error: function (error) {
+    //            jsonValue = jQuery.parseJSON(error.responseText);
+    //            alert("Error : " + jsonValue);
+    //        }
+    //    });
+    //}
+
+
+
+    function GetDoctorNameByHAndDId() {
+        $.ajax({
+            url: "/PatientAppointment/DoctorNameByHAndDId?HospitalID=" + $('#ddlHospitalName').val() + "&DepartmentId=" + $('#ddlDepartmentName').val(),
+            type: "GET",
+            success: function (result) {
+                data = JSON.parse(result);
+                var v = "<option value='0'>--Select--</option>";
+                $.each(data, function (i, item) {
+                    v += "<option value=" + item.UserId + ">" + item.UserName + "</option>";
+                });
+                $("#ddlDoctorName").html(v);
+            },
+            error: function (error) {
+                jsonValue = jQuery.parseJSON(error.responseText);
+                alert("Error : " + jsonValue);
+            }
+        });
+    }
+
+
+
+    //Cascading Databind
+    //Get Slot Time By Hospital Id And Doctor Id And DateOfAppointment
+    function GetSlotByHostIdAndDoctIdAndDOA() {
+        if ($('#ddlHospitalName').val() != '0' && $('#ddlDoctorName').val() != '0' && $('#txtAppointmentDate').val() != '') {
+            $.ajax({
+                url: "/PatientAppointment/GetSlotByHostIdAndDoctIdAndDOA?HospitalID=" + $('#ddlHospitalName').val() + "&DoctorId=" + $('#ddlDoctorName').val() + "&DateOfAppointment=" + $('#txtAppointmentDate').val(),
+                type: "GET",
+                success: function (result) {
+                    data = JSON.parse(result);
+                    var v = "<option value='0'>--Select--</option>";
+                    $.each(data, function (i, item) {
+                        v += "<option value=" + item.SlotID + ">" + item.SlotName + ":(" + item.Slot_TimeFrom + " To " + item.Slot_TimeTo + ")</option>";
+                    });
+                    $("#ddlSlot").html(v);
+
+                },
+                error: function (error) {
+                    jsonValue = jQuery.parseJSON(error.responseText);
+                    alert("Error : " + jsonValue);
+                }
+            });
+        }
+    }
+        //Cascading Databind
+        //Get Available Capacity By SlotId And  DateOfAppointment
+    $("#ddlSlot").change(function () {
+        $.ajax({
+            url: "/PatientAppointment/GetAvlCaptBySIdNDOA?SlotID=" + $('#ddlSlot').val() + "&DateOfAppointment=" + $('#txtAppointmentDate').val(), 
+            type: "GET",
+            success: function (result) {
+                data = JSON.parse(result);
+                $("#txtAvailableCapacity").val(data[0].AvailableCapacity);
+            },
+            error: function (error) {
+                jsonValue = jQuery.parseJSON(error.responseText);
+                alert("Error : " + jsonValue);
+            }
+        });
+    });
+
+    //UPDATE
+    function Edit(AppointmentId) {
+        $.ajax({
+            url: "/PatientAppointment/PatientAppointmentGetById?AppointmentId=" + AppointmentId,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (result) {
+                $("#hdnAppointmentId").val(result[0].AppointmentId);
+                $("#txtAppointmentDate").val(result[0].RegdNo);
+                $("#ddlHospitalName").val(result[0].HospitalID);
+                $("#ddlDepartmentName").val(result[0].DepartmentId);
+                $("#ddlDoctorName").val(result[0].DoctorId);
+                $("#ddlSlot").val(result[0].SlotID);
+                $("#txtAvailableCapacity").val(result[0].AvailableCapacity);
+                $("#txtPatientId").val(result[0].PatientId);
+                $("#txtPatientName").val(result[0].PatientName);
+                $("#txtMobileNo").val(result[0].MobileNo);
+                $("#txtEmail").val(result[0].Email);
+                $("#txtAge").val(result[0].Age);
+                $("#ddlGender").val(result[0].Gender);
+                $("#txtCity").val(result[0].City);
+                $("#txtAddress").val(result[0].Address);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    $("#btnCancel").click(function () {
+        reset();
+        if (getUrlVars()["AppointmentId"] != undefined) {
+            window.location.href = "/PatientAppointment/ViewPatientAppointment";
+        }
+    })
+
+</script>
+

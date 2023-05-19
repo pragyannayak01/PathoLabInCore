@@ -1,0 +1,649 @@
+﻿@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "PrintPrescription";
+    Layout = "~/Views/Shared/_LayoutaDoctorDynamic.cshtml";
+}
+<link href="~/css/printprescription.css" rel="stylesheet" />
+<body>
+    <div class="page-title">
+        <div class="title-details">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="row div3" id="prinarea">
+        @*Image Watermark *@
+        <div style="position: absolute;display:block; top:300px;bottom: 500px;left: 144px;z-index: 10000;font-size:100px;transform:rotate(0deg);opacity: 0.2;">
+            <img height="550px" src="~/images/watermark.jpg" />
+        </div>
+        <div class="col-md-12 col-xl-12">
+            <div class="card">
+                <!--===================================================-->
+                <div class="card-body" id="divToPrint">
+                    <div class="header from-group row ">
+                        <table>
+                            <tr>
+                                <td colspan="3" class=" col-xs-12 col-md-4 col-xl-4  psn na">
+                                    <div class="form-group row ">
+                                        <div style="margin-right:150px">
+                                            <input type="hidden" id="hdnPatientID" />
+                                            <input type="hidden" id="hdnPrescriptionId" />
+                                            <input type="hidden" id="hdnHospitalId" value="0" />
+                                            <label id="txtDoctorName" class="control-label"><b>Dr.@HttpContextAccessor.HttpContext.Session.GetString("UserName")</b></label><br />
+                                            <label class="control-label">M.B.B.S,M.D,M.S </label><br />
+                                            <label class="control-label">Mob No:</label>
+                                            <label class="control-label">9937643065</label><br />
+                                            <label class="control-label">Regd No:</label>
+                                            <label class="control-label">270988</label><br />
+                                            <label class="control-label">Email:</label>
+                                            <label id="txtDoctorName" class="control-label">@HttpContextAccessor.HttpContext.Session.GetString("UserName")01@gmail.com </label><br />
+                                        </div>
+                                    </div>
+                                <th class=" col-xs-12 col-md-1 col-xl-1 psn  logo ">
+                                    <div class="form-group row">
+                                        <div>
+                                            <div class="logo ">
+                                                <img src="~/images/hospital-Image.png" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td class="col-xs-12 col-md-7 col-xl-7 psn na">
+                                    <div class="form-group row ">
+                                        <div style="margin-left:120px">
+                                            @*<input type="hidden" id="hdnHospitalId" value="@HttpContextAccessor.HttpContext.Session.GetInt32("HospitalID")" />*@
+                                            <label id="txtHospitalName" class="control-label"><strong>@HttpContextAccessor.HttpContext.Session.GetString("HospitalName")</strong></label><br/>
+                                            @*<label class="control-label">Near Axis Bank,PK Road,  BBSR-756003.</label><br />
+                                                <label class="control-label">Ph:</label>
+                                                <label class="control-label">0684-2516666,2518888</label><br />
+                                                <label class="control-label">E-mail :</label>
+                                                <label class="control-label">customercare@sanjibani.com </label><br />
+                                                <label class="control-label">Website:</label>
+                                                <label class="control-label">www.sanjibanihospital.com </label><br />
+                                                <label class="control-label">Visiting Hours :</label>
+                                                <label class="control-label">08:00AM-12:00PM</label><br />*@
+                                            <label class="control-label" id="lblHAddress"></label>,
+                                            <label class="control-label" id="lblHPinCode"></label><br />
+                                            <label class="control-label">Ph:</label>
+                                            <label class="control-label" id="lblHLandlineNo"></label> <b>|</b>
+                                            <label class="control-label">RegdNo:</label>
+                                            <label class="control-label" id="lblHRegstrationNo"></label><br />
+                                            <label class="control-label">E-mail :</label>
+                                            <label class="control-label" id="lblHEmail"></label> <br />
+                                            <label class="control-label">Website:</label>
+                                            <label class="control-label" id="lblHWebsite"></label><br />
+                                            <label class="control-label">GSTNo:</label>
+                                            <label class="control-label" id="lblHGSTNo"></label><br />
+                                            <label class="control-label">MbNo :</label>
+                                            <label class="control-label" id="lblHMobielNo"> </label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <hr class="new1" />
+                    <!--===================================================-->
+                    <!-- BASIC FORM ELEMENTS 1 -->
+                    <!--===================================================-->
+                    <table>
+                        <tr>
+                            <td class="col-xs-12 col-md-6 col-xl-6  psn">
+                                <div class="form-group row  ">
+                                    <div class="fs1 " style="margin-left:15px">
+                                        <input type="hidden" id="hdnPatientID" />
+                                        <label class="control-label" for=RegdNo><b>Regd No:-</b></label>
+                                        <label id="txtRegdNo" for=RegdNo></label><br />
+                                        <label class="control-label" for=FullName><b>Name:-</b></label>
+                                        <label id="txtName" for=FullName></label><br />
+                                        <label class=" control-label" for=GuardianName><b>Guardian Name:-</b> </label>
+                                        <label id="txtHFMName" for=GuardianName></label><br />
+                                        <label class="control-label" for=Mobile><b>MobileNo:-</b> </label>
+                                        <label id="txtMobile" for=Mobile></label><br />
+                                        <label class="control-label" for=Email><b>Email:-</b></label>
+                                        <label id="txtEmail" for=Email></label><br />
+                                        <label class="control-label" for=Age><b>Age:-</b> </label>
+                                        <label id="txtAge" for=Age></label>    <b>|</b>
+                                        <label class="control-label" for=Gender><b>Gender:-</b> </label>
+                                        <label id="txtGender" for=Gender></label><br />
+                                    </div>
+                                </div>
+                            </td>
+                            <td class=" col-xs-12 col-md-6 col-xl-6 psn na">
+                                <div class="form-group row ">
+                                    <div class=" fs1 " style="margin-left:215px">
+                                        <label class="control-label" for="DateOfAppointment"><b>Date Of Appointment :-</b></label>
+                                        <label id="txtDate" for=DateOfAppointment></label><br />
+                                        <label class="control-label"> <b><u>Findings:-</u></b> </label><br />
+                                        <ul>
+                                            <li>
+                                                <label class="control-label" for=BloodPressure> <b>BP:-</b> </label>
+                                                <label id="txtBloodPressure" for=BloodPressure></label>   <b>|</b>
+                                                <label class=" control-label" for=Height> <b> Height:- </b></label>
+                                                <label id="txtHeight" for=Height></label><br />
+                                                <label class=" control-label" for=Weight> <b> Weight:- </b></label>
+                                                <label id="txtWeight" for=Weight></label>     <b>|</b>
+                                                <label class="control-label" for=OxygenLevel> <b>OL:-</b> </label>
+                                                <label id="txtOxygenLevel" for=OxygenLevel></label><br />
+                                                <label class=" control-label" for=Pulse> <b> Pulse:- </b></label>
+                                                <label id="txtPulse" for=Pulse></label>     <b>|</b>
+                                                <label class="control-label" for=Temperature> <b>Temp:-</b> </label>
+                                                <label id="txtTemperature" for=Temperature></label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <!--===================================================-->
+                    <!-- END BASIC FORM ELEMENTS 1-->
+                    <!--==============================================================================================================================================-->
+                    @*<hr class="new1" />*@
+                    <!-- BASIC FORM ELEMENTS 2 -->
+                    <!--===================================================-->
+                    <div class="form-group row div2">
+                        <table class="col-12 col-md-12 col-xl-12  ">
+                            <tr>
+                                <td class=" psn na ">
+                                    <div class=" fs1 " style="margin-left:15px">
+                                        <label class=" control-label" id="txtPrescribeMedicine"> <b>Prescribe Medicine :-</b> </label>
+                                        <table id="tblMedicine" class="med" style="border-bottom:">
+                                            <tr>
+                                                <td class="ob" width="40%"><b>Medicine Name</b></td>
+                                                <td class="ob" width="40%"><b>Dosage</b></td>
+                                                <td class="ob" width="40%"><b>Duration</b></td>
+                                            </tr>
+                                            <tbody class="medbord" id="tbody"></tbody>
+                                        </table><br />
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!--===================================================-->
+                    <!-- END BASIC FORM ELEMENTS 2-->
+                    <!--==============================================================================================================================================-->
+                    <!-- BASIC FORM ELEMENTS 3 -->
+                    <!--===================================================-->
+                    @*<hr class="new1" />
+                        <div class="form-group row div2">
+                            <table class="col-12 col-md-12 col-xl-12 one ">
+                                <thead>
+                                    <tr>
+                                        <td class=" psn na">
+                                            <div class="col-12 col-md-12 col-xl-12">
+                                                <label class=" control-label" id="txtPrescribeMedicine"> <b>Prescribe Medicine :-</b> </label>
+                                                <div>
+                                                    <table id="tblMedicine">
+                                                        <tr>
+                                                            <td rowspan="2">Medicine Name</td>
+                                                            <td colspan="2">Morning</td>
+                                                            <td colspan="2">Afternoon</td>
+                                                            <td colspan="2">Night</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>AfterMeal</td>
+                                                            <td>BeforeMeal</td>
+                                                            <td>AfterMeal</td>
+                                                            <td>BeforeMeal</td>
+                                                            <td>AfterMeal</td>
+                                                            <td>BeforeMeal</td>
+                                                        </tr>
+                                                        <tbody id="tbody"></tbody>
+                                                    </table><br />
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>*@
+                    <!--===================================================-->
+                    <!-- END BASIC FORM ELEMENTS 3-->
+                    <!--==============================================================================================================================================-->
+                    @*<hr class="new1" />*@
+                    <table class="col-12 col-md-12 col-xl-12  ">
+                        <tr>
+                            <td class=" psn">
+                                <div class="form-group row ">
+                                    <div class="col-xs-12 col-md-12 col-xl-12 fs1 " style="margin-right:200px">
+                                        <label class="control-label" for="DignosisID"><b>Dignosis Test:-</b></label>
+                                        <div>
+                                            <div id="row">
+                                                <div class="input-group m-3">
+                                                    @*<label id="hdndignosiscount"></label><br />*@
+                                                    <div id="newinput">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <label class=" control-label" for="OtherAdvice"><b> Other Advice:- </b></label>
+                                        <label id="txtOtherAdvice" for=OtherAdvice></label><br />
+                                        <label class="control-label" for="Symptoms"><b>Symptoms:-</b>  </label>
+                                        <label id="txtSymptoms" for=Symptoms></label><br />
+                                        <label class=" control-label" for="PatientHistory"><b>Patient History:- </b> </label>
+                                        <label id="txtHistory" for=PatientHistory></label><br />
+
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="col-12 col-md-12 col-xl-12 one ">
+                        <tr>
+                            <td class="col-xs-12 col-md-10 col-xl-10 psn" style="width: 760px">
+                                <label class=" control-label"><b>Prescription Card:- </b> </label>
+                                <label>Valid for 7 Days</label><br />
+                            </td>
+                            <td class="col-xs-12 col-md-2 col-xl-2 psn" style="align-items:end">
+                                <div class="form-group row ">
+                                    <div class="fs1">
+                                        <label class="control-label" style="font-style:oblique">AmitBehera</label><br />
+                                        <label id="txtDoctorName" class="control-label"><b>Dr.@HttpContextAccessor.HttpContext.Session.GetString("UserName")</b></label><br />
+                                        <label class="control-label"><b>M.B.B.S,M.D,M.S</b></label><br />
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="form-group row">
+                        <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                        <div class="col-12 col-md-6 col-xl-4 " id='DivIdToPrint'>
+                            <input class="btn btn-primary mb-1 pull-right" type='button' id='btn' value=Print onclick='printDiv();'>
+                        </div>
+                    </div>
+                    <!--===================================================-->
+                    <!-- END BASIC FORM ELEMENTS 2 -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    $(document).ready(function () {
+        var PatientID = getUrlVars()["PatientID"];
+        var PrescriptionId = getUrlVars()["PrescriptionId"];
+        if (PatientID != undefined && PrescriptionId != undefined) {
+            Print(PatientID, PrescriptionId);
+        }
+        getDataTable();
+    })
+    //< !--=================================================== -->
+    function HospitalDetails(HospitalID) {
+        $.ajax({
+            url: "/DoctorSchdule/GetHospitalDetails?HospitalID=" + HospitalID,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (result) {
+                $('#lblHAddress').text(result.Address);
+                $('#lblHPinCode').text(result.PinCode);
+                $('#lblHLandlineNo').text(result.LandlineNo);
+                $('#lblHEmail').text(result.HEmail);
+                $('#lblHWebsite').text(result.HWebsite);
+                $('#lblHGSTNo').text(result.GSTNo);
+                $('#lblHMobielNo').text(result.MobielNo);
+                $('#lblHRegstrationNo').text(result.RegstrationNo);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+    //< !--=================================================== -->
+    // DataBind In Print Page From View Page
+    function Print(PatientID, PrescriptionId) {
+        $.ajax({
+            url: "/DoctorSchdule/PrintPrescriptionDetailsByPId?PatientID=" + PatientID + "&PrescriptionId=" + PrescriptionId,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (result) {
+                $('#hdnPatientID').val(result.PatientID);
+                $('#hdnPrescriptionId').val(result.PrescriptionId);
+                $("#txtRegdNo").text(result.RegdNo);
+                $("#hdnHospitalId").text(result.HospitalID);
+                //$("#txtHospitalName").text(result.HospitalName);
+                $("#txtDate").text(result.DateOfAppointment);
+                $("#txtName").text(result.FullName);
+                $("#txtHFMName").text(result.GuardianName);
+                $("#txtMobile").text(result.Mobile);
+                $("#txtEmail").text(result.Email);
+                $("#txtAge").text(result.Age);
+                $("#txtGender").text(result.Gender);
+                $('#txtHeight').text(result.Height);
+                $('#txtWeight').text(result.Weight);
+                $('#txtBloodPressure').text(result.BloodPressure);
+                $("#txtPulse").text(result.Pulse);
+                $("#txtTemperature").text(result.Temperature);
+                $('#txtOxygenLevel').text(result.OxygenLevel);
+                $('#txtSymptoms').text(result.Symptoms);
+                $('#txtHistory').text(result.PatientHistory);
+                $('#txtOtherAdvice').text(result.OtherAdvice);
+                HospitalDetails(result.HospitalID);
+                $.ajax({
+                    url: "/DoctorSchdule/GetDignosisByPId?PrescriptionId=" + PrescriptionId,
+                    type: "GET",
+                    success: function (result) {
+                        data = JSON.parse(result);
+                        $.each(data, function (i, item) {
+                            DignosisDataBindForEdit(item.Name);
+                        });
+                        $("#" + id).html(v);
+                    },
+                    error: function (error) {
+                        jsonValue = jQuery.parseJSON(error.responseText);
+                        alert("Error : " + jsonValue);
+                    }
+                });
+                $.ajax({
+                    url: "/DoctorSchdule/GetMedicineByPId?PrescriptionId=" + PrescriptionId,
+                    type: "GET",
+                    success: function (result) {
+                        data = JSON.parse(result);
+                        MedicineDataBindForEdit(data);
+                    },
+                    error: function (error) {
+                        jsonValue = jQuery.parseJSON(error.responseText);
+                        alert("Error : " + jsonValue);
+                    }
+                });
+            },
+
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+    //< !--=================================================== -->
+    //Print and hide the print button
+    function printDiv() {
+        //Get the print button and put it into a variable
+        var printButton = document.getElementById("btn");
+        //Set the print button visibility to 'hidden'
+        printButton.style.visibility = 'hidden';
+        $('#doctordashboard').hide();
+        //Print the page content
+        window.print();
+        //var divContents = document.getElementById("divToPrint").innerHTML;
+        //var a = window.open('', '', 'height=500, width=500');
+        //a.document.write('<html>');
+        //a.document.write('<head><link href="~/css/printprescription.css" rel="stylesheet" /><link href="~/css/bootstrap.min.css" rel="stylesheet"></head>');
+        //a.document.write('<body>');
+        //a.document.write(divContents);
+        //a.document.write('</body></html>');
+        //a.document.close();
+        //a.print();
+        return false;
+    }
+    //< !--=================================================== -->
+
+    //Dignosis Data Bind At The Time Of Edit
+    function DignosisDataBindForEdit(value) {
+        $("#hdndignosiscount").val(parseFloat($("#hdndignosiscount").val() + 1));//Dynamic Id for Dynamic Dropdown
+        newRowAdd =
+            '<div class="input-group-prepend" ><label id="ddlDignosis-' + $("#hdndignosiscount").val() + '"  class="control-label" >' + value + '</label><div>';
+        $('#newinput').append(newRowAdd);
+    };
+    $("body").on("click", "#DeleteRow", function () {
+        $(this).parents("#row").remove();
+    })
+    //< !--=================================================== -->
+    //Medicine Data Bind At The Time Of Edit
+
+    function MedicineDataBindForEdit(data) {
+        $.each(data, function (i, items) {
+            $.ajax({
+                url: "/Dose/DoseGetByMedId?MedicineId=" + items.Id,
+                type: "GET",
+                success: function (result) {
+                    data = JSON.parse(result);
+                    var DosesElement = "<label id='txtDoses' class='control-label'>";
+                    $.each(data, function (i, item) {
+                        if (item.DoseId == items.DoseId) {
+                            DosesElement += "<option value=" + item.DoseId + " selected>" + item.DoseName + "</option>";
+                        }
+                    });
+                    DosesElement += "</label>";
+                    // Denotes total number of rows
+                    var rowIdx = "";
+                    // Adding a row inside the tbody.
+                    $('#tbody').append(`<tr id="${++rowIdx}">
+                     <td class="row-index text-center">
+                     <label id="txtMedicineName"  class="control-label "><input type="hidden" value="${items.Id}" id="hdnMedicineId" class="form-control m-input">${items.MedicineName}</label>
+                     </td>
+                     <td class="row-index text-center">
+                      <label id='txtDoses' class='control-label'>${DosesElement}</label>
+                     </td>
+                     <td class="row-index text-center">
+                     <label id="txtDuration"  maxlength = "100" size = "8" class="control-label ">${items.Duration}</label >
+                     </td>
+                     </tr>`
+                    );
+                },
+                error: function (error) {
+                    jsonValue = jQuery.parseJSON(error.responseText);
+                    alert("Error : " + jsonValue);
+                }
+            });
+        });
+
+        // jQuery button click event to remove a row.
+        $('#tbody').on('click', '.remove', function () {
+
+            // Getting all the rows next to the row
+            // containing the clicked button
+            var child = $(this).closest('tr').nextAll();
+
+            // Iterating across all the rows
+            // obtained to change the index
+            child.each(function () {
+                // Getting <tr> id.
+                var id = $(this).attr('id');
+                // Getting the <p> inside the .row-index class.
+                var idx = $(this).children('.row-index').children('p');
+                // Gets the row number from <tr> id.
+                var dig = parseInt(id.substring(1));
+                // Modifying row index.
+                idx.html(`Row ${dig - 1}`);
+                // Modifying row id.
+                $(this).attr('id', `R${dig - 1}`);
+            });
+
+            // Removing the current row.
+            $(this).closest('tr').remove();
+
+            // Decreasing total number of rows by 1.
+            rowIdx--;
+        });
+    }
+
+    //Create
+    $("#btnSubmit").click(function () {
+        var selected = [];
+        $('#newinput option:selected').each(function () {
+            selected.push($(this).attr('value'));
+        });
+        // Array of data we'll retu
+        var Items = []; //array declaring to store the records to send it to controller
+        var entity = {};
+        var tbl = document.getElementById('tbody');
+        for (var i = 0; i < tbl.rows.length; i++) {
+            var item1 = {};
+            item1.Id = tbl.rows[i].children[0].children[1].value;
+            item1.DoseId = tbl.rows[i].children[1].children[0].value;
+            item1.Duration = tbl.rows[i].children[2].children[0].value;
+            //item1.MorningAfterMeal = tbl.rows[i].children[1].children[0].value;
+            //item1.MorningBeforeMeal = tbl.rows[i].children[2].children[0].value;
+            //item1.AfternoonAfterMeal = tbl.rows[i].children[3].children[0].value;
+            //item1.AfternoonBeforeMeal = tbl.rows[i].children[4].children[0].value;
+            //item1.NightAfterMeal = tbl.rows[i].children[5].children[0].value;
+            //item1.NightBeforeMeal = tbl.rows[i].children[6].children[0].value;
+            Items.push(item1);
+        }
+        entity.Medicines = Items;
+        entity.PatientID = $("#hdnPatientID").val();
+        entity.PrescriptionId = $("#hdnPrescriptionId").val();
+        entity.HospitalID = $("#hdnHospitalId").val();
+        entity.GuardianName = $("#txtHFMName").val();
+        entity.Height = $("#txtHeight").val();
+        entity.Weight = $("#txtWeight").val();
+        entity.BloodPressure = $("#txtBloodPressure").val();
+        entity.OxygenLevel = $("#txtOxygenLevel").val();
+        entity.Pulse = $("#txtPulse").val();
+        entity.Temperature = $("#txtTemperature").val();
+        entity.Symptoms = $("#txtSymptoms").val();
+        entity.PatientHistory = $("#txtHistory").val();
+        entity.OtherAdvice = $("#txtOtherAdvice").val();
+        entity.DignosisCommaSepareted = selected.join(", ");
+
+        if (confirm("Are you sure you want to Submit ?")) {
+            $.ajax({
+                url: "/DoctorSchdule/CreatePrescription",
+                data: entity,
+                type: "POST",
+                success: function (result) {
+                    if (getUrlVars()["PatientID"] != undefined) {
+                        alert(result);
+                        window.location.href = "/DoctorSchdule/ViewsPrescription";
+                    }
+                    else {
+                        alert(result);
+                        reset();
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    });
+    //Medicine Data Bind At The Time Of Edit
+
+    //function MedicineDataBindForEdit(data) {
+    //    $.each(data, function (i, item) {
+    //        // Denotes total number of rows
+    //        var rowIdx = "";
+    //        // Adding a row inside the tbody.
+    //        $('#tbody').append(`<tr id="${++rowIdx}">
+    //         <td class="row-index text-center">
+    //         <label id="txtMedicineName"  class=" control-label "><label type="hidden" text="${item.Id}" id="hdnMedicineId" class="control-label m-input">${item.MedicineName}</label>
+    //         </td>
+    //         </td>
+    //          <td class="row-index text-center">
+    //          <label id="txtMorningAfterMeal"  maxlength = "100" size = "3"class="control-label"> ${item.MorningAfterMeal}</label>
+    //         </td>
+    //          <td class="row-index text-center">
+    //          <label id="txtMorningBeforeMeal"   maxlength = "100" size = "3"class="control-label ">${item.MorningBeforeMeal}</label>
+    //         </td>
+    //         <td class="row-index text-center">
+    //          <label id="txtAfternoonAfterMeal"   maxlength = "100" size = "3"class="control-label ">${item.AfternoonAfterMeal}</label>
+    //         </td>
+    //         <td class="row-index text-center">
+    //         <label id="txtAfternoonBeforeMeal"   maxlength = "100" size = "3"class="control-label ">${item.AfternoonBeforeMeal}</label>
+    //         </td>
+    //         <td class="row-index text-center">
+    //         <label id="txtNightAfterMeal"   maxlength = "100" size = "3"class="control-label ">${item.NightAfterMeal}</label>
+    //         </td>
+    //         <td class="row-index text-center">
+    //          <label id="txtNightBeforeMeal"   maxlength = "100" size = "3"class="control-label ">${item.NightBeforeMeal}</label>
+    //         </td>
+    //          </tr>`
+    //        );
+    //    });
+
+    //    // jQuery button click event to remove a row.
+    //    $('#tbody').on('click', '.remove', function () {
+
+    //        // Getting all the rows next to the row
+    //        // containing the clicked button
+    //        var child = $(this).closest('tr').nextAll();
+
+    //        // Iterating across all the rows
+    //        // obtained to change the index
+    //        child.each(function () {
+    //            // Getting <tr> id.
+    //            var id = $(this).attr('id');
+    //            // Getting the <p> inside the .row-index class.
+    //            var idx = $(this).children('.row-index').children('p');
+    //            // Gets the row number from <tr> id.
+    //            var dig = parseInt(id.substring(1));
+    //            // Modifying row index.
+    //            idx.html(`Row ${dig - 1}`);
+    //            // Modifying row id.
+    //            $(this).attr('id', `R${dig - 1}`);
+    //        });
+
+    //        // Removing the current row.
+    //        $(this).closest('tr').remove();
+
+    //        // Decreasing total number of rows by 1.
+    //        rowIdx--;
+    //    });
+    //}
+
+    //Create
+    //$("#btnSubmit").click(function () {
+    //    var selected = [];
+    //    $('#newinput option:selected').each(function () {
+    //        selected.push($(this).attr('value'));
+    //    });
+    //    // Array of data we'll retu
+    //    var Items = []; //array declaring to store the records to send it to controller
+    //    var entity = {};
+    //    var tbl = document.getElementById('tbody');
+    //    for (var i = 0; i < tbl.rows.length; i++) {
+    //        var item1 = {};
+    //        item1.Id = tbl.rows[i].children[0].children[0].value;
+    //        item1.MorningAfterMeal = tbl.rows[i].children[1].children[0].value;
+    //        item1.MorningBeforeMeal = tbl.rows[i].children[2].children[0].value;
+    //        item1.AfternoonAfterMeal = tbl.rows[i].children[3].children[0].value;
+    //        item1.AfternoonBeforeMeal = tbl.rows[i].children[4].children[0].value;
+    //        item1.NightAfterMeal = tbl.rows[i].children[5].children[0].value;
+    //        item1.NightBeforeMeal = tbl.rows[i].children[6].children[0].value;
+    //        Items.push(item1);
+    //    }
+    //    entity.Medicines = Items;
+    //    entity.PatientID = $("#hdnPatientID").val();
+    //    entity.PrescriptionId = $("#hdnPrescriptionId").val();
+    //    entity.GuardianName = $("#txtHFMName").val();
+    //    entity.Height = $("#txtHeight").val();
+    //    entity.Weight = $("#txtWeight").val();
+    //    entity.BloodPressure = $("#txtBloodPressure").val();
+    //    entity.OxygenLevel = $("#txtOxygenLevel").val();
+    //    entity.Symptoms = $("#txtSymptoms").val();
+    //    entity.PatientHistory = $("#txtHistory").val();
+    //    entity.OtherAdvice = $("#txtOtherAdvice").val();
+    //    entity.DignosisCommaSepareted = selected.join(", ");
+
+    //    if (confirm("Are you sure you want to Submit ?")) {
+    //        $.ajax({
+    //            url: "/DoctorSchdule/CreatePrescription",
+    //            data: entity,
+    //            type: "POST",
+    //            success: function (result) {
+    //                if (getUrlVars()["PatientID"] != undefined) {
+    //                    alert(result);
+    //                    window.location.href = "/DoctorSchdule/ViewPrescription";
+    //                }
+    //                else {
+    //                    alert(result);
+    //                    reset();
+    //                }
+    //            },
+    //            error: function (errormessage) {
+    //                alert(errormessage.responseText);
+    //            }
+    //        });
+    //    }
+    //});
+    //< !--=================================================== -->
+
+
+</script>

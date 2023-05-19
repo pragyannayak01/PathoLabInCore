@@ -1,0 +1,199 @@
+﻿@model PathoLab.Domain.LabTestMaster.LabTest
+@{
+    ViewData["Title"] = "AddLabTest";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+}
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active" asp-controller="LabTest" asp-action="AddLabTest">Add</a>
+                    <a class="nav-item nav-link " asp-controller="LabTest" asp-action="ViewLabTest">View</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            @*//  BASIC FORM ELEMENTS
+                //  ===================================================*@
+
+            <div class="card-body">
+                <div class="form-group row">
+                    <input type="hidden" value="0" id="hdnDignosisConfigId" />
+                    <div class="col-xs-12 col-md-4 col-xl-4">
+                        <label class="control-label">Dignosis<span class="text-danger">*</span></label>
+                        <select id="ddlDignosisValue" class="form-control" asp-items="@(new SelectList(ViewBag.Name,"DignosisID","Name"))" asp-for="DignosisID">
+                            <option value="0">--Select--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-12 col-md-4 col-xl-4">
+                        <label class="control-label" for="RegstrationNo">LabTestMethodology<span class="text-danger">*</span></label>
+                        <input id="testName" class="form-control" onchange="NamevalidationC('testName','lblErrorName')" />
+                        <span id="lblErrorName" style="color:red"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-12 col-md-4 col-xl-4">
+                        <label class="control-label" for="RegstrationNo">Price<span class="text-danger">*</span></label>
+                        <input id="price" class="form-control" onchange="Pricevalidate('price','lblerrorprice')" />
+                        <span id="lblerrorprice" style="color:red"></span><br />
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+
+                    <input id="hdnLabTestId" class="form-control" hidden />
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                    <div class="col-12 col-md-6 col-xl-4 justify-content-center">
+                        <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                        <button class="btn btn-danger mb-1" id="btnCancel">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/validation/validation.js"></script>
+
+<script>
+    $(document).ready(function () {
+        //breadcumb
+        loadNavigation('AddLabTest', 'gldata', 'plsubmission', 'AddLabTest', '', 'AddLabTest');
+        var LabTestId = getUrlVars()["LabTestId"];
+        if (LabTestId != undefined) {
+            $("#btnSubmit").html("Update");
+            $("#btnCancel").html("Cancel");
+            Edit(LabTestId)
+        }
+
+    });
+
+</script>
+
+<script type="text/javascript">
+
+    $("#btnSubmit").click(function () {
+        var doc = {
+            LabTestId: $("#hdnLabTestId").val(),
+            DignosisID: $("#ddlDignosisValue").val(),
+            LabTestName: $("#testName").val(),
+            Price: $("#price").val()
+        };
+
+        if (validate()
+            && NamevalidationC('txtName', 'lblErrorName') == true
+            && Pricevalidate('price', 'lblerrorprice') == true) {
+            if (confirm("Are you sure you want to Submit ?")) {
+                $.ajax({
+                    url: "/LabTest/AddLabTest",
+                    data: doc,
+                    type: "POST",
+                    success: function (result) {
+                        if (getUrlVars()["LabTestId"] != undefined) {
+                            alert(result)
+                            location.href = "/LabTest/ViewLabTest";
+                        }
+                        else
+                            alert(result);
+                        location.href = "/LabTest/ViewLabTest";
+                        reset();
+
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+            }
+
+        }
+
+    });
+
+
+
+    $("#btnCancel").click(function () {
+        if ($("#hdnLabTestId").val() != '') {
+            window.location.href = "/LabTest/ViewLabTest";
+        }
+        else
+            reset();
+    })
+    function reset() {
+        $('#hdnLabTestId').val("");
+        $('#ddlDignosisValue').val("0");
+        $("#testName").val("");
+        $("#price").val("");
+
+
+    }
+
+    //UPDATE
+    function Edit(LabTestId) {
+
+        $.ajax({
+            url: "/LabTest/GetTestbyid?LabTestId=" + LabTestId,
+            type: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (Result) {
+                $('#hdnLabTestId').val(Result.LabTestId);
+                $('#ddlDignosisValue').val(Result.DignosisID);
+                $("#testName").val(Result.LabTestName);
+                $('#price').val(Result.Price);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+        return false;
+    }
+    //validation
+    function validate() {
+        if ($('#ddlDignosisValue').val() == 0) {
+            alert("Please Select Dignosis Name!");
+            $('#ddlDignosisValue').focus();
+            return false;
+        }
+        else if ($('#testName').val() == "") {
+            alert("Please Enter Test Name!");
+            $('#testName').focus();
+            return false;
+        }
+        else if ($('#price').val() == "") {
+            alert("Please Enter Price!");
+            $('#price').focus();
+            return false;
+        }
+        else
+            return true;
+    }
+    //$("#btnCancel").click(function () {
+    //    if ($("#LabTestId").val() != '') {
+    //        window.location.href = "/LabTest/ViewLabTest";
+    //    }
+    //    else
+    //        reset();
+    //})
+    //function reset() {
+    //    $('#ddlDignosisValue').val("0");
+    //    $("#testName").val("");
+    //    $("#price").val("");      
+    //}
+
+</script>

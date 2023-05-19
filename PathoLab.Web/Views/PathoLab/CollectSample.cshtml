@@ -1,0 +1,264 @@
+﻿
+@{
+    ViewData["Title"] = "CollectSample";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+    var ResultData = ViewBag.Result as List<PathoLab.Domain.PathoBilMasterl.PathoBill>;
+}
+
+<h2>Collect Sample</h2>
+<link href="~/css/printprescription.css" rel="stylesheet" />
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link  " asp-controller="PathoLab" asp-action="ViewCollection">Collection Page</a>
+                    <a class="nav-item nav-link  active " asp-controller="PathoLab" asp-action="CollectSample"> Sample Collection</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            <!--===================================================-->
+            <!-- BASIC FORM ELEMENTS 1 -->
+            <!--===================================================-->
+            <h4>Patient Details</h4>
+            <div class="card-body">
+                <input type="hidden" id="hdnPathoBillId" class="form-control m-input">
+                <input type="hidden" id="hdnCollectionId" class="form-control m-input">
+                <div class="form-group row">
+                    <div class="col-xs-12 col-md-2 col-xl-2">
+                        <label class="control-label"><b>Name:-</b></label>
+                        <label id="lblName"></label>
+                    </div>
+                    <div class="col-xs-12 col-md-3 col-xl-3">
+                        <label class="control-label"><b>MobileNo:-</b> </label>
+                        <label id="lblMobile"></label>
+                    </div>
+                    <div class="col-xs-12 col-md-1 col-xl-1">
+                        <label class="control-label"><b>Age:-</b> </label>
+                        <label id="lblAge"></label>
+                    </div>
+                    <div class="col-xs-12 col-md-2 col-xl-2">
+                        <label class="control-label"><b>Gender:-</b></label>
+                        <label id="lblGender"></label><br />
+                    </div>
+                    <div class="col-xs-12 col-md-3 col-xl-3">
+                        <label class="control-label"><b>Email:-</b></label>
+                        <label id="lblEmail"></label><br />
+                    </div>
+                </div>
+            </div>
+
+
+            <!--===================================================-->
+            <!-- END BASIC FORM ELEMENTS 1-->
+            <!--==============================================================================================================================================-->
+            <!-- BASIC FORM ELEMENTS 2 -->
+            <!--===================================================-->
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-12 col-md-12 col-xl-12">
+                        <div>
+                            <table id="tblTestBill" class="col-12 col-md-12 col-xl-12">
+                                <tr>
+                                    <td><b>Sl#</b></td>
+                                    <td><b>Test Name</b></td>
+                                    <td><b>BarCodeNo</b></td>
+                                    @*<td><b>Action</b></td>*@
+                                </tr>
+                                <tbody id="tbody"></tbody>
+
+                            </table><br />
+                        </div><br />
+                    </div>
+                </div>
+
+                <!--==============================================================================================================================================-->
+
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                    <div class="col-12 col-md-4 col-xl-4" style="margin-left:300px">
+                        <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                    </div>
+                </div>
+
+                <!--==============================================================================================================================================-->
+                <!-- END BASIC FORM ELEMENTS 2 -->
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        //breadcumb
+        var PathoBillId = getUrlVars()["PathoBillId"];
+        if (PathoBillId != undefined) {
+            Collect(PathoBillId);
+            Report(PathoBillId);
+            Barcode(PathoBillId);
+        }
+
+    });
+    var PathoBillIdTemp;
+    var CollectionIdTemp;
+    //DataBind From PathoLabCollection Table
+    function Collect(PathoBillId) {
+        $.ajax({
+            url: "/PathoLab/GetPatientDetailsByPathoBillId?PathoBillId=" + PathoBillId,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (result) {
+                $('#hdnPathoBillId').text(result.PathoBillId);
+                PathoBillIdTemp = result.PathoBillId;
+                CollectionIdTemp = result.CollectionId;
+                $('#hdnCollectionId').text(result.CollectionId);
+                $('#lblName').text(result.FullName);
+                $('#lblDate').text(result.DateOfAppointment);
+                $('#lblAge').text(result.Age);
+                $('#lblGender').text(result.Gender);
+                $('#lblMobile').text(result.Mobile);
+                $('#lblEmail').text(result.Email);
+                $('#lblLabTestMethodology').text(result.LabTestName);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    //< !--=================================================== -->
+    function Barcode(PathoBillId) {
+        $.ajax({
+            url: "/PathoLab/GetBarcodeByPathoBillId?PathoBillId=" + PathoBillId,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (data) {
+                $("#divBarcode").html("<img style='height:50px;width:200px' src='" + JSON.parse(data).BarcodeImage + "' alt='' />");
+            },
+            //error: function (errormessage) {
+            //    alert(errormessage.responseText);
+            //}
+        });
+    }
+    //< !--=================================================== -->
+
+    function Report(PathoBillId) {
+        $.ajax({
+            url: "/PathoLab/BindingTest?PathoBillId=" + PathoBillId,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (data) {
+                // Denotes total number of rows
+                var rowIdx = "";
+                // Adding a row inside the tbody.
+                $.each(data, function (i, item) {
+                    $('#tbody').append(`<tr id="R${++rowIdx}">
+                      <td class="row-index text-center">
+                     <label  class="control-label">${rowIdx}</label>
+                    </td>
+                     <td class="row-index text-center">
+                     <label id="txtTestName"  class="control-label">${item.LabTestName}</label>
+                    <input type="hidden" value="${item.LabTestId}" id="hdnLabTestId" class="form-control m-input">
+                    </td>
+                     <td class="row-index text-center">
+                  <input id="txtBarcode" type="text" maxlength = "100" size = "10"class="form-control m-input" >
+                 </td>
+
+                    </tr>`
+                    );
+                });
+            },
+            //error: function (errormessage) {
+            //    alert(errormessage.responseText);
+            //}
+        });
+        // jQuery button click event to remove a row.
+        $('#tbody').on('click', '.remove', function () {
+
+            // Getting all the rows next to the row
+            // containing the clicked button
+            var child = $(this).closest('tr').nextAll();
+
+            // Iterating across all the rows
+            // obtained to change the index
+            child.each(function () {
+                // Getting <tr> id.
+                var id = $(this).attr('id');
+                // Getting the <p> inside the .row-index class.
+                var idx = $(this).children('.row-index').children('p');
+                // Gets the row number from <tr> id.
+                var dig = parseInt(id.substring(1));
+                // Modifying row index.
+                idx.html(`Row ${dig - 1}`);
+                // Modifying row id.
+                $(this).attr('id', `R${dig - 1}`);
+            });
+
+            // Removing the current row.
+            $(this).closest('tr').remove();
+
+            // Decreasing total number of rows by 1.
+            rowIdx--;
+        });
+    }
+    //< !--=================================================== -->
+    //Create
+    $("#btnSubmit").click(function () {
+        var selected = [];
+        $('#newinput option:selected').each(function () {
+            selected.push($(this).attr('value'));
+        });
+        // Array of data we'll retu
+        var Items = []; //array declaring to store the records to send it to controller
+        var entity = {};
+        var tbl = document.getElementById('tbody');
+        for (var i = 0; i < tbl.rows.length; i++) {
+            var item1 = {};
+            item1.LabTestId = tbl.rows[i].children[1].children[1].value;
+            item1.Barcode = tbl.rows[i].children[2].children[0].value;
+            Items.push(item1);
+        }
+        entity.CollectionSample = Items;
+        
+        entity.PathoBillId = PathoBillIdTemp;
+        entity.CollectionId = CollectionIdTemp;
+        debugger
+        if (confirm("Are you sure you want to Submit ?")) {
+            $.ajax({
+                url: "/PathoLab/SampleCollectionInfo",
+                data: entity,
+                type: "POST",
+                success: function (result) {
+                    if (result = "Data Saved Successfully") {
+                        alert(result);
+
+                        location.href = "/PathoLab/ViewCollection";
+                    }
+                    else {
+                        alert(result);
+                        reset();
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    });
+
+</script>
+

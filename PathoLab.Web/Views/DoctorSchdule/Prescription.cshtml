@@ -1,0 +1,623 @@
+﻿@model PathoLab.Domain.DignosisMaster.Dignosis
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Prescription";
+    Layout = "~/Views/Shared/_LayoutaDoctorDynamic.cshtml";
+}
+<style>
+    .logo {
+        flex: 1;
+    }
+
+        .logo img {
+            width: 120px;
+            height: 120px;
+            float: left;
+        }
+
+    table td {
+        border: 1px solid black;
+        padding: 4px 12px;
+    }
+</style>
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">                    
+                    <a class="nav-item nav-link active ">Prescription</a>
+                </ul>
+
+                <div class="indicatorslist">
+                    <a onclick="updateDepartment()" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">Appointments </p>
+                </div>
+               
+            </div>
+            <!--===================================================-->
+            @*<hr />*@
+            <!-- BASIC FORM ELEMENTS 1 -->
+            <!--===================================================-->
+            <div class="card-body">
+                <!--Static-->
+                <div class="form-group row">
+                    <input type="hidden" id="hdnPatientID" />
+                    @*<input id="txtMedicineName" class="form-control m-input">*@
+                    <div class="col-xs-12 col-md-3 col-xl-3">
+                        <label class="control-label" for="RegdNo"><b>Regd No</b></label>
+                        <input id="txtRegdNo" class="form-control" disabled />
+                    </div>
+                    <div class="col-xs-12 col-md-4 col-xl-4">
+                        <input type="hidden" id="hdnHospitalId" value="@HttpContextAccessor.HttpContext.Session.GetInt32("HospitalID")" />
+                        <label class="control-label" for="HospitalName"><b>Hospital Name</b></label>
+                        <input id="txtHospitalName" class="form-control" disabled value="@HttpContextAccessor.HttpContext.Session.GetString("HospitalName")" />
+                    </div>
+                    <div class="col-xs-12 col-md-3 col-xl-3">
+                        <label class="control-label" for="DrName"><b>Doctor Name</b></label>
+                        <input id="txtDoctorName" class="form-control" disabled value="@HttpContextAccessor.HttpContext.Session.GetString("UserName")" />
+                    </div>
+                    <div class="col-xs-12 col-md-2 col-xl-2">
+                        <label class="control-label" for="DateOfAppointment"><b>Date</b></label>
+                        <input id="txtDate" class="form-control" disabled />
+                    </div>
+                    <div class="col-xs-12 col-md-3 col-xl-3">
+                        <label class="control-label" for="FullName"><b>Name</b></label>
+                        <input id="txtName" class="form-control" disabled />
+                    </div>
+                    <div class="col-12 col-md-3 col-xl-3">
+                        <label class=" control-label" for="GuardianName"><b>Husband/Father/Mother   Name</b> </label>
+                        <input id="txtHFMName" class="form-control" onchange="NamevalidationC('txtHFMName','lblErrorName')" />
+                        <span id="lblErrorName" style="color:red"></span>
+                    </div>
+                    <div class="col-12 col-md-2 col-xl-2">
+                        <label class="control-label" for="Mobile"><b>Mobile No</b> </label>
+                        <input id="txtMobile" class="form-control" disabled />
+                    </div>
+                    <div class="col-12 col-md-2 col-xl-2">
+                        <label class="control-label" for=Email><b>Email</b></label>
+                        <input id="txtEmail" type="email" class="form-control" disabled />
+                    </div>
+                    <div class="col-12 col-md-1 col-xl-1">
+                        <label class="control-label" for="Age"><b>Age</b> </label>
+                        <input id="txtAge" class="form-control"  disabled/>
+                    </div>
+                    <div class="col-12 col-md-1 col-xl-1">
+                        <label class="control-label" for="Gender"><b>Gender</b> </label>
+                        <input id="txtGender" class="form-control"  disabled/>
+                    </div>
+                </div>
+            </div>
+            <!--===================================================-->
+            <!-- END BASIC FORM ELEMENTS 1-->
+            <!--==============================================================================================================================================-->
+            <hr />
+            <!-- BASIC FORM ELEMENTS 2 -->
+            <!--===================================================-->
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-12 col-md-4 col-xl-4">
+                        <label class="control-label" for="BloodPressure"> <b>Blood Pressure</b> </label>
+                        <input type="text" id="txtBloodPressure" class="form-control" onchange="BPvalidate('txtBloodPressure','llbError')" />
+                        <span id="llbError" style="color:red"></span><br />
+                        <label class=" control-label" for="Height"> <b> Height </b></label>
+                        <input type="text" id="txtHeight" class="form-control" />
+                        <label class=" control-label" for="Weight"> <b> Weight </b></label>
+                        <input type="text" id="txtWeight" class="form-control" />
+                        <label class="control-label" for="OxygenLevel"> <b>Oxygen Level</b> </label>
+                        <input type="text" id="txtOxygenLevel" class="form-control" onchange="Oxyvalidate('txtOxygenLevel', 'llbErroroxy')" />
+                        <span id="llbErroroxy" style="color:red"></span><br />
+                        <label class=" control-label" for="Pulse"> <b> Pulse </b></label>
+                        <input type="text" id="txtPulse" class="form-control" />
+                        <label class="control-label" for="Temperature"> <b>Temperature </b> </label>
+                        <input type="text" id="txtTemperature" class="form-control" />
+                    </div>
+                    <div class="col-12 col-md-8 col-xl-8">
+                        <label class="control-label" for="Symptoms"><b>Symptoms</b>  </label>
+                        <textarea id="txtSymptoms" cols="40" rows="6" class="form-control"></textarea>
+                        <label class=" control-label" for="PatientHistory"><b>Patient History </b> </label>
+                        <textarea id="txtHistory" cols="40" rows="6" class="form-control"></textarea>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="form-group row">
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <label class=" control-label" for="Dignosis"><b>  Dignosis Test</b> </label>
+                        @*<input type="text" id="txtDignosisTest" class="form-control" />
+                            <div class="input-group m-3">
+                             <input type="text" class="form-control m-input">
+                            <select id="ddlDignosis" class="form-control">
+                                    <option value="0">--Select--</option>
+                                </select>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger"
+                                            id="DeleteRow" type="button">
+                                        <i class="fa fa-trash-o"></i>
+                                    </button>
+                                </div>
+                            </div>*@
+                        <div id="newinput"> <input type="hidden" id="hdndignosiscount" /></div>
+                        <button id="rowAdder" type="button" class="btn btn-dark pull-right">
+                            <span class="bi bi-plus-square-dotted">
+                            </span> ADD
+                        </button>
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-8">
+                        <label class=" control-label" id="txtPrescribeMedicine"> <b>Prescribe Medicine </b> </label>
+                        <div >
+                            <table id="tblMedicine">
+                                <tr>
+                                    <td>Medicine Name</td>
+                                    <td>Dosages</td>
+                                    <td>Duration</td>
+                                    <td>Action</td>
+                                </tr>
+                                <tbody id="tbody"></tbody>
+                            </table><br />
+                            <div class="form-group row">
+                                <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <button class="btn btn-md btn-primary pull-right" id="addBtn" type="button"> Add </button>
+                                </div>
+                            </div>
+                        </div><br />
+                        <div class="form-group row">
+                            <div class="col-12 col-md-10 col-xl-12">
+                                <label class="control-label" for="OtherAdvice"><b>Other Advice</b>  </label>
+                                <textarea id="txtOtherAdvice" cols="40" rows="6" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                        <button class="btn btn-danger mb-1" onclick="reset()" id="btnReset">Reset</button>
+                    </div>
+                </div>
+
+                <!--===================================================-->
+                <!-- END BASIC FORM ELEMENTS 2 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js">
+    </script>*@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" rel="stylesheet" type="text/css" />
+<script src="~/validation/validation.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        //breadcumb
+        var PatientID = getUrlVars()["PatientID"];
+        if (PatientID != undefined) {
+            $("#btnSubmit").html("Submit");
+            $("#btnReset").html("Reset");
+            BindPatientDetails(PatientID);
+            GetDignosis();
+        }
+    });
+
+    //< !--=================================================== -->
+    function reset() {
+        window.location.href = "/DoctorSchdule/Appointments";
+    }
+    //< !--=================================================== -->
+    //Medicine AutoFill
+    $(document).on('keypress', '.inputs', function () {
+        $('#tblMedicine tbody tr').each(function (index) {
+            var row = this;
+            $(this).find("td").eq(0).find("#txtMedicineName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '/DoctorSchdule/AutoComplete/',
+                        data: { "prefix": request.term },
+                        type: "POST",
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return item;
+                            }))
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                },
+                select: function (e, i) {
+                    $(row).find('td').find("#hdnMedicineId").val(i.item.val);
+                },
+                minLength: 1
+            });
+        });
+    });
+    //Medicine On Change
+    $(document).on('change', '.inputs', function () {
+        $('#tblMedicine tbody tr').each(function (index) {
+            var row = this;
+            $(this).find("td").eq(0).find("#txtMedicineName").blur(function () {
+                $.ajax({
+                    url: "/Dose/DoseGetByMedId?MedicineId=" + $(row).find('td').eq(0).find("#hdnMedicineId").val(),
+                    type: "GET",
+                    success: function (result) {
+                        data = JSON.parse(result);
+                        var v = "<option value='0'>--Select--</option>";
+                        $.each(data, function (i, item) {
+                            v += "<option value=" + item.DoseId + ">" + item.DoseName + "</option>";
+                        });
+                        $(row).find('td').next('td').find("#txtDoses").html(v);
+                        //$(this).find("td").eq(1).find("#txtDoses").html(v);
+                    },
+                    error: function (error) {
+                        jsonValue = jQuery.parseJSON(error.responseText);
+                        alert("Error : " + jsonValue);
+                    }
+                });
+            });
+        });
+    });
+    //< !--=================================================== -->
+    //DataBind From Appointment Table
+    function BindPatientDetails(PatientID) {
+        $.ajax({
+            url: "/DoctorSchdule/GetPatientDetailsByPatientID?PatientID=" + PatientID,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (result) {
+                $('#hdnPatientID').val(result[0].PatientID);
+                $('#txtName').val(result[0].FullName);
+                $('#txtHospitalName').val(result[0].HospitalName);
+                $('#txtRegdNo').val(result[0].RegdNo);
+                $('#txtDate').val(result[0].DateOfAppointment);
+                $('#txtAge').val(result[0].Age);
+                $('#txtGender').val(result[0].Gender);
+                $('#txtMobile').val(result[0].Mobile);
+                $('#txtEmail').val(result[0].Email);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+    //< !--=================================================== -->
+    //Reverse back
+    function updateDepartment() {
+        location.href = "/DoctorSchdule/Appointments";
+    }
+        //< !--=================================================== -->
+    //Create
+    $("#btnSubmit").click(function () {
+        var selected = [];
+        $('#newinput option:selected').each(function () {
+            selected.push($(this).attr('value'));
+        });
+
+        // Array of data we'll retu
+        var Items = []; //array declaring to store the records to send it to controller
+        var entity = {};
+
+        var tbl = document.getElementById('tbody');
+        for (var i = 0; i < tbl.rows.length; i++) {
+            var item1 = {};
+            item1.Id = tbl.rows[i].children[0].children[1].value;
+            item1.DoseId = tbl.rows[i].children[1].children[0].value;
+            item1.Duration = tbl.rows[i].children[2].children[0].value;
+            //item1.MorningAfterMeal = tbl.rows[i].children[1].children[0].value;
+            //item1.MorningBeforeMeal = tbl.rows[i].children[2].children[0].value;
+            //item1.AfternoonAfterMeal = tbl.rows[i].children[3].children[0].value;
+            //item1.AfternoonBeforeMeal = tbl.rows[i].children[4].children[0].value;
+            //item1.NightAfterMeal = tbl.rows[i].children[5].children[0].value;
+            //item1.NightBeforeMeal = tbl.rows[i].children[6].children[0].value;
+            Items.push(item1);
+        }
+        entity.Medicines = Items;
+        entity.PatientID = $("#hdnPatientID").val();
+        entity.GuardianName = $("#txtHFMName").val();
+        entity.Height = $("#txtHeight").val();
+        entity.Weight = $("#txtWeight").val();
+        entity.BloodPressure = $("#txtBloodPressure").val();
+        entity.OxygenLevel = $("#txtOxygenLevel").val();
+        entity.HospitalID = $("#hdnHospitalId").val();
+        //entity.BloodPressure = $("#txtBloodPressure").val();
+        entity.Pulse = $("#txtPulse").val();
+        entity.Temperature = $("#txtTemperature").val();
+        entity.PatientHistory = $("#txtHistory").val();
+        entity.OtherAdvice = $("#txtOtherAdvice").val();
+        entity.DignosisCommaSepareted = selected.join(", ");
+
+        //var desg = {
+        //    PatientID: $("#hdnPatientID").val(),
+        //    GuardianName: $("#txtHFMName").val(),
+        //    Height: $("#txtHeight").val(),
+        //    Weight: $("#txtWeight").val(),
+        //    BloodPressure: $("#txtBloodPressure").val(),
+        //    OxygenLevel: $("#txtOxygenLevel").val(),
+        //    Symptoms: $("#txtSymptoms").val(),
+        //    PatientHistory: $("#txtHistory").val(),
+        //    OtherAdvice: $("#txtOtherAdvice").val(),
+        //    DignosisCommaSepareted: selected.join(", "),
+        //};
+        if (validate()) {
+            if (confirm("Are you sure you want to Submit ?")) {
+                $.ajax({
+                    url: "/DoctorSchdule/CreatePrescription",
+                    data: entity,
+                    type: "POST",
+                    success: function (result) {
+                        if (getUrlVars()["PatientID"] != undefined) {
+                            alert(result);
+                            window.location.href = "/DoctorSchdule/ViewsPrescription";
+                        }
+                        else {
+                            alert(result);
+                            reset();
+                        }
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+            }
+        }
+    });
+    //< !--=================================================== -->
+
+    //Cancle
+    $("#btnCancel").click(function () {
+        reset();
+        if (getUrlVars()["PatientID"] != undefined) {
+            window.location.href = "/DoctorSchdule/CreatePrescription";
+        }
+    })
+    //< !--=================================================== -->
+
+    //Adding Add More Option In Dignosis
+    $("#rowAdder").click(function () {
+        $("#hdndignosiscount").val(parseFloat($("#hdndignosiscount").val() + 1));//Dynamic Id for Dynamic Dropdown
+        newRowAdd =
+            '<div id="row"> <div class="input-group m-3"><select id="ddlDignosis-' + $("#hdndignosiscount").val() + '"  class="form-control" >< option value = "0" > --Select--</option ></select >' +
+            '<div class="input-group-prepend">' +
+            '<button class="btn btn-danger" id="DeleteRow" type="button">' +
+            '<i class="fa fa-trash-o"></i></button> </div>' +
+            '</div> </div>';
+        $('#newinput').append(newRowAdd);
+        GetDignosisOfEachDropdownById('ddlDignosis-' + $("#hdndignosiscount").val());
+    });
+
+    $("body").on("click", "#DeleteRow", function () {
+        $(this).parents("#row").remove();
+    })
+    //Dropdown data bind
+    function GetDignosisOfEachDropdownById(id) {
+        $.ajax({
+            url: "/DoctorSchdule/GetDignosis",
+            type: "GET",
+            success: function (result) {
+                data = JSON.parse(result);
+                var v = "<option value='0'>--Select--</option>";
+                $.each(data, function (i, item) {
+                    v += "<option value=" + item.DignosisID + ">" + item.Name + " </option>";
+                });
+                $("#" + id).html(v);
+            },
+            error: function (error) {
+                jsonValue = jQuery.parseJSON(error.responseText);
+                alert("Error : " + jsonValue);
+            }
+        });
+    }
+    //< !--=================================================== -->
+    //Medicine Adding
+    //$("#rowAdding").click(function () {
+    //    newRowAdding =
+    //        '<div id="row"> <div class="input-group m-3"><input type="text" class="form-control m-input">' +
+    //        '<div class="input-group-prepend">' +
+    //        '<button class="btn btn-danger" id="DelRow" type="button">' +
+    //        '<i class="fa fa-trash-o"></i></button> </div>' +
+    //        '</div> </div>';
+    //    $('#newinputs').append(newRowAdding);
+    //});
+    //$("body").on("click", "#DelRow", function () {
+    //    $(this).parents("#row").remove();
+    //})
+    //< !--=================================================== -->
+
+    // Dignosis Name  Data Bind
+    function GetDignosis() {
+        $.ajax({
+            url: "/DoctorSchdule/GetDignosis",
+            type: "GET",
+            success: function (result) {
+                data = JSON.parse(result);
+                var v = "<option value='0'>--Select--</option>";
+                $.each(data, function (i, item) {
+                    v += "<option value=" + item.DignosisID + ">" + item.Name + " </option>";
+                });
+                $("#ddlDignosis").html(v);
+            },
+            error: function (error) {
+                jsonValue = jQuery.parseJSON(error.responseText);
+                alert("Error : " + jsonValue);
+            }
+        });
+    }
+    //< !--=================================================== -->
+
+    //Add Textbox Inside The Table Cells
+    // Denotes total number of rows
+    var rowIdx = "";
+    // jQuery button click event to add a row
+    $('#addBtn').on('click', function () {
+        // Adding a row inside the tbody.
+        $('#tbody').append(`<tr id="R${++rowIdx}">
+             <td class="row-index text-center">
+             <input id="txtMedicineName" class="inputs form-control m-input"><input type="hidden" id="hdnMedicineId" class="form-control m-input">
+             </td>
+              <td class="row-index text-center">
+               <select id="txtDoses" class="form-control">
+               <option value="0">--Select--</option>
+               </select>
+             </td>
+              <td class="row-index text-center">
+              <input id="txtDuration" type="text" maxlength = "100" size = "8"class="form-control m-input">
+             </td>
+              <td class="text-center">
+                <button class="btn btn-danger remove"
+                  type="button">Remove</button>
+                </td>
+              </tr>`
+        );
+    });
+
+    // jQuery button click event to remove a row.
+    $('#tbody').on('click', '.remove', function () {
+
+        // Getting all the rows next to the row
+        // containing the clicked button
+        var child = $(this).closest('tr').nextAll();
+
+        // Iterating across all the rows
+        // obtained to change the index
+        child.each(function () {
+
+            // Getting <tr> id.
+            var id = $(this).attr('id');
+
+            // Getting the <p> inside the .row-index class.
+            var idx = $(this).children('.row-index').children('p');
+
+            // Gets the row number from <tr> id.
+            var dig = parseInt(id.substring(1));
+
+            // Modifying row index.
+            idx.html(`Row ${dig - 1}`);
+
+            // Modifying row id.
+            $(this).attr('id', `R${dig - 1}`);
+        });
+
+        // Removing the current row.
+        $(this).closest('tr').remove();
+
+        // Decreasing total number of rows by 1.
+        rowIdx--;
+    });
+
+    //< !--=================================================== -->
+    function validate() {
+        if ($('#txtHFMName').val() == "") {
+            alert("Please Enter gurdian Name!");
+            $('#txtHFMName').focus();
+            return false;
+
+        }
+       else if ($('#txtBloodPressure').val() == "") {
+            alert("Please Enter BloodPressure !");
+            $('#txtBloodPressure').focus();
+            return false;
+        }
+        
+        else if ($('#txtHeight').val() == "") {
+            alert("Please Enter Patient's Height!");
+            $('#txtHeight').focus();
+            return false;
+
+        } else if ($('#txtWeight').val() == "") {
+            alert("Please Enter Patient's Weight!");
+            $('#txtWeight').focus();
+            return false;
+
+       
+
+        } else if ($('#txtOxygenLevel').val() == "") {
+            alert("Please Enter OxygenLevel !");
+            $('#txtOxygenLevel').focus();
+            return false;
+
+        } else if ($('#txtPulse').val() == "") {
+            alert("Please Enter Pulse rate!");
+            $('#txtPulse').focus();
+            return false;
+
+        } else if ($('#txtTemperature').val() == "") {
+            alert("Please Enter BodyTemperature!");
+            $('#txtTemperature').focus();
+            return false;
+
+        } else if ($('#txtHistory').val() == "") {
+            alert("Please Enter Patient's history!");
+            $('#txtHistory').focus();
+            return false;
+
+        } else if ($('#ddlDignosis').val() == 0) {
+            alert("Please select your Diognesis!");
+            $('#ddlDignosis').focus();
+            return false;
+
+        } else if ($('#txtOtherAdvice').val() == "") {
+            alert("Please Enter otherAdvise!");
+            $('#txtOtherAdvice').focus();
+            return false;
+
+        //} else if ($('#tblMedicine').val() == "") {
+        //    alert("Please Enter Data!");
+        //    $('#tblMedicine').focus();
+        //    return false;
+
+        //} else if ($('#newinput').val() == "") {
+        //    alert("Please Enter Diognesis !");
+        //    $('#newinput').focus();
+        //    return false;
+        //} else if ($('#txtMobielNo').val() == "") {
+        //    alert("Please Enter MobielNo!");
+        //    $('#txtMobielNo').focus();
+        //    return false;
+
+        //} else if ($('#txtGSTNo').val() == "") {
+        //    alert("Please Enter GST NO!");
+        //    $('#txtGSTNo').focus();
+        //    return false;
+
+        }
+        else
+            return true;
+    }
+
+
+</script>

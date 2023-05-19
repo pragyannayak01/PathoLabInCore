@@ -1,0 +1,136 @@
+﻿@model PathoLab.Domain.Report.ReportEntity
+
+@{
+    ViewData["Title"] = "DailyDateWiseAppointment";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+    var ResultData = ViewBag.Result as List<PathoLab.Domain.Report.ReportEntity>;
+}
+
+<h3>DailyDateWiseAppointment</h3>
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active " asp-controller="Report" asp-action="DailyDateWiseAppointment">DailyDateWiseAppointment</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                </div>
+            </div>           
+            <div class="card-body ">
+                <a href="/Report/ExportToExcelReport"><i class="fa fa-file-excel-o" style="font-size:24px"></i></a>
+
+                <!-- Search Panel-->
+                <div class="search-container">
+                    <div class="search-sec" style="display: block;">
+                        <form method="post" id="indsearch">
+                            <div class="form-group form-row">
+                                <div class="col-12 col-md-6 col-xl-3">
+                                    <label class="control-label">Hospital Name</label>
+                                    <select class="form-control" id="ddlHospitalName" asp-items="@(new SelectList(ViewBag.HospitalName,"HospitalID","HospitalName"))" asp-for="HospitalID">
+                                        <option value="Select">--Select--</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-2 ">
+                                    <button id="btnSearch" class="btn btn-primary mt-xl-4 mt-2"> <i class="fa fa-search"></i> Search</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="text-center"> <a class="searchopen" title="Search" data-toggle="tooltip" data-placement="bottom"> <i class="icon-angle-arrow-down"></i> </a></div>
+                </div>
+
+                <!-- Search Panel -->
+                @if (ResultData != null && ResultData.ToList().Count > 0)
+                {
+                    <div class="table-responsive">
+                        <table data-toggle="table" id="tblHospital" class="table">
+                            <thead>
+                                <tr>
+                                    <th width="60px" class="align-top text-center">SlNo</th>
+
+                                    <th width="150px" class="align-top">
+                                        HospitalName
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        AppointmentCount
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int count = 1;
+                                }
+                                @foreach (var list in ResultData)
+                                {
+                                    <tr>
+                                        <td class="text-center">@count</td>
+                                        <td>
+                                            @list.HospitalName
+                                        </td>
+                                        <td>
+                                            <a href="/Report/HospitalWiseAppointment?HospitalID=@list.HospitalID">@list.AppointmentCount </a>
+                                        </td>
+                                    </tr>
+                                    count++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="norecord"> No Record Found</div>
+                }
+                <div class="clearfix col-sm-12"></div>
+            </div>
+
+            @* ----------------------- *@
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        getDataTable();
+    })
+    //Pagination
+    function getDataTable() {
+        $('#tblHospital').DataTable({
+            "searching": true,
+            //"bStateSave": true,
+            "dom": 'Bfrtip',
+            "autoWidth": false,
+            "buttons": [
+                //{
+                //    extend: 'print',
+                //    title: 'Manage Block',
+                //    exportOptions: {
+                //        columns: [0, 1, 2, 3, 4]
+                //    },
+                //    customize: function (win) { $(win.document.body).css('font-size', '10pt').prepend('<img src="' + origin + '/images/t5-logo-white.png"  style="position:absolute; top:0; left:0;" />'); $(win.document.body).find('table').addClass('compact').css('font-size', 'inherit'); }
+
+                //}
+                ,
+                {
+                    extend: 'pageLength'
+                }
+            ],
+            "lengthMenu": [
+                [10, 25, 50, 100, 1000 - 1],
+                ['10 rows', '25 rows', '50 rows', '100 rows', '1000 rows', 'Show all']
+            ]
+        });
+    }
+        //< !--=================================================== -->
+
+</script>

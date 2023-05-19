@@ -1,0 +1,317 @@
+﻿@model PathoLab.Domain.DignosisConfigurationMaster.DignosisConfiguration
+@{
+    ViewData["Title"] = "ViewsPathoLabReport";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+}
+
+<link href="~/css/printprescription.css" rel="stylesheet" />
+<style>
+
+    table td {
+        border: 1px solid black;
+        padding: 4px 12px;
+    }
+</style>
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active  " asp-controller="PathoLab" asp-action="ViewsPathoLabReport"> Patho Lab Report</a>
+                    <a class="nav-item nav-link   " asp-controller="PathoLab" asp-action="PathoReportCollectionForPrint">View Patho Report</a>
+                    <a class="nav-item nav-link   " asp-controller="PathoLab" asp-action="PrintReport"> Print Report</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            <h5 style="text-align: center">Upload Report</h5><br />
+            <!--===================================================-->
+            <!-- BASIC FORM ELEMENTS 1 -->
+            <!--===================================================-->
+            <!--<div class="card-body">-->
+            <!--Static-->
+            <div class="card">
+                <table>
+                    <tr>
+                        <td class="col-xs-12 col-md-6 col-xl-6 psn">
+                            <div class="form-group row  ">
+                                <div class="fs1 " style="margin-left:15px">
+                                    <label class="control-label"><b>Collection Id :-</b></label>
+                                    <label id="txtCollectionId"></label>
+                                    <input type="hidden" id="hdnPathoBillId" /><br />
+                                    <label class="control-label" for=FullName><b>Name:-</b></label>
+                                    <label id="txtName" for=FullName></label><br />
+                                    <label class="control-label" for=Mobile><b>MobileNo:-</b> </label>
+                                    <label id="txtMobile" for=Mobile></label><br />
+                                    <label class="control-label" for=Age><b>Age:-</b> </label>
+                                    <label id="txtAge" for=Age></label><br />
+
+                                </div>
+                            </div>
+                        </td>
+                        <td class="col-xs-12 col-md-6 col-xl-6  psn">
+                            <div class="form-group row  ">
+                                <div class="fs1 " style="margin-left:150px">
+                                    <label class="control-label" for="DateOfAppointment"><b>Reported On  :-</b></label>
+                                    <label id="txtDate" for=DateOfAppointment></label><br />
+                                    <label class="control-label" for=Email><b>Email:-</b></label>
+                                    <label id="txtEmail" for=Email></label><br />
+                                    <label class="control-label" for=Gender><b>Gender:-</b> </label>
+                                    <label id="txtGender" for=Gender></label><br />
+
+                                </div>
+                            </div>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+            @*<hr class="new1" />*@
+
+            <!--===================================================-->
+            <!-- END BASIC FORM ELEMENTS 1-->
+            <!--==============================================================================================================================================-->
+            <!-- BASIC FORM ELEMENTS 1 -->
+            <!--===================================================-->
+            <div class="card-body">
+                <!--Static-->
+                <!--<div class="form-group row">
+                    <input type="hidden" value="0" id="hdnDignosisConfigId" />
+                    <div class="col-xs-12 col-md-6 col-xl-6">
+                        <label class="control-label"><b>Dignosis Value :-</b></label>
+                        <select id="ddlDignosisValue" class="form-control">
+                            <option value="0">--Select--</option>
+                        </select>-->
+                @*<label id="ddlDignosisValue" class="control-label"></label>*@
+                <!--</div>
+
+                </div>-->
+                <div class="form-group row">
+                    <input type="hidden" id="hdnPatientID" />
+                    <div class="col-xs-12 col-md-6 col-xl-6">
+                        <input type="hidden" value="0" id="hdnLabTestId" />
+                        <label class="control-label"><b>Lab Test Methodology :-</b></label>
+                        <label id="lblLabTestMethodology" class="control-label"></label>
+                    </div>
+
+                </div>
+            </div>
+            <!--===================================================-->
+            <!-- END BASIC FORM ELEMENTS 1-->
+            <!--==============================================================================================================================================-->
+            <!-- BASIC FORM ELEMENTS 2 -->
+            <!--===================================================-->
+            <div class="card-body">
+                <div class="col-12 col-md-12 col-xl-12">
+                    <div>
+                        <table id="tblDignosisConfiguration">
+                            <tr>
+                                <td rowspan="2"><b>Investigation Name</b></td>
+                                <td colspan="2"><b>Biological Reference Interval</b></td>
+                                <td rowspan="2"><b>Unit</b></td>
+                                <td rowspan="2"><b>Value</b><span class="text-danger">*</span></td>
+                            </tr>
+                            <tr>
+                                <td><b>Minimum Percentage</b></td>
+                                <td><b>Maximum Percentage</b></td>
+                            </tr>
+                            <tbody id="tbody"></tbody>
+                        </table><br />
+                    </div><br />
+                </div>
+                @*<div class="form-group row">
+                        <label class="col-12 col-md-4 col-xl-4 control-label"></label>
+                        <div class="col-12 col-md-4col-xl-4">
+                            <input type="file" id="myfile" name="myfile"><br><br>
+                        </div>
+                    </div>*@
+            </div>
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                    <button class="btn btn-danger mb-1" onclick="cancel()" id="btnCancel">Cancel</button>
+                </div>
+            </div>
+
+            <!--===================================================-->
+            <!-- END BASIC FORM ELEMENTS 2 -->
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        //breadcumb
+        var PathoBillId = getUrlVars()["PathoBillId"];
+        var LabTestId = getUrlVars()["LabTestId"];
+        if (PathoBillId != undefined && LabTestId != undefined) { //&& LabTestId != undefined
+            $("#btnSubmit").html("Submit");
+            $("#btnCancel").html("Cancel");
+            BindPatientDetails(PathoBillId, LabTestId);
+            Report(PathoBillId);
+        }
+    });
+    //< !--=================================================== -->
+
+    function Report(PathoBillId) {
+        $.ajax({
+            url: "/PathoLab/BindingTestConfig?PathoBillId=" + PathoBillId,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (data) {
+                //$('#lblLabTestMethodology').text(data[0].LabTestName);
+                // Denotes total number of rows
+                var rowIdx = "";
+                // Adding a row inside the tbody.
+                $.each(data, function (i, item) {
+                    $('#tbody').append(`<tr id="R${++rowIdx}">
+                    <td class="row-index text-center">
+                    <label id="txtInvestigationName"  class="control-label ">${item.InvestigationName}</label><input type="hidden"  value="${item.DignosisConfigId}" id="hdnDignosisConfigId" class="form-control m-input">
+                    </td>
+                     <td class="row-index text-center">
+                     <label id="txtMinimumPercentage"   class="control-label ">${item.MinimumPercentage}</label>
+                    </td>
+                     <td class="row-index text-center">
+                     <label id="txtMaximumPercentage"  class="control-label ">${item.MaximumPercentage}</label>
+                    </td>
+                    <td class="row-index text-center">
+                     <label id="txtUnit"   class="control-label">${item.Unit}</label>
+                    </td>
+                    <td class="row-index text-center">
+                     <input id="txtValue" type="text" maxlength = "100" size = "10"class="form-control m-input">
+                    </td>
+                    </tr>`
+                    );
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+        // jQuery button click event to remove a row.
+        $('#tbody').on('click', '.remove', function () {
+
+            // Getting all the rows next to the row
+            // containing the clicked button
+            var child = $(this).closest('tr').nextAll();
+
+            // Iterating across all the rows
+            // obtained to change the index
+            child.each(function () {
+                // Getting <tr> id.
+                var id = $(this).attr('id');
+                // Getting the <p> inside the .row-index class.
+                var idx = $(this).children('.row-index').children('p');
+                // Gets the row number from <tr> id.
+                var dig = parseInt(id.substring(1));
+                // Modifying row index.
+                idx.html(`Row ${dig - 1}`);
+                // Modifying row id.
+                $(this).attr('id', `R${dig - 1}`);
+            });
+
+            // Removing the current row.
+            $(this).closest('tr').remove();
+
+            // Decreasing total number of rows by 1.
+            rowIdx--;
+        });
+    }
+    //< !--=================================================================================== -->
+    //Cancle
+    $("#btnCancel").click(function () {
+        if (getUrlVars()["PathoBillId"] != undefined) {
+            window.location.href = "/PathoLab/ViewPathoLabCollection";
+        }
+    })
+    //< !--=================================================== -->
+    //DataBind From PathoLabCollection Table
+    function BindPatientDetails(PathoBillId, LabTestId) {
+        $.ajax({
+            url: "/PathoLab/GetPatientDetailsByPathoBillId?PathoBillId=" + PathoBillId + "&LabTestId=" + LabTestId,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (result) {
+                $('#hdnPathoBillId').text(result.PathoBillId);
+                $('#hdnLabTestId').text(result.LabTestId);
+                $('#txtCollectionId').text(result.CollectionId);
+                $('#txtName').text(result.FullName);
+                $('#txtDate').text(result.DateOfAppointment);
+                $('#txtAge').text(result.Age);
+                $('#txtGender').text(result.Gender);
+                $('#txtMobile').text(result.Mobile);
+                $('#txtEmail').text(result.Email);
+                $('#lblLabTestMethodology').text(result.LabTestName);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+    //< !--=================================================== -->
+    //Create
+    $("#btnSubmit").click(function () {
+        var selected = [];
+        $('#newinput option:selected').each(function () {
+            selected.push($(this).attr('value'));
+        });
+
+        // Array of data we'll retu
+        var Items = []; //array declaring to store the records to send it to controller
+        var entity = {};
+
+        var tbl = document.getElementById('tbody');
+        for (var i = 0; i < tbl.rows.length; i++) {
+            var item1 = {};
+            item1.PathoBillId = getUrlVars()["PathoBillId"];
+            item1.LabTestId = $("#hdnLabTestId").val();
+            item1.DignosisConfigId = tbl.rows[i].children[0].children[1].value;
+            item1.Value = tbl.rows[i].children[4].children[0].value;
+            Items.push(item1);
+        }
+        entity.TestValues = Items;
+        if (confirm("Are you sure you want to Submit ?")) {
+            $.ajax({
+                url: "/PathoLab/InsertPathoReportCollection",
+                data: entity,
+                type: "POST",
+                success: function (result) {
+                    if (getUrlVars()["PathoBillId"] != undefined) {
+                        alert(result)
+                        location.href = "/PathoLab/PathoReportCollectionForPrint";
+                    }
+                    else {
+                        alert(result);
+                        reset();
+
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    });
+    //< !--=================================================== -->
+     //< !--=================================================== -->
+
+    //$("#btnSubmit").click(function () {
+    //    if (getUrlVars()["PathoBillId"] != undefined) {
+    //        window.location.href = "/PathoLab/PrintReport?PathoBillId=" + getUrlVars()["PathoBillId"];
+    //    }
+    //})
+</script>

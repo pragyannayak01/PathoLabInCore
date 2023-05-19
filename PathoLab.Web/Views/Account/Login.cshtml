@@ -1,0 +1,298 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<!--<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+    <script src="~/js/jquery-3.3.1.min.js"></script>
+    <style>
+        .divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
+.h-custom {
+height: calc(100% - 73px);
+}-->
+@*@media (max-width: 450px) {
+.h-custom {
+height: 100%;
+}
+}*@
+    <!--</style>
+</head>
+<body>-->
+    <!-- Section: Design Block -->
+    <!--<section class="text-center">-->
+        <!-- Background image -->
+        <!--<div class="p-5 bg-image" style=" background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20190220/ourmid/pngtree-technology-technology-health-doctors-image_10060.jpg'); height: 300px; "></div>-->        <!-- Background image -->
+
+        <!--<div class="card mx-4 mx-md-5 shadow-5-strong" style="
+        margin-top: -100px;
+        background: hsla(0, 0%, 100%, 0.8);
+        backdrop-filter: blur(30px);">
+            <div class="card-body py-5 px-md-5">
+
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-6">
+                        <h2 class="fw-bold mb-5"><b>Login</b></h2>
+                        <form>-->
+                            <!-- Email input -->
+                            <!--<div class="form-outline col-12 col-md-6 col-xl-6" style="margin-left:180px">
+                                <label class="form-label" for="form3Example3"><b>User Name</b> </label>
+                                <input type="email" id="txtusername" class="form-control submit"
+                                       placeholder="Enter a Valid User Name" />
+                            </div>-->
+
+                            <!-- Password input -->
+                            <!--<div class="form-outline col-12 col-md-6 col-xl-6" style="margin-left:180px">
+                                <label class="form-label" for="form3Example4"><b>Password</b></label>
+                                <input type="password" id="txtpassword" class="form-control submit"
+                                       placeholder="Enter a Valid Password" />
+                            </div>-->
+                            <!-- Submit button -->
+                            <!--<div class="text-center text-lg-start mt-4 pt-2">
+                                <button type="button" class="btn btn-primary btn-lg" id="btnLogin"
+                                        style="padding-left: 2.5rem; padding-right: 2.5rem;">
+                                    Sign In
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>-->
+<html lang="en">
+<head>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+    <script src="~/js/jquery-3.3.1.min.js"></script>
+    <!--Stylesheet-->
+    <style media="screen">
+        *,
+        *:before,
+        *:after {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #080710;
+        }
+
+        .background {
+            width: 430px;
+            height: 520px;
+            position: absolute;
+            transform: translate(-50%,-50%);
+            left: 50%;
+            top: 50%;
+        }
+
+            .background .shape {
+                height: 200px;
+                width: 200px;
+                position: absolute;
+                border-radius: 50%;
+            }
+
+        .shape:first-child {
+            background: linear-gradient( #1845ad, #23a2f6 );
+            left: -80px;
+            top: -80px;
+        }
+
+        .shape:last-child {
+            background: linear-gradient( to right, #ff512f, #f09819 );
+            right: -30px;
+            bottom: -80px;
+        }
+
+        form {
+            height: 520px;
+            width: 400px;
+            background-color: rgba(255,255,255,0.13);
+            position: absolute;
+            transform: translate(-50%,-50%);
+            top: 50%;
+            left: 50%;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.1);
+            box-shadow: 0 0 40px rgba(8,7,16,0.6);
+            padding: 50px 35px;
+        }
+
+            form * {
+                font-family: 'Poppins',sans-serif;
+                color: #ffffff;
+                letter-spacing: 0.5px;
+                outline: none;
+                border: none;
+            }
+
+            form h3 {
+                font-size: 32px;
+                font-weight: 500;
+                line-height: 42px;
+                text-align: center;
+            }
+
+        label {
+            display: block;
+            margin-top: 30px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        input {
+            display: block;
+            height: 50px;
+            width: 100%;
+            background-color: rgba(255,255,255,0.07);
+            border-radius: 3px;
+            padding: 0 10px;
+            margin-top: 8px;
+            font-size: 14px;
+            font-weight: 300;
+        }
+
+        ::placeholder {
+            color: #e5e5e5;
+        }
+
+        button {
+            margin-top: 50px;
+            width: 100%;
+            background-color: #ffffff;
+            color: #080710;
+            padding: 15px 0;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    <form>
+        <h3>Login </h3>
+        <!-- Email input -->
+        <label class="form-label" for="form3Example3"><b>User Name</b> </label>
+        <input type="email" id="txtusername" class="form-control submit"
+               placeholder="Enter a Valid User Name" />
+
+        <!-- Password input -->
+        <label class="form-label" for="form3Example4"><b>Password</b></label>
+        <input type="password" id="txtpassword" class="form-control submit"
+               placeholder="Enter a Valid Password" />
+
+        <button id="btnLogin">Log In</button>
+        
+    </form>
+</body>
+</html>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    });
+    $('.submit').keypress(function (event) {
+        var keycode = (event.keyCode ? event.keyCode : event.which);//enter click event
+        if (keycode == '13') {
+            if ($("#txtusername").val() == '') {
+                alert("Please Enter UserName!");
+            }
+            else if ($("#txtpassword").val() == '') {
+                alert("Please Enter Password!");
+            }
+            else {
+                // alert('You pressed a "enter" key in textbox');
+                var login = {
+                    UserName: $("#txtusername").val(),
+                    Password: $("#txtpassword").val(),
+                };
+                $.ajax({
+                    url: "/Account/Login",
+                    data: login,
+                    type: "POST",
+                    success: function (result) {
+                        if (result == 1) {
+                            window.location.href ='/Home/Dashboard/';//Admin
+                        }
+                        //else if (result == 6) {
+                        //    window.location.href ='/Home/DoctorDashboard/';//Doctor
+                        //}
+                        //else if (result == 7) {
+                        //    window.location.href ='/Home/PatientDashboard/';//Patient
+                        //}
+                        //else if (result == 9) {
+                        //    window.location.href ='/Home/FrontOfficeDashboard/';//FrontOffice
+                        //}
+
+                        else {
+                            alert("Check your User ID and Password");
+                        }
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+            }
+        }
+    });
+    $("#btnLogin").click(function () {
+        if ($("#txtusername").val() == '') {
+            alert("Please Enter UserName!");
+        }
+        else if ($("#txtpassword").val() == '') {
+            alert("Please Enter Password!");
+        }
+        else {
+            var login = {
+                UserName: $("#txtusername").val(),
+                Password: $("#txtpassword").val(),
+            };
+            $.ajax({
+                url: "/Account/Login",
+                data: login,
+                type: "POST",
+                success: function (result){
+                    if (result == 1) {
+                        window.location.href = '/Home/Dashboard/';
+                    }
+                    //else if (result == 6) {
+                    //    window.location.href = '/Home/DoctorDashboard/';
+                    //}
+                    //else if (result == 7) {
+                    //    window.location.href = '/Home/PatientDashboard/';
+                    //}
+                    //else if (result == 9) {
+                    //    window.location.href = '/Home/FrontOfficeDashboard/';
+                    //}
+                    else {
+                        alert("Check your User ID and Password");
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    });
+</script>

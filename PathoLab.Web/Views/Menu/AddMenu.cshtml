@@ -1,0 +1,159 @@
+﻿
+@{
+    ViewData["Title"] = "AddMenu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active" asp-controller="Menu" asp-action="AddMenu">Add</a>
+                    <a class="nav-item nav-link" asp-controller="Menu" asp-action="ViewMenu">View</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            <!-- BASIC FORM ELEMENTS -->
+            <!--===================================================-->
+            <div class="card-body">
+                <div class="form-group row">
+                    <input type="hidden" id="hdnMenuId" />
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input"><b>Menu Name</b> <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-4 col-xl-4">
+                        <input type="text" id="txtMenuName" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input"><b>Sl.No</b> <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-4 col-xl-4">
+                        <input type="text" id="txtSlNo" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input"><b>Icon Name</b> <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-4 col-xl-4">
+                        <input type="text" id="txtIconName" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                        <button class="btn btn-danger mb-1" id="btnCancel">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--===================================================-->
+        <!-- END BASIC FORM ELEMENTS -->
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        //breadcumb
+        loadNavigation('Add Menu', 'gldata', 'plsubmission', 'Add Menu', '', 'Add Menu');
+        var MenuId = getUrlVars()["MenuId"];
+        if (MenuId != undefined) {
+            $("#btnSubmit").html("Update");
+            $("#btnCancel").html("Cancel");
+            Edit(MenuId);
+        }
+    });
+    function validate() {
+        if ($('#txtMenuName').val() == "") {
+            alert("Please Enter Menu!");
+            $('#txtMenuName').focus();
+            return false;
+        }
+        if ($('#txtSlNo').val() == "") {
+            alert("Please Enter SlNo!");
+            $('#txtSlNo').focus();
+            return false;
+        }
+        if ($('#txtIconName').val() == "") {
+            alert("Please Enter IconName!");
+            $('#txtIconName').focus();
+            return false;
+        }
+        else {
+            $("#btnCancel").hide();
+            return true;
+        }
+    }
+//Insert
+    $("#btnSubmit").click(function () {
+        var dept = {
+            MenuId: $("#hdnMenuId").val(),
+            MenuName: $("#txtMenuName").val(),
+            SlNo: $("#txtSlNo").val(),
+            IconName: $("#txtIconName").val(),
+        };
+        if (validate()) {
+            if (confirm("Are you sure you want to Submit ?")) {
+                $.ajax({
+                    url: "/Menu/AddMenu",
+                    data: dept,
+                    type: "POST",
+                    success: function (result) {
+                        if (getUrlVars()["MenuId"] != undefined) {
+                            alert(result)
+                            window.location.href ="/Menu/ViewMenu";
+                        }
+                        else {
+                            alert(result);
+                            reset();
+                        }
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+            }
+        }
+    });
+    //UPDATE
+    function Edit(MenuId) {
+            $.ajax({
+                url: "/Menu/MenuGetById?MenuId=" + MenuId,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    $("#hdnMenuId").val(result.MenuId),
+                        $("#txtMenuName").val(result.MenuName),
+                        $("#txtSlNo").val(result.SlNo),
+                        $("#txtIconName").val(result.IconName)
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+    }
+
+    $("#btnCancel").click(function () {
+        if (getUrlVars()["MenuId"] != undefined) {
+            window.location.href = "/Menu/AddMenu";
+        }
+    })
+    //< !--=================================================== -->
+    function reset() {
+        window.location.href = "/Menu/AddMenu";
+    }
+        //< !--=================================================== -->
+
+</script>
+
+

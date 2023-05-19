@@ -1,0 +1,198 @@
+﻿@model PathoLab.Domain.DesignationMaster.DesignationName
+@{
+    ViewData["Title"] = "AddPermission";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+    var ResultData = ViewBag.Result as List<PathoLab.Domain.PermissionMaster.Permission>;
+    var ResultSubMenu = ViewBag.SubMenu as List<PathoLab.Domain.SubMenuMaster.SubMenuClass>;
+
+}
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active" asp-controller="Permission" asp-action="AddPermission">Add</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            <!-- BASIC FORM ELEMENTS -->
+            <!--===================================================-->
+            <div class="card-body">
+                <input type="hidden" value="0" id="hdnPermissionId" />
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"><b>Designation </b><span class="text-danger">*</span></label>
+                    <div class="col-xs-12 col-md-4 col-xl-4">
+                        <select id="ddlDesignation" class="form-control" asp-items="@(new SelectList(ViewBag.DesignationName,"DesignationId","Designation",ViewBag.DesignationId))">
+                            <option value="0">--Select--</option>
+                        </select>
+                    </div>
+                </div>
+                @if (ResultSubMenu != null && ResultSubMenu.ToList().Count > 0)
+                {
+                    <div class="table-responsive">
+                        <table data-toggle="table" id="tblPermission" class="table">
+                            <thead>
+                                <tr>
+                                    <th width="60px" class="align-top text-center">Sl#</th>
+                                    <th width="150px" class="align-top">
+                                        <input type="checkbox" id="chkIsCheckedAll" name="chkIsCheckedAll" value="0" class="form-control" />
+                                        <label for="chkIsCheckedAll"></label>Action
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Menu Name
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        SubMenu Name
+                                    </th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody id="databody">
+                                @{
+                                    int count = 1;
+                                }
+                                @foreach (var list in ResultSubMenu)
+                                {
+                                    <tr>
+                                        <td class="text-center">@count</td>
+                                        <td>
+                                            @if (list.IsChecked)
+                                            {
+                                                <input type="checkbox" id="chkIsChecked-@list.SubMenuId" name="@list.SubMenuId" value="@list.SubMenuId" class="form-control chk" checked />
+                                                <label for="chkIsChecked-@list.SubMenuId"></label>
+                                            }
+                                            else
+                                            {
+                                                <input type="checkbox" id="chkIsChecked-@list.SubMenuId" name="@list.SubMenuId" value="@list.SubMenuId" class="form-control chk" />
+                                                <label for="chkIsChecked-@list.SubMenuId"></label>
+                                            }
+                                        </td>
+                                        <td>
+                                            @list.MenuName
+                                        </td>
+                                        <td>
+                                            @list.SubMenuName
+                                        </td>
+                                      
+                                    </tr>
+                                    count++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="norecord"></div>
+                }
+                <div class="clearfix col-sm-12"></div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                        <button class="btn btn-danger mb-1" id="btnCancel">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--===================================================-->
+        <!-- END BASIC FORM ELEMENTS -->
+    </div>
+</div>
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+<script>
+
+    $(document).ready(function () {
+    //    getDataTable();
+    })
+    //Designation  change event to view all the menu and submenu
+    $("#ddlDesignation").change(function () {
+        location.href ="/Permission/GetSelectedPermissions?DesignationId=" + $("#ddlDesignation").val();
+    });
+
+
+    $('#chkIsCheckedAll').change(function () {
+        $('tbody tr td input[type="checkbox"]').prop('checked', $(this).prop('checked'));
+    });
+
+
+    $('.chk').change(function () {
+        if ($('tbody tr td input[type="checkbox"]').length == $('tbody tr td input[type="checkbox"]').filter(':checked').length) {
+            $("#chkIsCheckedAll").prop('checked', true);
+        }
+        else {
+            $("#chkIsCheckedAll").prop('checked', false);
+        }
+    });
+
+    //Create
+    $("#btnSubmit").click(function () {
+        var entity = []; //array declaring to store the records to send it to controller
+        var tbl = document.getElementById('databody');
+        for (var i = 0; i < tbl.rows.length; i++) {
+            var item1 = {};
+            item1.SubMenuId = parseInt(tbl.rows[i].children[1].children[0].value);
+            item1.DesignationId = parseInt($("#ddlDesignation").val());
+            var id = tbl.rows[i].children[1].children[0].id;
+            item1.IsChecked = $('#' + id).is(':checked');
+            entity.push(item1);
+        }
+        if (confirm("Are you sure you want to Submit ?")) {
+            $.ajax({
+                url: "/Permission/CreatePermission",
+                data: JSON.stringify(entity),
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    alert(result);
+                    window.location.href ="/Permission/AddPermission";
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    });
+
+    //Pagination
+    function getDataTable() {
+        $('#tblPermission').DataTable({
+            "searching": true,
+            //"bStateSave": true,
+            "dom": 'Bfrtip',
+            "autoWidth": false,
+            "buttons": [
+                //{
+                //    extend: 'print',
+                //    title: 'Manage Block',
+                //    exportOptions: {
+                //        columns: [0, 1, 2, 3, 4]
+                //    },
+                //    customize: function (win) { $(win.document.body).css('font-size', '10pt').prepend('<img src="' + origin + '/images/t5-logo-white.png"  style="position:absolute; top:0; left:0;" />'); $(win.document.body).find('table').addClass('compact').css('font-size', 'inherit'); }
+
+                //}
+                ,
+                {
+                    extend: 'pageLength'
+                }
+            ],
+            "lengthSubMenu": [
+                [10, 25, 50, 100, 1000 - 1],
+                ['10 rows', '25 rows', '50 rows', '100 rows', '1000 rows', 'Show all']
+            ]
+        });
+    }
+</script>

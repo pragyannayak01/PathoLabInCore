@@ -1,0 +1,110 @@
+﻿@model PathoLab.Domain.PatientMaster.PatientBooking
+@{
+    ViewData["Title"] = "PatientBookingSchedule";
+    Layout = "~/Views/Shared/PatientLayout.cshtml";
+    var ResultData = ViewBag.Result as List<PathoLab.Domain.PatientMaster.PatientBooking>;
+
+}
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    @*<p class="ml-2">(*) Indicates mandatory </p>*@
+                </div>
+            </div>
+            <div class="card-body ">
+                @if (ResultData != null && ResultData.ToList().Count > 0)
+                {
+                    <div class="table-responsive">
+                        <table data-toggle="table" id="tblHospital" class="table">
+                            <thead>
+                                <tr>
+                                    <th width="60px" class="align-top text-center">Sl#</th>
+                                    <th width="150px" class="align-top">
+                                        Date Of Appointment
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Hospital Name
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Appointment Id
+                                    </th>
+
+                                    <th width="150px" class="align-top">
+                                        Slot Name
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Slot Time From
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Slot Time To
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Patient Name
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @{
+                                    int count = 1;
+                                }
+                                @foreach (var list in ResultData)
+                                {
+                                    <tr>
+                                        <td class="text-center">@count</td>
+                                        <td>
+                                            @list.DateOfAppointment
+                                        </td>
+                                        <td>
+                                            @list.HospitalName
+                                        </td>
+                                        <td>
+                                            @list.AppointmentId
+                                        </td>
+
+                                        <td>
+                                            @list.SlotName
+                                        </td>
+
+                                        <td>
+                                            @list.Slot_TimeFrom
+                                        </td>
+                                        <td>
+                                            @list.Slot_TimeTo
+                                        </td>
+
+                                        <td>
+                                            @list.FullName
+                                        </td>
+
+                                    </tr>
+                                    count++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="norecord"> No Record Found</div>
+                }
+                <div class="clearfix col-sm-12"></div>
+            </div>
+
+            @* ----------------------- *@
+        </div>
+    </div>
+</div>

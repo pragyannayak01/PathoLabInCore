@@ -1,0 +1,341 @@
+﻿
+@{
+    ViewData["Title"] = "AddHospital";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+}
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active" asp-controller="HospitalMaster" asp-action="AddHospital">Add</a>
+                    <a class="nav-item nav-link " asp-controller="HospitalMaster" asp-action="ViewHospital">View</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            @*//  BASIC FORM ELEMENTS
+                //  ===================================================*@
+            @*// HospitalID,HospitalName,RegstrationNo,LandlineNo,Address,City,State,PinCode,ContactPerson,MobielNo,GSTNo*@
+
+        <div class="card-body">
+            <div class="form-group row">
+                @* ID *@
+                <input type="hidden" id="hdnHospitalID" />
+                @* HospitalName *@
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="HospitalName">Hospital Name <span class="text-danger">*</span></label>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <input type="text" id="txtName" class="form-control" onchange="NamevalidationC('txtName','lblErrorName')" />
+                    <span id="lblErrorName" style="color:red"></span>
+
+                </div>
+            </div>
+            @* Regstration *@
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="RegstrationNo">Regstration No <span class="text-danger">*</span></label>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <input type="text" id="txtRegstrationNo" class="form-control">
+
+                </div>
+            </div>
+            @* LandlineNo *@
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="LandlineNo">Landline No </label>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <input type="text" id="txtLandlineNo" class="form-control" onchange="Land_Phonevalidate('txtLandlineNo','lblErrorLandlineNo')">
+                    <span id="lblErrorLandlineNo" style="color:red"></span>
+
+                </div>
+            </div>
+            @* Address *@
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="Address"> Address<span class="text-danger">*</span></label>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <input type="text" id="txtAddress" class="form-control">
+                </div>
+            </div>
+
+            @* City *@
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="City">City <span class="text-danger">*</span></label>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <input type="text" id="txtCity" class="form-control">
+                </div>
+            </div>
+            @*  State *@
+
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="State">State <span class="text-danger">*</span></label>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <select class="form-control" id="ddlState">
+                        <option value="0">Select</option>
+                        <option value="Odisha">Odisha</option>
+                        <option value="Bihar">Bihar</option>
+                        <option value="WestBengal">WestBengal</option>
+
+                    </select>
+                </div>
+            </div>
+            @*  PinCode *@
+
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="PinCode">PinCode <span class="text-danger">*</span></label>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <input type="text" id="txtPinCode" class="form-control" onchange="Pinvalidate('txtPinCode','lblErrorPin')" />
+                    <span id="lblErrorPin" style="color:red"></span>
+                </div>
+            </div>
+            @* Email *@
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="HEmail">Email <span class="text-danger">*</span></label>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <input type="text" id="txtHEmail" class="form-control" />
+                    @*<span id="lblErrorPin" style="color:red"></span>*@
+                </div>
+            </div>
+            @* Website *@
+           
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="HWebsite">Website <span class="text-danger">*</span></label>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <input type="text" id="txtHWebsite" class="form-control" />
+                    @*<span id="lblErrorPin" style="color:red"></span>*@
+                </div>
+            </div>
+            @*  ContactPerson *@
+
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="ContactPerson">ContactPerson <span class="text-danger">*</span></label>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <input type="text" id="txtContactPerson" class="form-control">
+                </div>
+            </div>
+            @*  MobielNo *@
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="MobielNo">MobielNo <span class="text-danger">*</span></label>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <input type="text" id="txtMobielNo" class="form-control" onchange="Phonevalidate('txtMobielNo','lblErrorPhone')" />
+                    <span id="lblErrorPhone" style="color:red"></span>
+                </div>
+            </div>
+
+            @*  GSTNo *@
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="GSTNo">GSTNo <span class="text-danger">*</span></label>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <input type="text" id="txtGSTNo" class="form-control" onchange="GstNo('txtGSTNo','lblErrorGst')" />
+                    <span id="lblErrorGst" style="color:red"></span>
+                </div>
+            </div>
+
+
+
+            @*BUTTONS*@
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                    <button class="btn btn-danger mb-1" id="btnCancel">Reset</button>
+                </div>
+            </div>
+        </div>
+            @*===================================================
+                END BASIC FORM ELEMENTS*@
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        //breadcumb
+        loadNavigation('AddHospital', 'gldata', 'plsubmission', 'AddHospital', '', 'AddHospital');
+        var HospitalID = getUrlVars()["HospitalID"];
+        if (HospitalID != undefined) {
+            $("#btnSubmit").html("Update");
+            $("#btnCancel").html("Cancel");
+            Edit(HospitalID)
+        }
+
+    });
+
+</script>
+
+<script type="text/javascript">
+
+    $("#btnSubmit").click(function () {
+
+
+        var doc = {
+            HospitalID: $("#hdnHospitalID").val(),
+            HospitalName: $("#txtName").val(),
+            RegstrationNo: $("#txtRegstrationNo").val(),
+            LandlineNo: $("#txtLandlineNo").val(),
+            Address: $("#txtAddress").val(),
+            City: $("#txtCity").val(),
+            State: $("#ddlState").val(),
+            PinCode: $("#txtPinCode").val(),
+            ContactPerson: $("#txtContactPerson").val(),
+            MobielNo: $("#txtMobielNo").val(),
+            GSTNo: $("#txtGSTNo").val(),
+            HEmail: $("#txtHEmail").val(),
+            HWebsite: $("#txtHWebsite").val()
+
+        };
+
+        if (validate() && Phonevalidate('txtMobielNo', 'lblErrorPhone') == true
+            && NamevalidationC('txtName', 'lblErrorName') == true && Land_Phonevalidate('txtLandlineNo', 'lblErrorLandlineNo') == true
+            && Pinvalidate('txtPinCode', 'lblErrorPin') == true && GstNo('txtGSTNo', 'lblErrorGst') == true) {
+            if (confirm("Are you sure you want to Submit ?")) {
+                $.ajax({
+                    url: "/HospitalMaster/AddHospital",
+                    data: doc,
+                    type: "POST",
+                    success: function (result) {
+                        if (getUrlVars()["HospitalID"] != undefined) {
+                            alert(result)
+                            window.location.href = "/HospitalMaster/ViewHospital";
+                        }
+                        else
+                            alert(result);
+                        reset();
+
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+            }
+
+        }
+
+    });
+
+
+
+    $("#btnCancel").click(function () {
+        if ($("#hdnHospitalID").val() != '') {
+            window.location.href = "/HospitalMaster/ViewHospital";
+        }
+        else
+            reset();
+    })
+    function reset() {
+        $('#hdnHospitalID').val("");
+        $("#txtName").val("");
+        $("#txtRegstrationNo").val("");
+        $("#txtLandlineNo").val("");
+        $("#txtAddress").val("");
+        $("#txtCity").val("");
+        $("#ddlState").val("0");
+        $("#txtPinCode").val("");
+        $("#txtContactPerson").val("");
+        $("#txtMobielNo").val("");
+        $("#txtGSTNo").val("");
+        $("#txtHEmail").val("");
+        $("#txtHWebsite").val("");
+
+    }
+
+    //UPDATE
+    function Edit(HospitalID) {
+
+        $.ajax({
+            url: "/HospitalMaster/GetByHospitalID?HospitalID=" + HospitalID,
+            type: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (Result) {
+                $('#hdnHospitalID').val(Result.HospitalID);
+                $("#txtName").val(Result.HospitalName);
+                $("#txtRegstrationNo").val(Result.RegstrationNo);
+                $("#txtLandlineNo").val(Result.LandlineNo);
+                $("#txtAddress").val(Result.Address);
+                $("#txtCity").val(Result.City);
+                $("#ddlState").val(Result.State);
+                $("#txtPinCode").val(Result.PinCode);
+                $("#txtContactPerson").val(Result.ContactPerson);
+                $("#txtMobielNo").val(Result.MobielNo);
+                $("#txtGSTNo").val(Result.GSTNo);
+                $("#txtHEmail").val(Result.HEmail);
+                $("#txtHWebsite").val(Result.HWebsite);
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+        return false;
+    }
+    //validation
+    function validate() {
+        if ($('#txtName').val() == "") {
+            alert("Please Enter hospital Name!");
+            $('#txtName').focus();
+            return false;
+
+        }
+        else if ($('#txtRegstrationNo').val() == "") {
+            alert("Please Enter Registration no!");
+            $('#txtRegstrationNo').focus();
+            return false;
+
+        } else if ($('#txtLandlineNo').val() == "") {
+            alert("Please Enter Landline no!");
+            $('#txtLandlineNo').focus();
+            return false;
+
+        } else if ($('#txtAddress').val() == "") {
+            alert("Please Enter Address!");
+            $('#txtAddress').focus();
+            return false;
+
+        } else if ($('#txtCity').val() == "") {
+            alert("Please Enter city name!");
+            $('#txtCity').focus();
+            return false;
+
+        } else if ($('#ddlState').val() == "Select") {
+            alert("Please select your state!");
+            $('#ddlState').focus();
+            return false;
+
+        } else if ($('#txtPinCode').val() == "") {
+            alert("Please Enter PinCode!");
+            $('#txtPinCode').focus();
+            return false;
+
+        } else if ($('#txtContactPerson').val() == "") {
+            alert("Please Enter ContactPerson!");
+            $('#txtContactPerson').focus();
+            return false;
+
+        } else if ($('#txtMobielNo').val() == "") {
+            alert("Please Enter MobielNo!");
+            $('#txtMobielNo').focus();
+            return false;
+
+        } else if ($('#txtGSTNo').val() == "") {
+            alert("Please Enter GST NO!");
+            $('#txtGSTNo').focus();
+            return false;
+
+        }
+        else
+            return true;
+    }
+
+
+
+
+</script>

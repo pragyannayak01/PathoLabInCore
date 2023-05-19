@@ -1,0 +1,281 @@
+﻿@model PathoLab.Domain.PatientMaster.patient
+@{
+    ViewData["Title"] = "ViewDoctor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var ResultData = ViewBag.Result as List<PathoLab.Domain.PatientMaster.patient>;
+}
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link " asp-controller="Patient" asp-action="Patient_Registration">Add</a>
+                    <a class="nav-item nav-link active " asp-controller="Patient" asp-action="GetAllPatient">View</a>
+                </ul>
+            </div>
+            <!-- Search Panel-->
+            @*<div class="search-container">
+
+            <div class="text-center"> <a class="searchopen" title="Search" data-toggle="tooltip" data-placement="bottom"> <i class="icon-angle-arrow-down"></i> </a></div>
+        </div>*@
+
+            <div class="search-container">
+                <div class="search-sec" style="display: block;">
+                    <form method="post" id="indsearch">
+                        <div class="form-group form-row">
+                            @*<label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Sector Name<span class="text-danger">*</span></label>*@
+
+
+
+                            <div class="col-12 col-md-6 col-xl-3">
+                                <label class="control-label">Name</label>
+                                <input id="Dname" class="form-control" asp-for="FullName" />
+                            </div>
+
+                            <div class="col-lg-2 ">
+                                <button id="btnSearch" class="btn btn-primary mt-xl-4 mt-2"> <i class="fa fa-search"></i> Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="text-center"> <a class="searchopen" title="Search" data-toggle="tooltip" data-placement="bottom"> <i class="icon-angle-arrow-down"></i> </a></div>
+            </div>
+
+            <!-- Search Panel -->
+            <!--===================================================-->
+            <div class="card-body ">
+                @if (ResultData != null && ResultData.ToList().Count > 0)
+                {
+                    <div class="table-responsive">
+                        <table data-toggle="table" id="tblDoctor" class="table">
+                            <thead>
+                                <tr>
+                                    <th width="60px" class="align-top text-center">Sl#</th>
+
+                                    <th width="150px" class="align-top">
+                                        Name
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        User Name
+                                    </th>
+
+                                    <th width="150px" class="align-top">
+                                        Email
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Mobile
+                                    <th width="150px" class="align-top">
+                                        Gender
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Previous History
+                                    </th>
+                                    <th width="150px" class="align-top">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int count = 1;
+                                }
+                                @foreach (var list in ResultData)
+                                {
+                                    <tr>
+                                        <td class="text-center">@count</td>
+
+                                        <td>
+                                            @list.FullName
+                                        </td>
+                                        <td>
+                                            @list.UserName
+                                        </td>
+
+                                        <td>
+                                            @list.Email
+                                        </td>
+                                        <td>
+                                            @list.Mobile
+                                        </td>
+                                        <td>
+                                            @list.Gender
+                                        </td>
+                                        <td>
+                                            @list.PatientHistory
+                                        </td>
+
+
+
+
+
+
+
+
+                                        <td>
+                                            @*<a href="/RegistrationUser/User_Registration?id=@Convert.ToString(@list.UserId)" class="text-primary mr-3" title="" data-original-title="Edit"><i class="icon-edit1"></i></a>*@
+                                            <a onclick="updateDepartment('@list.UserId');" class="text-primary mr-3" title="" data-original-title="Edit"><i class="icon-edit1"></i></a>
+
+                                            <a onclick="deleteDoctor('@list.UserId');" class="text-danger" title="" data-original-title="Delete"><i class="icon-trash-21"></i></a>
+                                        </td>
+                                    </tr>
+                                    count++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="norecord"> No Record Found</div>
+                }
+                <div class="clearfix col-sm-12"></div>
+            </div>
+
+
+            <div class="modal fade" id="SubmitModal" tabindex="1" role="dialog"
+                 aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5>Customer Details</h5>
+                        </div>
+                        <div class="modal-body">
+                            <h6 class="modalMsg"></h6>
+                        </div>
+                        <div class="modal-footer">
+                            @*<a href="/RegistrationUser/User_Registration?id=@Convert.ToString(@list.UserId)" class="text-primary mr-3" title="" data-original-title="Edit"><i class="icon-edit1"></i></a>*@
+
+                            <input type="submit" class="btn btn-info btn-sm submitConfirm hbtn" value="Yes" styk="display:none" />
+                            <button type="button" class="btn btn-danger btn-sm No hbtn" data-dismiss="modal" aria-label="Close">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="DSubmitModal" tabindex="1" role="dialog"
+                 aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5>Customer Details</h5>
+                        </div>
+                        <div class="modal-body">
+                            <h6 class="DmodalMsg"></h6>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-info btn-sm DsubmitConfirm hbtn" value="Yes" styk="display:none" />
+                            <button type="button" class="btn btn-danger btn-sm No hbtn" data-dismiss="modal" aria-label="Close">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="SuccessModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="resultMsg" style="color:blue"></h5>
+                        </div>
+                        <div class="modal-body">
+                            <h5 class="msgsuccess"></h5>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-danger btnok" asp-controller="Patient" asp-action="GetAllPatient">Close</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--===================================================-->
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        getDataTable();
+    })
+    //Pagination
+    function getDataTable() {
+        $('#tblDoctor').DataTable({
+            "searching": true,
+            //"bStateSave": true,
+            "dom": 'Bfrtip',
+            "autoWidth": false,
+            "buttons": [
+                //{
+                //    extend: 'print',
+                //    title: 'Manage Block',
+                //    exportOptions: {
+                //        columns: [0, 1, 2, 3, 4]
+                //    },
+                //    customize: function (win) { $(win.document.body).css('font-size', '10pt').prepend('<img src="' + origin + '/images/t5-logo-white.png"  style="position:absolute; top:0; left:0;" />'); $(win.document.body).find('table').addClass('compact').css('font-size', 'inherit'); }
+
+                //}
+                ,
+                {
+                    extend: 'pageLength'
+                }
+            ],
+            "lengthMenu": [
+                [10, 25, 50, 100, 1000 - 1],
+                ['10 rows', '25 rows', '50 rows', '100 rows', '1000 rows', 'Show all']
+            ]
+        });
+    }
+    var x;
+    function updateDepartment(DepartmentId) {
+        $('.modalMsg').text('Are you sure to Update the details ?');
+        $('.submitConfirm').css('display', 'block');
+        $('#SubmitModal').modal("show");
+        x = DepartmentId;
+
+        //if (confirm("Are you sure you want to update ?")) {
+        //    location.href = "/Patient/patient_Registration?id=" + DepartmentId;
+        //}
+    }
+    $(".submitConfirm").click(function () {
+        location.href = "/Patient/patient_Registration?id=" + x;
+    });
+
+    var dl;
+    function deleteDoctor(UserId) {
+        $('.DmodalMsg').text('Are you sure to delete ?');
+        $('.DsubmitConfirm').css('display', 'block');
+        $('#DSubmitModal').modal("show");
+        dl = UserId;
+    }
+    $(".DsubmitConfirm").click(function () {
+        $.ajax({
+            url: "/Patient/Delete?id=" + dl,
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (data) {
+                if (data == "3") {
+                    $('.modalMsg').text('');
+                    $('#DSubmitModal').modal("hide");
+                    $('.msgsuccess').text('Data Deleted successfully.');
+                    $('#SuccessModal').modal('show');
+                    /* window.location.href = "/RegistrationUser/GetAllUsers";*/
+                }
+
+
+            },
+            error: function (error) {
+                jsonValue = jQuery.parseJSON(error.responseText);
+                bootbox.alert("Error : " + jsonValue);
+            }
+        });
+
+    });
+
+  
+</script>
+

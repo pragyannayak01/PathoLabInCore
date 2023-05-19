@@ -1,0 +1,219 @@
+﻿@model PathoLab.Domain.RoleMaster.Role
+
+@{
+    ViewData["Title"] = "ViewDoctor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var ResultData = ViewBag.Result as List<PathoLab.Domain.RoleMaster.Role>;
+}
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link" asp-controller="Role" asp-action="Role_Insert">Add</a>
+                    <a class="nav-item nav-link active" asp-controller="Role" asp-action="GetAllRole">View</a>
+                </ul>
+            </div>
+            <!-- Search Panel-->
+            <div class="search-container">
+
+                <div class="text-center"> <a class="searchopen" title="Search" data-toggle="tooltip" data-placement="bottom"> <i class="icon-angle-arrow-down"></i> </a></div>
+            </div>
+
+            <!-- Search Panel -->
+            <!--===================================================-->
+            <div class="card-body ">
+                @if (ResultData != null && ResultData.ToList().Count > 0)
+                {
+                    <div class="table-responsive">
+                        <table data-toggle="table" id="tblDoctor" class="table">
+                            <thead>
+                                <tr>
+                                    <th width="60px" class="align-top text-center">Sl#</th>
+                                    <th width="150px" class="align-top">
+                                        Role ID
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Role Name
+                                    </th>
+
+
+                                    <th width="150px" class="align-top">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int count = 1;
+                                }
+                                @foreach (var list in ResultData)
+                                {
+                                    <tr>
+                                        <td class="text-center">@count</td>
+                                        <td>
+                                            @list.RoleId
+                                        </td>
+                                        <td>
+                                            @list.RoleName
+                                        </td>
+
+
+
+
+                                        <td>
+                                            <a onclick="updateDepartment('@list.RoleId');" class="text-primary mr-3" title="" data-original-title="Edit"><i class="icon-edit1"></i></a>
+
+                                            @*<a href="/Role/Role_Insert?id=@Convert.ToString(list.RoleId)" class="text-primary mr-3" title="" data-original-title="Edit"><i class="icon-edit1"></i></a>*@
+                                            <a onclick="deleteDoctor('@list.RoleId');" class="text-danger" title="" data-original-title="Delete"><i class="icon-trash-21"></i></a>
+                                        </td>
+                                    </tr>
+                                    count++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="norecord"> No Record Found</div>
+                }
+                <div class="clearfix col-sm-12"></div>
+            </div>
+
+            <div class="modal fade" id="SubmitModal" tabindex="1" role="dialog"
+                 aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5>Customer Details</h5>
+                        </div>
+                        <div class="modal-body">
+                            <h6 class="modalMsg"></h6>
+                        </div>
+                        <div class="modal-footer">
+                            @*<a href="/RegistrationUser/User_Registration?id=@Convert.ToString(@list.UserId)" class="text-primary mr-3" title="" data-original-title="Edit"><i class="icon-edit1"></i></a>*@
+
+                            <input type="submit" class="btn btn-info btn-sm submitConfirm hbtn" value="Yes" styk="display:none" />
+                            <button type="button" class="btn btn-danger btn-sm No hbtn" data-dismiss="modal" aria-label="Close">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="DSubmitModal" tabindex="1" role="dialog"
+                 aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5>Customer Details</h5>
+                        </div>
+                        <div class="modal-body">
+                            <h6 class="DmodalMsg"></h6>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-info btn-sm DsubmitConfirm hbtn" value="Yes" styk="display:none" />
+                            <button type="button" class="btn btn-danger btn-sm No hbtn" data-dismiss="modal" aria-label="Close">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="SuccessModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="resultMsg" style="color:blue"></h5>
+                        </div>
+                        <div class="modal-body">
+                            <h5 class="msgsuccess"></h5>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-danger btnok" asp-controller="Role" asp-action="GetAllRole">Close</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--===================================================-->
+        </div>
+    </div>
+</div>
+<script>
+    var x;
+    function updateDepartment(DepartmentId) {
+        $('.modalMsg').text('Are you sure to Update the details ?');
+        $('.submitConfirm').css('display', 'block');
+        $('#SubmitModal').modal("show");
+        x = DepartmentId;
+
+        //if (confirm("Are you sure you want to update ?")) {
+        //    location.href = "/Patient/patient_Registration?id=" + DepartmentId;
+        //}
+    }
+    $(".submitConfirm").click(function () {
+        location.href = "/Role/Role_Insert?id=" + x;
+    });
+
+    var dl;
+    function deleteDoctor(UserId) {
+        $('.DmodalMsg').text('Are you sure to delete ?');
+        $('.DsubmitConfirm').css('display', 'block');
+        $('#DSubmitModal').modal("show");
+        dl = UserId;
+    }
+    $(".DsubmitConfirm").click(function () {
+        $.ajax({
+            url: "/Role/Delete?id=" + dl,
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (data) {
+                if (data == "3") {
+                    $('.modalMsg').text('');
+                    $('#DSubmitModal').modal("hide");
+                    $('.msgsuccess').text('Data Deleted successfully.');
+                    $('#SuccessModal').modal('show');
+                    /* window.location.href = "/RegistrationUser/GetAllUsers";*/
+                }
+
+
+            },
+            error: function (error) {
+                jsonValue = jQuery.parseJSON(error.responseText);
+                bootbox.alert("Error : " + jsonValue);
+            }
+        });
+
+    });
+    //function deleteDoctor(id) {
+    //    if (confirm("Are you sure you want to delete ?")) {
+    //        $.ajax({
+    //            url: "/Role/Delete?id=" + id,
+    //            type: "POST",
+    //            dataType: "json",
+    //            contentType: "application/json;charset=UTF-8",
+    //            success: function (data) {
+    //                if (data == "3") {
+
+    //                    window.location.href = "/Role/GetAllRole";
+    //                }
+
+
+    //            },
+    //            error: function (error) {
+    //                jsonValue = jQuery.parseJSON(error.responseText);
+    //                bootbox.alert("Error : " + jsonValue);
+    //            }
+    //        });
+    //    }
+    //}
+</script>
+

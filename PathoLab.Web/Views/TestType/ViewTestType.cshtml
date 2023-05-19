@@ -1,0 +1,111 @@
+﻿
+@{
+    ViewData["Title"] = "ViewTestType";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var ResultData = ViewBag.Result as List<PathoLab.Domain.TestType.TestTypeMaster>;
+}
+
+
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link " asp-controller="TestType" asp-action="AddTestType">Add</a>
+                    <a class="nav-item nav-link active " asp-controller="TestType" asp-action="ViewTestType">View</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            @*//TestTypeID,TestType*@
+            <div class="card-body ">
+                @if (ResultData != null && ResultData.ToList().Count > 0)
+                {
+                    <div class="table-responsive">
+                        <table data-toggle="table" id="tblDoctor" class="table">
+                            <thead>
+                                <tr>
+                                    <th width="60px" class="align-top text-center">Sl#</th>
+                                    <th width="150px" class="align-top">
+                                        TestType
+                                    </th>
+                                    <th width="150px" class="align-top">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int count = 1;
+                                }
+                                @foreach (var list in ResultData)
+                                {
+                                    <tr>
+                                        <td class="text-center">@count</td>
+                                        <td>
+                                            @list.TestType
+                                        </td>                                       
+                                        <td>
+                                            <a href="/TestType/AddTestType?TestTypeID=@Convert.ToString(list.TestTypeID)" class="text-primary mr-3" title="" data-original-title="Edit"><i class="icon-edit1"></i></a>
+                                            <a onclick="deleteDoctor('@list.TestTypeID');" class="text-danger" title="" data-original-title="Delete"><i class="icon-trash-21"></i></a>
+                                        </td>
+                                    </tr>
+                                    count++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="norecord"> No Record Found</div>
+                }
+                <div class="clearfix col-sm-12"></div>
+            </div>
+            <!--===================================================-->
+        </div>
+    </div>
+</div>
+<script>
+    function deleteDoctor(TestTypeID) {
+        if (confirm("Are you sure you want to delete ?")) {
+            $.ajax({
+                url: "/TestType/Delete?TestTypeID=" + TestTypeID,
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json;charset=UTF-8",
+                success: function (data) {
+                    if (data == "1") {
+
+                        alert("Data Deleted successfully")
+                            window.location.href = "/TestType/ViewTestType";
+
+                      
+                    }
+                    else if (data == "4") {
+                        bootbox.alert(" Already In Use!", function () {
+                            //window.location.href = "/Sector/ViewSector";
+                            window.location.href = "/TestType/ViewTestType";
+                          /*  window.location.reload();*/
+                        });
+
+                    }
+                    else { }
+                },
+                error: function (error) {
+                    jsonValue = jQuery.parseJSON(error.responseText);
+                    bootbox.alert("Error : " + jsonValue);
+                }
+            });
+        }
+    }
+</script>

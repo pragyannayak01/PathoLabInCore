@@ -1,0 +1,136 @@
+﻿
+@{
+    ViewData["Title"] = "SendEmail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+<div class="col-md-12 col-sm-12">
+    <div class="card">
+        <div class="card-header">
+            <ul class="nav nav-tabs nav-fill" role="tablist">
+                <a class="nav-item nav-link active">Send Email</a>
+            </ul>
+            <div class="indicatorslist">
+                <p class="ml-2 text-danger">(*) Indicates mandatory </p>
+            </div>
+        </div>
+        <div class="card-body uploadmeeting col-xl-10">
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">To <span class="text-danger">*</span></label>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <span class="colon">:</span>
+                    @if (@ViewBag.EmailId != null)
+                    {
+                        <input type="email" id="emailsend" class="form-control" value="@ViewBag.EmailId" readonly />
+                    }
+                    else
+                    {
+                        <input type="email" id="emailsend" class="form-control" />
+                    }
+                </div>
+
+            </div>
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">CC <span class="text-danger">*</span></label>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <span class="colon">:</span>
+                    <input type="email" id="emailsendcc" class="form-control" />
+                </div>
+
+            </div>
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">BCC <span class="text-danger">*</span></label>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <span class="colon">:</span>
+                    <input type="email" id="emailsendbcc" class="form-control" />
+                </div>
+
+            </div>
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Subject <span class="text-danger">*</span></label>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <span class="colon">:</span>
+                    <input type="text" id="subject" class="form-control" />
+                </div>
+
+            </div>
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Body <span class="text-danger">*</span></label>
+                <div class="col-12 col-md-6 col-xl-6">
+                    <span class="colon">:</span>
+                    <textarea rows="6" cols="23" name="body" id="txtbody" class="form-control"></textarea>
+                    <script>
+                        CKEDITOR.replace('body');
+                    </script>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-readonly-input"></label>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <button class="btn btn-success mb-1" id="btnSubmit">Send mail</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#btnSubmit").click(function () {
+        if (validate()) {
+            if (confirm("Are you sure , you want to send mail?")) {
+                var txtdata = CKEDITOR.instances.txtbody.getData();
+                //var element = $(txtdata);
+                //element.find("p").remove();
+                //var newString = element.html();
+                var emailid = $("#emailsend").val();
+                var ccmail = $("#emailsendcc").val();
+                var bccmail = $("#emailsendbcc").val();
+                var subject = $("#subject").val();
+                var result = txtdata.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+                var newresult1 = result.replace(/[&]nbsp[;]/gi, " ").replace(/[<]br[^>]*[>]/gi, "");
+                var final1 = newresult1.replace(/[&]quot[;]/gi, "'").replace(/(\r\n|\n|\r)/gm, "");
+                var final = final1.replace(/     /g, "");
+                var finalResult = final.replace(/  /g, "");
+                var body = finalResult;
+                $.ajax({
+                    method: "post",
+                    url: '@Url.Content("~/Email/SendEmail")',
+                    data: { tomail: emailid, ccmail: ccmail, bccmail: bccmail, sub: subject, body: body },
+                    datatype: "json",
+                    success: function (data) {
+                        alert(data);
+                        //return false;
+                        location.href = "/Email/SendEmail";
+                    }
+                });
+            }
+        }
+    });
+        function validate() {
+            var textdata = CKEDITOR.instances.txtbody.getData();
+            if ($("#emailsend").val() == "") {
+                alert("Please enter Email ID");
+                return false;
+            }
+            else if ($("#subject").val() == "") {
+                alert("Please enter Subject");
+                return false;
+            }
+            //else if ($("#body").val() == "") {
+            //    alert("Please enter Body");
+            //    return false;
+            //}
+            else if (textdata=="" || textdata=='')
+            {
+                alert("Please enter Body");
+                return false;
+            }
+            else {
+                return true;
+
+            }
+        }
+</script>
+
+

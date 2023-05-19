@@ -1,0 +1,287 @@
+﻿
+@{
+    ViewData["Title"] = "AddDignosis";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active" asp-controller="Dose" asp-action="AddDose">Add</a>
+                    <a class="nav-item nav-link " asp-controller="Dose" asp-action="ViewDose">View</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            <!-- BASIC FORM ELEMENTS -->
+            <!--===================================================-->
+            <div class="card-body">
+
+
+                <!--Static-->
+                @*<div class="form-group row">
+            <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Medicine Name  <span class="text-danger">*</span></label>
+            <div class="col-12 col-md-6 col-xl-4">
+                <select id="ddlMedicine" class="form-control" onchange="GetSubcatName()" asp-items="@(new SelectList(ViewBag.Medicine,"id","Name"))">
+                </select>
+            </div>
+            <label id="lblsubcatagory" class="col-12 col-md-2 col-xl-2" style="color:brown"></label>
+        </div>*@
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Category  <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <select id="ddlCategory" class="form-control" asp-items="@(new SelectList(ViewBag.MedicineCategory,"CatagoryId","CatagoryName"))">
+                            <option value="Select">--Select--</option>
+                        </select>
+                    </div>
+                    <label id="lblsubcatagory" class="col-12 col-md-2 col-xl-2" style="color:brown"></label>
+                </div>
+                <div class="form-group row">
+                    <input type="hidden" id="hdnDignosisID" />
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Dose Name <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input type="text" id="nam" class="form-control" />
+
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                        <button class="btn btn-danger mb-1" id="btnReset">Reset</button>
+
+                    </div>
+                </div>
+
+
+                <div class="modal fade" id="SubmitModal" tabindex="1" role="dialog"
+                     aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5>Customer Details</h5>
+                            </div>
+                            <div class="modal-body">
+                                <h6 class="modalMsg"></h6>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-info btn-sm submitConfirm hbtn" value="Yes" styk="display:none" />
+                                <button type="button" class="btn btn-danger btn-sm No hbtn" data-dismiss="modal" aria-label="Close">No</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="SuccessModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="resultMsg" style="color:blue"></h5>
+                            </div>
+                            <div class="modal-body">
+                                <h5 class="msgsuccess"></h5>
+                            </div>
+                            <div class="modal-footer">
+                                <a class="btn btn-danger btnok" asp-controller="Dose" asp-action="ViewDose">Close</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="UnSuccessModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="resultMsg" style="color:blue"></h5>
+                            </div>
+                            <div class="modal-body">
+                                <h5 class="msgunsuccess"></h5>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger btn-sm No hbtn" data-dismiss="modal" @*aria-label="Close"*@>Close</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--===================================================-->
+                <!-- END BASIC FORM ELEMENTS -->
+            </div>
+        </div>
+    </div>
+    <script>
+    $(document).ready(function () {
+        //breadcumb
+        loadNavigation('Add Dose', 'gldata', 'plsubmission', 'Add Dose', '', 'Add Dose');
+        var DignosisID = getUrlVars()["DignosisID"];
+        if (DignosisID != undefined) {
+            $("#btnSubmit").html("Update");
+            $("#btnReset").html("Cancel");
+            Edit(DignosisID);
+        }
+    });
+        //To find Subcatagory of the Perticular Medicine
+        function GetSubcatName() {
+            $.ajax({
+                url: "/Dose/GetSubCatByMId?MedicineId=" + $('#ddlMedicine').val(),
+                type: "GET",
+                success: function (result) {
+                    data = JSON.parse(result);
+                    //var v = "<option value='0'>--Select--</option>";
+                    //$.each(data, function (i, item) {
+                    //    v += "<option value=" + item.SubCatagoryId + ">" + item.SubCatagoryName + "</option>";
+                    //});
+                    $("#lblsubcatagory").html(data.SubCatagoryName);
+                },
+                error: function (error) {
+                    jsonValue = jQuery.parseJSON(error.responseText);
+                    bootbox.alert("Error : " + jsonValue);
+                }
+            });
+        }
+
+
+
+    function validate() {
+
+        //if ($('#ddlMedicine').val() == "0") {
+        //    $('.msgunsuccess').text('Please Select Medicine Name!');
+        //    $('#UnSuccessModal').modal('show');
+
+        //  // alert("Please Select Catagory Name!");
+        //    $('#ddlMedicine').focus();
+        //    return false;
+
+        //}
+        if ($('#ddlCategory').val() == "0") {
+            $('.msgunsuccess').text('Please Select Category Name!');
+            $('#UnSuccessModal').modal('show');
+
+            // alert("Please Select Catagory Name!");
+            $('#ddlCategory').focus();
+            return false;
+
+        }
+        else if ($('#nam').val() == "") {
+            $('.msgunsuccess').text('Please Enter Dose Name !');
+            $('#UnSuccessModal').modal('show');
+
+           // alert("Please Enter Name !");
+            $('#nam').focus();
+            return false;
+
+        }
+
+        else {
+           // $("#btnReset").hide();
+            return true;
+        }
+
+    }
+    $("#btnReset").click(function () {
+        if ($("#hdnDignosisID").val() != '') {
+            window.location.href = "/Dose/ViewDose";
+        }
+        else
+            reset();
+    });
+    $("#btnSubmit").click(function () {
+        //var chkValidation = validate();
+        if (validate() == true)  {
+
+
+
+                $('.modalMsg').text('Are you sure to save the details ?');
+                $('.submitConfirm').css('display', 'block');
+                $('#SubmitModal').modal("show");
+
+
+        }
+    });
+    $(".submitConfirm").click(function () {
+
+
+            var dign = {
+                DoseId: $("#hdnDignosisID").val(),
+                DoseName: $("#nam").val(),
+                CatagoryId: $("#ddlCategory").val(),
+
+            };
+
+
+                $.ajax({
+                    url: "/Dose/AddDose",
+                    data: dign,
+                    type: "POST",
+                    success: function (result) {
+                        if (result == "Record Saved Successfully") {
+                            $('.modalMsg').text('');
+                            $('#SubmitModal').modal("hide");
+                            $('.msgsuccess').text('Data Saved successfully.');
+                            $('#SuccessModal').modal('show');
+                            reset()
+
+
+                        }
+                        else if ((result == "Record Updated Successfully")) {
+                            $('.modalMsg').text('');
+                            $('#SubmitModal').modal("hide");
+                            $('.msgsuccess').text('Data Updated successfully.');
+                            $('#SuccessModal').modal('show');
+                            //window.location.href = "/Dignosis/ViewDignosis";
+                        }
+
+                        else {
+                            $('.modalMsg').text('');
+                            $('#SubmitModal').modal("hide");
+                            $('.msgunsuccess').text('Data Already Exits');
+                            $('#UnSuccessModal').modal('show');
+                        }
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+
+
+    });
+    //UPDATE
+    function Edit(DignosisID) {
+
+
+            $.ajax({
+                url: "/Dose/DoseGetById?DignosisID=" + DignosisID,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    $('#hdnDignosisID').val(result.DoseId);
+                    $("#nam").val(result.DoseName);
+                    $("#ddlCategory").val(result.CatagoryId);
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+
+    }
+    function reset() {
+        $('#hdnDignosisID').val("");
+        $("#nam").val("");
+        $("#ddlCategory").val("0");
+    }
+
+    </script>
+

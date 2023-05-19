@@ -1,0 +1,581 @@
+﻿@{
+    ViewData["Title"] = "AddDoctor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active" asp-controller="Patient" asp-action="Patient_Registration">Add</a>
+                    <a class="nav-item nav-link " asp-controller="Patient" asp-action="GetAllPatient">View</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            <!-- BASIC FORM ELEMENTS -->
+            <!--===================================================-->
+            <div class="card-body">
+
+
+
+                @*<div class="form-group col-md-4">
+                <label class="control-label">Name<span class="text-danger">*</span></label>
+                <input id="Name" class="form-control" onchange="NamevalidationC('Name','lblErrorName')" />
+                <span id="lblErrorName" style="color:red"></span>
+            </div>*@
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="RegstrationNo">Name <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input id="Name" class="form-control" onchange="NamevalidationC('Name','lblErrorName')" autocomplete="off" />
+                        <span id="lblErrorName" style="color:red"></span>
+                    </div>
+                </div>
+
+                @*<div class="form-group col-md-4">
+                <label class="control-label">Email<span class="text-danger">*</span></label>
+                <input id="Email" type="email" class="form-control" onchange="emailValidate('Email','lblError')" />
+                <span id="lblError" style="color:red"></span>
+            </div>*@
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="RegstrationNo">Email <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input id="Email" type="email" class="form-control" onchange="emailValidate('Email','lblError')" />
+                        <span id="lblError" style="color:red"></span>
+                    </div>
+                </div>
+
+                @*<div class="form-group col-md-4">
+                <label class="control-label" type="number">Mobile<span class="text-danger">*</span></label>
+                <input id="Mobile" class="form-control" onchange="Phonevalidate('Mobile','lblErrorPhone')" />
+                <span id="lblErrorPhone" style="color:red"></span>
+            </div>*@
+
+
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="RegstrationNo">Mobile <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input id="Mobile" class="form-control" onchange="Phonevalidate('Mobile','lblErrorPhone')" />
+                        <span id="lblErrorPhone" style="color:red"></span>
+
+                    </div>
+                </div>
+
+
+
+
+                @*<div class="form-group col-md-4">
+                <label class="control-label">Gender<span class="text-danger">*</span></label>
+                <select class="form-control" id="Gender">
+                    <option value="0">Select</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+
+                </select>
+
+            </div>*@
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="RegstrationNo">Gender <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <select class="form-control" id="Gender">
+                            <option value="0">Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+
+                        </select>
+                    </div>
+                </div>
+
+
+                @*<div class="form-group col-md-4">
+                <label class="control-label">Age<span class="text-danger">*</span></label>
+                <input id="Age" class="form-control" onchange="OnlyNumber('Age','lblErrorAgeYear')" />
+                <span id="lblErrorAgeYear" style="color:red"></span>
+
+            </div>*@
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="RegstrationNo">Age <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input id="Age" class="form-control" onchange="OnlyNumber('Age','lblErrorAgeYear')" />
+                        <span id="lblErrorAgeYear" style="color:red"></span>
+
+                    </div>
+                </div>
+
+                @*<div class="form-group col-md-4">
+                <label class="control-label">City<span class="text-danger">*</span></label>
+                <input id="City" class="form-control" />
+
+
+            </div>*@
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="RegstrationNo">City <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input id="City" class="form-control" />
+
+                    </div>
+                </div>
+
+
+
+
+
+
+                @*<div class="form-group col-md-6">
+                <label class="control-label">Address1<span class="text-danger">*</span></label>
+                <input id="Address" class="form-control" />
+            </div>*@
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="RegstrationNo">Address1 <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input id="Address" class="form-control" />
+
+                    </div>
+                </div>
+
+
+                @*<div class="form-group col-md-6">
+                <label class="control-label">Address2<span class="text-danger">*</span></label>
+                <input id="Address2" class="form-control" />
+            </div>*@
+
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="RegstrationNo">Address2 <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input id="Address2" class="form-control" />
+
+                    </div>
+                </div>
+
+                @*<div class="form-group col-md-4">
+                <label class="control-label">UserName<span class="text-danger">*</span></label>
+                <input id="UserId" class="form-control" onchange="UserNameValidate('UserId','lblErrorUserId')" />
+                <span id="lblErrorUserId" style="color:red"></span>
+            </div>*@
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="RegstrationNo">UserName <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input id="UserId" class="form-control" onchange="UserNameValidate('UserId','lblErrorUserId')" />
+                        <span id="lblErrorUserId" style="color:red"></span>
+
+                    </div>
+                </div>
+                @*<div class="form-group col-md-4">
+                <label class="control-label">Passward<span class="text-danger">*</span></label>
+                <input id="Password" class="form-control" onchange="StrongPwd('Password', 'lblErrorPassward')" />
+                <span id="lblErrorPassward" style="color:red"></span>
+            </div>*@
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="RegstrationNo">Passward <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input id="Password" class="form-control" onchange="StrongPwd('Password', 'lblErrorPassward')" />
+                        <span id="lblErrorPassward" style="color:red"></span>
+
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="RegstrationNo">Conform Passward <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input id="Passwordconfirm" class="form-control" />
+
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="RegstrationNo">Patient History<span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <textarea id="txthistory" class="form-control"></textarea>
+
+
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+
+                    <input id="id" class="form-control" hidden />
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                    <div class="col-12 col-md-6 col-xl-4 justify-content-center">
+                        <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                        <button class="btn btn-danger mb-1" id="btnCancel">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="SubmitModal" tabindex="1" role="dialog"
+                 aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5>Customer Details</h5>
+                        </div>
+                        <div class="modal-body">
+                            <h6 class="modalMsg"></h6>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-info btn-sm submitConfirm hbtn" value="Yes" styk="display:none" />
+                            <button type="button" class="btn btn-danger btn-sm No hbtn" data-dismiss="modal" aria-label="Close">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="SuccessModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="resultMsg" style="color:blue"></h5>
+                        </div>
+                        <div class="modal-body">
+                            <h5 class="msgsuccess"></h5>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-danger btnok" asp-controller="Patient" asp-action="GetAllPatient">Close</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="UnSuccessModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="resultMsg" style="color:blue"></h5>
+                        </div>
+                        <div class="modal-body">
+                            <h5 class="msgunsuccess"></h5>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger btn-sm No hbtn" data-dismiss="modal" @*aria-label="Close"*@>Close</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!--===================================================-->
+        <!-- END BASIC FORM ELEMENTS -->
+    </div>
+</div>
+
+<script type="text/javascript" src="http://localhost/acrilart/javascript/jquery-1.6.4.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="/js/jquery-1.2.6.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="/js/jquery-ui-personalized-1.5.2.packed.js"></script>
+<script language="JavaScript" type="text/javascript" src="/js/sprinkle.js"></script>
+<script src="~/validation/validation.js"></script>
+
+<script src="~/validation/validation.js"></script>
+<script>
+    $(document).ready(function () {
+        //breadcumb
+        loadNavigation('Add Patient', 'gldata', 'plsubmission', 'Add Patient', '', 'Add Patient');
+        var id = getUrlVars()["id"];
+        if (id != undefined) {
+            $("#btnSubmit").html("Update");
+            $("#btnCancel").html("Cancel");
+            Edit(id);
+        }
+    });
+
+
+
+
+    function validate() {
+       
+        if ($('#Name').val() == "") {
+            $('.msgunsuccess').text('Please Enter Name !');
+            $('#UnSuccessModal').modal('show');
+
+           // alert("Please Enter Name!");
+            $('#Name').focus();
+            return false;
+
+        }
+        else if ($('#Email').val() == "") {
+            $('.msgunsuccess').text('Please Enter Email!');
+            $('#UnSuccessModal').modal('show');
+
+            //alert("Please Enter Email!");
+            $('#Email').focus();
+            return false;
+
+        }
+        else if ($('#Mobile').val() == "") {
+            $('.msgunsuccess').text('Please Enter Mobile!');
+            $('#UnSuccessModal').modal('show');
+
+            //alert("Please Enter Mobile!");
+            $('#Mobile').focus();
+            return false;
+
+        }
+        else if ($('#Gender').val() == "0") {
+            $('.msgunsuccess').text('Please Select Gender !');
+            $('#UnSuccessModal').modal('show');
+
+            //alert("Please Select Gender !");
+            $('#Gender').focus();
+            return false;
+
+        }
+        else if ($('#Age').val() == "") {
+            $('.msgunsuccess').text('Please Enter Age !');
+            $('#UnSuccessModal').modal('show');
+
+            //alert("Please Enter Age !");
+            $('#Age').focus();
+            return false;
+
+        }
+        else if ($('#City').val() == "") {
+            $('.msgunsuccess').text('Please Enter City!');
+            $('#UnSuccessModal').modal('show');
+
+            //alert("Please Enter City!");
+            $('#City').focus();
+            return false;
+
+        }
+
+        else if ($('#Address').val() == "") {
+            $('.msgunsuccess').text('Please Enter first Address !');
+            $('#UnSuccessModal').modal('show');
+
+            //alert("Please Enter first Address!");
+            $('#Address').focus();
+            return false;
+
+        }
+        else if ($('#Address2').val() == "") {
+            $('.msgunsuccess').text('Please Enter Second Address!');
+            $('#UnSuccessModal').modal('show');
+
+            //alert("Please Enter Second Address!");
+            $('#Address2').focus();
+            return false;
+
+        }
+        else if ($('#Address2').val().length >= 500) {
+            $('.msgunsuccess').text('Maxmimum Length Of Address Field id 500!');
+            $('#UnSuccessModal').modal('show');
+
+            //alert("Maxmimum Length Of Address Field id 500!");
+            $('#Address2').focus();
+            return false;
+
+        }
+        else if ($('#Address').val().length >= 500) {
+            $('.msgunsuccess').text('Maxmimum Length Of Address Field id 500!');
+            $('#UnSuccessModal').modal('show');
+
+            //alert("Maxmimum Length Of Address Field id 500!");
+            $('#Address').focus();
+            return false;
+
+        }
+        else if ($('#UserId').val() == "") {
+            $('.msgunsuccess').text('Please Enter UserName !');
+            $('#UnSuccessModal').modal('show');
+
+
+            //alert("Please Enter UserName!");
+            $('#UserId').focus();
+            return false;
+
+        }
+
+        else if ($('#Password').val() == "") {
+            $('.msgunsuccess').text('Please Enter Passward !');
+            $('#UnSuccessModal').modal('show');
+
+            //alert("Please Enter Passward!");
+            $('#Password').focus();
+            return false;
+
+        }
+        else if ($('#Passwordconfirm').val() == "") {
+            $('.msgunsuccess').text('Please Enter ComformPassward!');
+            $('#UnSuccessModal').modal('show');
+
+            //alert("Please Enter ComformPassward!");
+            $('#Passwordconfirm').focus();
+            return false;
+
+         }
+        else if ($('#txthistory').val() == "") {
+            $('.msgunsuccess').text('Please Enter Previous History!');
+            $('#UnSuccessModal').modal('show');
+
+             //alert("Please Enter Previous History!");
+             $('#txthistory').focus();
+             return false;
+
+         }
+        else
+            return true;
+    }
+
+
+    $("#btnCancel").click(function () {
+        reset();
+        if ($("#id").val() != '') {
+            window.location.href = "/Patient/GetAllPatient";
+        }
+    })
+
+    $("#btnSubmit").click(function () {
+        //var chkValidation = validate();
+        if (validate() && Phonevalidate('Mobile', 'lblErrorPhone') == true && emailValidate('Email', 'lblError') == true
+            && UserNameValidate('UserId', 'lblErrorUserId') == true && NamevalidationC('Name', 'lblErrorName') == true
+            && OnlyNumber('Age', 'lblErrorAgeDays') == true && StrongPwd('Password', 'lblErrorPassward') == true) {
+           
+
+                if ($("#Password").val() == $("#Passwordconfirm").val()) {
+                    $('.modalMsg').text('Are you sure to save the details ?');
+                    $('.submitConfirm').css('display', 'block');
+                    $('#SubmitModal').modal("show");
+                }
+                else {
+                    $('.msgunsuccess').text('Passward Should  Match!');
+                    $('#UnSuccessModal').modal('show');
+                    //alert("Passward Should  Match")
+                }
+        }
+    });
+
+    function reset() {
+        $('#UserId').val("");
+        $("#Password").val("");
+        $("#Passwordconfirm").val("");
+        $("#Name").val("");
+        $("#Email").val("");
+        $("#Mobile").val("");
+        $("#Gender").val("0");
+        $("#Address").val("");
+        $("#Age").val("");
+        $("#Address2").val("");
+        $("#City").val("");
+        $("#txthistory").val("");//PatientHistory
+
+       
+    }
+    $(".submitConfirm").click(function () {
+        var doc = {
+            UserId: $("#id").val(),
+            UserName: $("#UserId").val(),
+            Password: $("#Password").val(),
+            Passwordconfirm: $("#Passwordconfirm").val(),
+            FullName: $("#Name").val(),
+            Email: $("#Email").val(),
+            Mobile: $("#Mobile").val(),
+            Gender: $("#Gender").val(),
+            Address: $("#Address").val(),
+            RoleId: $("#RoleId").val(),
+            Address1: $("#Address2").val(),
+            City: $("#City").val(),
+            Age: $("#Age").val(),
+            PatientHistory: $("#txthistory").val(),
+          
+        };
+
+        if (validate() && Phonevalidate('Mobile', 'lblErrorPhone') == true && emailValidate('Email', 'lblError') == true
+            && UserNameValidate('UserId', 'lblErrorUserId') == true && NamevalidationC('Name', 'lblErrorName') == true
+            && OnlyNumber('Age', 'lblErrorAgeDays') == true && StrongPwd('Password', 'lblErrorPassward') == true) {
+           // if ($("#Password").val() == $("#Passwordconfirm").val()) {
+               // if (confirm("Are you sure you want to Save Data ?")) {
+                    $.ajax({
+                        url: "/Patient/Add",
+                        data: doc,
+                        type: "POST",
+                        success: function (result) {
+                            if (result == "Record Saved Successfully") {
+                                $('.modalMsg').text('');
+                                $('#SubmitModal').modal("hide");
+                                $('.msgsuccess').text('Data Saved successfully.');
+                                $('#SuccessModal').modal('show');
+                                //alert(result)
+                                //window.location.href = "/Patient/GetAllPatient";
+
+                            }
+                            else if ((result == "Record Updated Successfully")) {
+                                $('.modalMsg').text('');
+                                $('#SubmitModal').modal("hide");
+                                $('.msgsuccess').text('Data Updated successfully.');
+                                $('#SuccessModal').modal('show');
+                                //alert(result)
+                                //window.location.href = "/Patient/GetAllPatient";
+                            }
+
+                            else {
+                                $('.modalMsg').text('');
+                                $('#SubmitModal').modal("hide");
+                                $('.msgunsuccess').text('Data Already Exits');
+                                $('#UnSuccessModal').modal('show');
+                                //alert(result);
+                            }
+
+                        },
+                        error: function (errormessage) {
+                            alert(errormessage.responseText);
+                        }
+                    });
+                }
+            //}
+            //else {
+            //    alert("passward should match")
+
+            //    $("#Passwordconfirm").focus();
+            //}
+       // }
+
+
+    });
+    //UPDATE
+    function Edit(id) {
+        $.ajax({
+            url: "/patient/UserGetById?id=" + id,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (result) {
+                $('#id').val(result.UserId);
+                $("#UserId").val(result.UserName);
+                $("#Password").val(result.Password);
+                $("#Passwordconfirm").val(result.Password);
+                $("#Name").val(result.FullName);
+                $("#Email").val(result.Email);
+                $("#Mobile").val(result.Mobile);
+                $("#Gender").val(result.Gender);
+                $("#Address").val(result.Address);
+                $("#Age").val(result.Age);
+
+                $("#Address2").val(result.Address1);
+                $("#City").val(result.City);
+                $("#txthistory").val(result.PatientHistory);
+                //$("#Designation").val(result.DesignationId);
+                //$("#Department").val(result.DepartmentId);
+                //$("#Hospital").val(result.HospitalID);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+
+    }
+
+
+</script>

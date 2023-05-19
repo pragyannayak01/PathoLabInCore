@@ -1,0 +1,236 @@
+﻿
+@{
+    ViewData["Title"] = "ViewsPrescription";
+    Layout = "~/Views/Shared/_LayoutaDoctorDynamic.cshtml";
+    var ResultData = ViewBag.Result as List<PathoLab.Domain.PrescriptionMaster.Prescription>;
+
+}
+
+
+<style>
+    .logo {
+        flex: 1;
+    }
+
+        .logo img {
+            width: 150px;
+            height: 150px;
+            float: left;
+        }
+
+    table td {
+        border: 1px solid black;
+        padding: 4px 12px;
+    }
+
+    .header {
+        padding: 30px;
+        text-align: center;
+        background: #ded2d2;
+        color: black;
+        font-size: 20px;
+        width: 1050px;
+        height: 200px;
+    }
+
+    .div1 {
+        width: 1050px;
+        height: 100px;
+        border: 1px solid black;
+        background: #ded2d2;
+    }
+</style>
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link  " asp-controller="DoctorSchdule" asp-action="Appointments">Appointments</a>
+                    <a class="nav-item nav-link active " asp-controller="DoctorSchdule" asp-action="ViewsPrescription">View Prescription</a>
+                </ul>
+            </div>
+            <!--===================================================-->
+            <!--===================================================-->
+            <div class="card-body ">
+                @if (ResultData != null && ResultData.ToList().Count > 0)
+                {
+                    <div class="table-responsive">
+                        <table data-toggle="table" id="tblPrescription" class="table">
+                            <thead>
+                                <tr>
+                                    <th width="60px" class="align-top text-center">Sl#</th>
+
+                                    <th width="150px" class="align-top">
+                                        PatientName
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        DateOfAppointment
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Mobile
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        GuardianName
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Email
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Age
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Gender
+                                    </th>
+                                    <th width="150px" class="align-top">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int count = 1;
+                                }
+                                @foreach (var list in ResultData)
+                                {
+                                    <tr>
+                                        <td class="text-center">@count</td>
+
+                                        <td>
+                                            @list.FullName
+                                        </td>
+                                        <td>
+                                            @list.DateOfAppointment
+                                        <td>
+                                            @list.Mobile
+                                        </td>
+                                        <td>
+                                            @list.GuardianName
+                                        </td>
+                                        <td>
+                                            @list.Email
+                                        </td>
+                                        <td>
+                                            @list.Age
+                                        </td>
+                                        <td>
+                                            @list.Gender
+                                        </td>
+                                        <td>
+                                            <a onclick="updatePrescription('@list.PatientID', '@list.PrescriptionId');" class="text-primary mr-3" title="" data-original-title="Edit"><i class="icon-edit1"></i><b>Edit</b></a><br />
+                                            <a onclick="deletePrescription('@list.PrescriptionId');" class="text-danger" title="" data-original-title="Delete"><i class="icon-trash-21"></i><b>Delete</b></a> <br />
+                                            <a onclick="PrintPrescription('@list.PatientID', '@list.PrescriptionId');" class="text-primary mr-3" title="" data-original-title="Print"><i id="printprescription" class="fa fa-print" aria-hidden="true"></i><b>Print</b></a><br />
+                                        </td>
+                                    </tr>
+                                    count++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="norecord"> No Record Found</div>
+                }
+                <div class="clearfix col-sm-12"></div>
+            </div>
+            <!--===================================================-->
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var PrescriptionId = getUrlVars()["PrescriptionId"];
+        var PatientID = getUrlVars()["PatientID"];
+        if (PrescriptionId != undefined && PatientID != undefined) {
+            $("#btnSubmit").html("Update");
+            $("#btnReset").html("Cancel");
+            PrintPrescription(PatientID, PrescriptionId);
+            getDataTable();
+        }
+    })
+
+    //Edit Prescription
+    function updatePrescription(PatientID, PrescriptionId) {
+        if (confirm("Are you sure you want to update ?")) {
+            location.href = "/DoctorSchdule/EditPrescription?PrescriptionId=" + PrescriptionId + "&PatientID=" + PatientID;
+        }
+    }
+
+    //Print Prescription
+    function PrintPrescription(PatientID, PrescriptionId) {
+        if (confirm("Are you sure you want to print ?")) {
+            location.href = "/DoctorSchdule/PrintPrescription?PatientID=" + PatientID + "&PrescriptionId=" + PrescriptionId;
+
+        }
+    }
+
+    $('icon').on('click', function () {
+        PrintPrescription();
+    })
+
+
+    //< !--=================================================== -->
+    //Delete Prescription
+    function deletePrescription(PrescriptionId) {
+        if (confirm("Are you sure you want to delete ?")) {
+            $.ajax({
+                url: "/DoctorSchdule/DeletePrescription?PrescriptionId=" + PrescriptionId,
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json;charset=UTF-8",
+                success: function (data) {
+                    if (data == "3") {
+                        alert("Prescription Deleted Successfully");
+                        window.location.reload();
+                    }
+                    else if (data == "4") {
+                        alert("Prescription Already In Use!");
+                        window.location.reload();
+                    }
+                    else { }
+                },
+                error: function (error) {
+                    jsonValue = jQuery.parseJSON(error.responseText);
+                    bootbox.alert("Error : " + jsonValue);
+                }
+            });
+        }
+    }
+    //Pagination
+    function getDataTable() {
+        $('#tblSlotMapping').DataTable({
+            "searching": true,
+            //"bStateSave": true,
+            "dom": 'Bfrtip',
+            "autoWidth": false,
+            "buttons": [
+                //{
+                //    extend: 'print',
+                //    title: 'Manage Block',
+                //    exportOptions: {
+                //        columns: [0, 1, 2, 3, 4]
+                //    },
+                //    customize: function (win) { $(win.document.body).css('font-size', '10pt').prepend('<img src="' + origin + '/images/t5-logo-white.png"  style="position:absolute; top:0; left:0;" />'); $(win.document.body).find('table').addClass('compact').css('font-size', 'inherit'); }
+
+                //}
+                ,
+                {
+                    extend: 'pageLength'
+                }
+            ],
+            "lengthMenu": [
+                [10, 25, 50, 100, 1000 - 1],
+                ['10 rows', '25 rows', '50 rows', '100 rows', '1000 rows', 'Show all']
+            ]
+        });
+    }
+
+</script>
+

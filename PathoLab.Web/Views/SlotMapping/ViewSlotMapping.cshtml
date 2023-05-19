@@ -1,0 +1,215 @@
+﻿@model PathoLab.Domain.SlotMappig.SlotMapping
+@{
+    ViewData["Title"] = "ViewSlotMapping";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+    var ResultData = ViewBag.Result as List<PathoLab.Domain.SlotMappig.SlotMapping>;
+
+}
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link" asp-controller="SlotMapping" asp-action="AddSlotMapping">Add</a>
+                    <a class="nav-item nav-link active" asp-controller="SlotMapping" asp-action="ViewSlotMapping">View</a>
+                </ul>
+            </div>
+            <!-- Search Panel-->
+            <div class="search-container">
+                <div class="search-sec" style="display: block;">
+                    <form method="post" id="indsearch">
+                        <div class="form-group form-row">
+
+                            <div class="col-12 col-md-6 col-xl-3">
+                                <label class="control-label">Hospital Name</label>
+                                <select id="HospitalName" class="form-control" onchange="GetAllSlotByHId()" asp-items="@(new SelectList(ViewBag.HospitalName,"HospitalID","HospitalName"))" asp-for="HospitalID">
+                                    <option value="0">--Select--</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-6 col-xl-3">
+                                <label class="control-label">Slot Name</label>
+                                <select asp-for="SlotID" id="SlotName" class="form-control">
+                                    <option value="0">--Select--</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-6 col-xl-3">
+                                <label class="control-label">Doctor Name</label>
+                                <select id="DoctorName" class="form-control" asp-items="@(new SelectList(ViewBag.DoctorName,"UserId","UserName"))" asp-for="DoctorId">
+                                    <option value="0">--Select--</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-2 ">
+                                <button id="btnSearch" class="btn btn-primary mt-xl-4 mt-2"> <i class="fa fa-search"></i> Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="text-center"> <a class="searchopen" title="Search" data-toggle="tooltip" data-placement="bottom"> <i class="icon-angle-arrow-down"></i> </a></div>
+            </div>
+            <!-- Search Panel -->
+            <!--===================================================-->
+            <div class="card-body ">
+                @if (ResultData != null && ResultData.ToList().Count > 0)
+                {
+                    <div class="table-responsive">
+                        <table data-toggle="table" id="tblSlotMapping" class="table">
+                            <thead>
+                                <tr>
+                                    <th width="60px" class="align-top text-center">Sl#</th>
+                                    <th width="150px" class="align-top">
+                                        Hospital Name
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Slot Name
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Doctor Name
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Day
+                                    </th>
+                                    <th width="150px" class="align-top">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int count = 1;
+                                }
+                                @foreach (var list in ResultData)
+                                {
+                                    <tr>
+                                        <td class="text-center">@count</td>
+                                        <td>
+                                            @list.HospitalName
+                                        </td>
+                                        <td>
+                                            @list.SlotName
+                                        </td>
+                                        <td>
+                                            @list.DoctorName
+                                        </td>
+                                        <td>
+                                            @list.Day
+                                        </td>
+                                        <td>
+                                            <a onclick="updateSlotMapping('@list.SlotID', '@list.DoctorId');" class="text-primary mr-3" title="" data-original-title="Edit"><i class="icon-edit1"></i><b>Edit</b></a><br />
+                                            <a onclick="deleteSlotMapping('@list.SMId');" class="text-danger" title="" data-original-title="Delete"><i class="icon-trash-21"></i><b>Delete</b></a>
+
+                                        </td>
+                                    </tr>
+                                    count++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="norecord"> No Record Found</div>
+                }
+                <div class="clearfix col-sm-12"></div>
+            </div>
+            <!--===================================================-->
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        getDataTable();
+    })
+
+    //Update SlotMapping
+    function updateSlotMapping(SlotID,DoctorId) {
+        if (confirm("Are you sure you want to update ?")) {
+            location.href = "/SlotMapping/AddSlotMapping?SlotID=" + SlotID + "&DoctorId=" + DoctorId;
+        }
+    }
+
+    //Delete SlotMapping
+    function deleteSlotMapping(SMId) {
+        if (confirm("Are you sure you want to delete ?")) {
+            $.ajax({
+                url: "/SlotMapping/DeleteSlotMapping?SMId=" + SMId,
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json;charset=UTF-8",
+                success: function (data) {
+                    if (data == "3") {
+                        alert("SlotMapping Deleted Successfully");
+                        window.location.reload();
+                    }
+                    else if (data == "4") {
+                        alert("SlotMapping Already In Use!");
+                        window.location.reload();
+                    }
+                    else { }
+                },
+                error: function (error) {
+                    jsonValue = jQuery.parseJSON(error.responseText);
+                    bootbox.alert("Error : " + jsonValue);
+                }
+            });
+        }
+    }
+
+    //Pagination
+    function getDataTable() {
+        $('#tblSlotMapping').DataTable({
+            "searching": true,
+            //"bStateSave": true,
+            "dom": 'Bfrtip',
+            "autoWidth": false,
+            "buttons": [
+                //{
+                //    extend: 'print',
+                //    title: 'Manage Block',
+                //    exportOptions: {
+                //        columns: [0, 1, 2, 3, 4]
+                //    },
+                //    customize: function (win) { $(win.document.body).css('font-size', '10pt').prepend('<img src="' + origin + '/images/t5-logo-white.png"  style="position:absolute; top:0; left:0;" />'); $(win.document.body).find('table').addClass('compact').css('font-size', 'inherit'); }
+
+                //}
+                ,
+                {
+                    extend: 'pageLength'
+                }
+            ],
+            "lengthMenu": [
+                [10, 25, 50, 100, 1000 - 1],
+                ['10 rows', '25 rows', '50 rows', '100 rows', '1000 rows', 'Show all']
+            ]
+        });
+    }
+
+    //Cascading Databind
+    //Get All Slot By Hospital Id
+    function GetAllSlotByHId() {
+        $.ajax({
+            url: "/Slot/GetSlotByHospitalId?HospitalID=" + $('#HospitalName').val(),
+            type: "GET",
+            success: function (result) {
+                data = JSON.parse(result);
+                var v = "<option value='0'>--Select--</option>";
+                $.each(data, function (i, item) {
+                    v += "<option value=" + item.SlotID + ">" + item.SlotName + "</option>";
+                });
+                $("#SlotName").html(v);
+            },
+            error: function (error) {
+                jsonValue = jQuery.parseJSON(error.responseText);
+                alert("Error : " + jsonValue);
+            }
+        });
+    }
+
+</script>

@@ -1,0 +1,371 @@
+﻿@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "PrintBill";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+}
+
+<link href="~/css/printprescription.css" rel="stylesheet" />
+<body>
+    <div class="page-title">
+        <div class="title-details">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="row div3" id="prinarea">
+        <div class="col-md-12 col-xl-12">
+            <div class="card">
+
+                <!--===================================================-->
+                <div class="card-body" id="divToPrint">
+                    <div class="header from-group row ">
+                        <table>
+                            <tr>
+                                <td class=" col-xs-12 col-md-10 col-xl-10  psn na">
+                                    <div class="form-group row ">
+                                        <div style="margin-right:150px">
+                                            <input type="hidden" id="hdnPatientID" />
+                                            <input type="hidden" id="hdnPrescriptionId" />
+                                            <input type="hidden" id="hdnPathoBillId" />
+                                            <input type="hidden" id="hdnHospitalId" value="0" />
+                                            <label id="txtHospitalName" class="control-label" style="font-size:35px"><b>@HttpContextAccessor.HttpContext.Session.GetString("HospitalName")</b></label><br />
+                                            <label class="control-label" id="lblHAddress"></label>,
+                                            <label class="control-label" id="lblHPinCode"></label><br />
+                                            <label class="control-label">Ph:</label>
+                                            <label class="control-label" id="lblHLandlineNo"></label> <b>|</b>
+                                            <label class="control-label">RegdNo:</label>
+                                            <label class="control-label" id="lblHRegstrationNo"></label><br />
+                                            <label class="control-label">E-mail :</label>
+                                            <label class="control-label" id="lblHEmail"></label> <br />
+                                            <label class="control-label">Website:</label>
+                                            <label class="control-label" id="lblHWebsite"></label><br />
+                                            <label class="control-label">GSTNo:</label>
+                                            <label class="control-label" id="lblHGSTNo"></label> <b>|</b>
+                                            <label class="control-label">MbNo :</label>
+                                            <label class="control-label" id="lblHMobielNo"> </label>
+
+                                            @*<label class="control-label" style="font-size:35px"><b>PATHOLOGY</b></label><br />
+                                                <label class="control-label" style="font-size:35px"><b>BILL</b></label><br />*@
+                                        </div>
+                                    </div>
+                                <th class=" col-xs-12 col-md-1 col-xl-1 psn na  ">
+                                    <div class="form-group row">
+                                        <div>
+                                            <div class="logo" style="margin-left:150px">
+                                                <img src="~/images/hospital-Image.png" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th>
+                            </tr>
+                        </table>
+                    </div>
+
+
+
+                    <hr class="new2" />
+
+                    <!--===================================================-->
+                    <!-- BASIC FORM ELEMENTS 1 -->
+                    <!--===================================================-->
+                    <table>
+                        <tr>
+                            <td class="col-xs-12 col-md-6 col-xl-6  psn ">
+                                <div class="form-group row  ">
+                                    <div class="fs1 " style="margin-left:20px">
+                                        <input type="hidden" id="hdnPatientID" />
+                                        <label class="control-label"><b>Name:-</b></label>
+                                        <label id="lblName"></label><br />
+                                        <label class="control-label"><b>MobileNo:-</b> </label>
+                                        <label id="lblMobile"></label><br />
+                                        <label class="control-label"><b>Age:-</b> </label>
+                                        <label id="lblAge"></label> <b>|</b>
+                                        <label class="control-label"><b>Gender:-</b></label>
+                                        <label id="lblGender"></label><br />
+                                        <label class="control-label"><b>Email:-</b></label>
+                                        <label id="lblEmail"></label><br />
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="col-xs-12 col-md-6 col-xl-6  psn">
+                                <div class="form-group row  ">
+                                    <div class="fs1 " style="margin-left:250px">
+                                        <label class="control-label"><b>Bill Date:-</b> </label>
+                                        <label id="lblDatee"></label><br />
+                                        <label class="control-label"><b>Bill No  :-</b></label>
+                                        <label id="lblCollectionId"></label><br />
+                                        <div id="divBarcode"></div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <!--===================================================-->
+                    <!-- END BASIC FORM ELEMENTS 1-->
+                    <!--==============================================================================================================================================-->
+                    @*<hr class="new2" />*@
+
+                    <div class="form-group row">
+                        <div class="col-12 col-md-12 col-xl-12">
+                            <table id="tblTestBill" class="col-12 col-md-12 col-xl-12">
+                                <tr>
+                                    <td><center><b>Test Name</b></center></td>
+                                    <td><b>Price</b></td>
+                                    <td><b>Payable</b></td>
+                                </tr>
+                                <tbody id="tbody"></tbody>
+
+                            </table><br />
+                        </div>
+                    </div>
+                    <table>
+                        <tr>
+                            <td class="col-xs-12 col-md-12 col-xl-12  psn">
+                                <div class="form-group row  ">
+                                    <div class="fs1 " style="margin-left:760px">
+                                        <label class="control-label"><b> Total:-</b></label>
+                                        <label id="lblTotal">0</label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-xs-12 col-md-12 col-xl-12  psn">
+                                <div class="form-group row  ">
+                                    <div class="fs1 " style="margin-left:20px">
+                                        <label class="control-label"><b>Pay Mode:-</b></label>
+                                        <label id="lblPayMode"></label><br />
+                                    </div>
+                                    <div class="fs1 " style="margin-left:250px">
+                                        <label class="control-label"><b>Tax:-</b></label>
+                                        <label id="lblTax">0.00</label><br />
+                                    </div>
+                                    <div class="fs1 " style="margin-left:310px">
+                                        <label class="control-label"><b>Paid Amount:-</b></label>
+                                        <label id="lblTotalPaid">0</label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <hr class="new2" />
+                    <!--==============================================================================================================================================-->
+                    <table>
+                        <tr>
+                            <td class="col-xs-12 col-md-12 col-xl-12  psn">
+                                <div class="form-group row  ">
+                                    <div class="fs1 " style="margin-left:10px">
+                                        <label class="control-label"> <b>Thank You</b></label>
+                                    </div>
+                                </div>
+                                <div class="form-group row  ">
+                                    <div style="margin-left:10px">
+                                        <label class="control-label"> Note:-</label>
+                                        <label class="control-label"> This is computer generated bill hence requires no seal.</label><br />
+                                    </div>
+                                    <div class="fs1 " style="margin-left:510px">
+                                        <label class="control-label"><b> Sign</b></label>
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
+                    </table>
+                    <hr class="new2" />
+                    <table>
+                        <tr>
+                            <td class="col-xs-12 col-md-12 col-xl-12  psn">
+                                <div class="form-group row  ">
+                                    <div style="margin-left:10px">
+                                        <label class="control-label"> User:-</label>
+                                        <label id="lblDoctorName">@HttpContextAccessor.HttpContext.Session.GetString("UserName")</label><br />
+                                    </div>
+                                    <div style="margin-left:700px">
+                                        <label class="control-label">Print Date:-</label>
+                                        <label id="lblDateee"></label>
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="form-group row">
+                        <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                        <div class="col-12 col-md-6 col-xl-4 " id='DivIdToPrint'>
+                            <input class="btn btn-primary mb-1 pull-right" type='button' id='btn' value=Print onclick='printDiv();'>
+                        </div>
+                    </div>
+                    <!--===================================================-->
+                    <!-- END BASIC FORM ELEMENTS 2 -->
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    $(document).ready(function () {
+        //breadcumb
+        var PathoBillId = getUrlVars()["PathoBillId"];
+        if (PathoBillId != undefined) {
+            Print(PathoBillId);
+            Report(PathoBillId);
+            Barcode(PathoBillId);
+        }
+
+    });
+
+    //DataBind From PathoLabCollection Table
+    function Print(PathoBillId) {
+        $.ajax({
+            url: "/PathoLab/PrintPathoBill?PathoBillId=" + PathoBillId,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (result) {
+                $('#hdnPathoBillId').text(result.PathoBillId);
+                $('#lblName').text(result.FullName);
+                $('#lblDatee').text(result.DateOfAppointment);
+                $('#lblDate').text(result.DateOfAppointment);
+                $('#lblCollectionId').text(result.CollectionId);
+                $('#lblBillno').text(result.CollectionId);
+                $('#lblAge').text(result.Age);
+                $('#lblGender').text(result.Gender);
+                $('#lblMobile').text(result.Mobile);
+                $('#lblEmail').text(result.Email);
+                $('#lblDateee').text(result.DateOfAppointment);
+                $('#lblLabTestMethodology').text(result.LabTestName);
+                HospitalDetails(result.HospitalID);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+    //< !--=================================================== -->
+    function HospitalDetails(HospitalID) {
+        $.ajax({
+            url: "/PathoLab/GetHospitalDetails?HospitalID=" + HospitalID,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (result) {
+                $('#lblHAddress').text(result.Address);
+                $('#lblHPinCode').text(result.PinCode);
+                $('#lblHLandlineNo').text(result.LandlineNo);
+                $('#lblHEmail').text(result.HEmail);
+                $('#lblHWebsite').text(result.HWebsite);
+                $('#lblHGSTNo').text(result.GSTNo);
+                $('#lblHMobielNo').text(result.MobielNo);
+                $('#lblHRegstrationNo').text(result.RegstrationNo);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+    //< !--=================================================== -->
+    function Barcode(PathoBillId, LabTestId) {
+        $.ajax({
+            url: "/PathoLab/GetBarcodeByPathoBillId?PathoBillId=" + PathoBillId + "&LabTestId=" + LabTestId,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (data) {
+                $("#divBarcode").html("<img style='height:50px;width:200px' src='" + JSON.parse(data).BarcodeImage + "' alt='' />");
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+    //< !--=================================================== -->
+
+    function Report(PathoBillId) {
+        $.ajax({
+            url: "/PathoLab/BindingTest?PathoBillId=" + PathoBillId,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (data) {
+                // Denotes total number of rows
+                var rowIdx = "";
+                $("#lblPayMode").text(data[0].PayMode);
+                // Adding a row inside the tbody.
+                var totlPrice = 0;
+                $.each(data, function (i, item) {
+                    totlPrice += item.Price;
+                    $('#tbody').append(`<tr id="R${++rowIdx}">
+                     <td class="row-index text-center">
+                     <label id="txtTestName"  class="control-label">${item.LabTestName}</label>
+                    </td>
+                     <td class="row-index text-center">
+                     <label id="txtPrice"  class="control-label ">${item.Price}</label>
+                    </td>
+                     <td class="row-index text-center">
+                     <label id="txtPrice"   class="control-label ">${item.Price}</label>
+                    </td>
+                    </tr>`
+                    );
+                });
+                $("#lblTotal").text(totlPrice);
+                $("#lblTotalPaid").text(totlPrice);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+        // jQuery button click event to remove a row.
+        $('#tbody').on('click', '.remove', function () {
+
+            // Getting all the rows next to the row
+            // containing the clicked button
+            var child = $(this).closest('tr').nextAll();
+
+            // Iterating across all the rows
+            // obtained to change the index
+            child.each(function () {
+                // Getting <tr> id.
+                var id = $(this).attr('id');
+                // Getting the <p> inside the .row-index class.
+                var idx = $(this).children('.row-index').children('p');
+                // Gets the row number from <tr> id.
+                var dig = parseInt(id.substring(1));
+                // Modifying row index.
+                idx.html(`Row ${dig - 1}`);
+                // Modifying row id.
+                $(this).attr('id', `R${dig - 1}`);
+            });
+
+            // Removing the current row.
+            $(this).closest('tr').remove();
+
+            // Decreasing total number of rows by 1.
+            rowIdx--;
+        });
+    }
+
+
+    //< !--=================================================== -->
+    //Print and hide the print button
+    function printDiv() {
+        //Get the print button and put it into a variable
+        var printButton = document.getElementById("btn");
+        //Set the print button visibility to 'hidden'
+        printButton.style.visibility = 'hidden';
+        $('#admindashboard').hide();
+        //Print the page content
+        window.print();
+        return false;
+    }
+
+    //< !--=================================================== -->
+
+
+</script>
+
+
+

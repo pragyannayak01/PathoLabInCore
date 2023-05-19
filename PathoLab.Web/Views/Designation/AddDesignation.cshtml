@@ -1,0 +1,137 @@
+﻿
+@{
+    ViewData["Title"] = "AddDesignation";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+}
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active" asp-controller="Designation" asp-action="AddDesignation">Add</a>
+                    <a class="nav-item nav-link " asp-controller="Designation" asp-action="ViewDesignation">View</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            <!-- BASIC FORM ELEMENTS -->
+            <!--===================================================-->
+            <div class="card-body">
+                <!--Static-->
+                <div class="form-group row">
+                    <input type="hidden" id="hdnDesignationId" />
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Designation Name <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input type="text" id="txtDesignation" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                        <button class="btn btn-danger mb-1" id="btnCancel">Reset</button>
+                    </div>
+                </div>
+            </div>
+            <!--===================================================-->
+            <!-- END BASIC FORM ELEMENTS -->
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        //breadcumb
+        loadNavigation('Add Designation', 'gldata', 'plsubmission', 'Add Designation', '', 'Add Designation');
+        var DesignationId = getUrlVars()["DesignationId"];
+        if (DesignationId != undefined) {
+            $("#btnSubmit").html("Update");
+            $("#btnCancel").html("Cancel");
+            Edit(DesignationId);
+        }
+    });
+    function validate() {
+        if ($('#txtDesignation').val() == "") {
+            alert("Please Enter Designation!");
+            $('#txtDesignation').focus();
+            return false;
+        }
+        else {
+            $("#btnCancel").hide();
+            return true;
+        }
+    }
+
+    //Create
+   $("#btnSubmit").click(function () {
+
+        var desg = {
+            DesignationId: $("#hdnDesignationId").val(),
+            Designation: $("#txtDesignation").val(),
+        };
+        if (validate()) {
+            if (confirm("Are you sure you want to Submit ?")) {
+                $.ajax({
+                    url: "/Designation/AddDesignation",
+                    data: desg,
+                    type: "POST",
+                    success: function (result) {
+                        if (getUrlVars()["DesignationId"] != undefined) {
+                            alert(result);
+                            window.location.href = "/Designation/ViewDesignation";
+                        }
+                        else {
+                            alert(result);
+                            reset();
+                        }
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+            }
+        }
+    });
+
+    //UPDATE
+    function Edit(DesignationId) {
+
+            $.ajax({
+                url: "/Designation/DesignationGetById?DesignationId=" + DesignationId,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    $('#hdnDesignationId').val(result.DesignationId);
+                    $("#txtDesignation").val(result.Designation);
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+    }
+
+    $("#btnCancel").click(function () {
+        reset();
+        if (getUrlVars()["DesignationId"] != undefined) {
+            window.location.href = "/Designation/ViewDesignation";
+        }
+    })
+
+    function reset() {
+        $('#hdnDesignationId').val("");
+        $("#txtDesignation").val("");
+    }
+
+</script>

@@ -1,0 +1,288 @@
+﻿
+@{
+    ViewData["Title"] = "AddDoctor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active" asp-controller="DoctorMaster" asp-action="AddDoctor">Add</a>
+                    <a class="nav-item nav-link " asp-controller="DoctorMaster" asp-action="ViewDoctor">View</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            <!-- BASIC FORM ELEMENTS -->
+            <!--===================================================-->
+            <div class="card-body">
+                <!--Static-->
+                <div class="form-group row">
+                    <input type="hidden" id="hdnDoctorId" />
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input"> Prefix<span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+
+                        <select class="form-control" id="ddlPrifix">
+                            <option value="Select">---Select---</option>
+                            <option value="Mr">Mr</option>
+                            <option value="Mrs">Mrs</option>
+                            <option value="Miss">Miss</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Doctor Name <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input type="text" id="txtDoctorName" class="form-control" onchange="Namevalidation('txtDoctorName','lblErrorName')" />
+                        <span id="lblErrorName" style="color:red"></span>
+
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input"> Designation<span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <select id="ddlDesignation" asp-items="@(new SelectList( ViewBag.Desg,"DesignationId","Designation"))" class="form-control">
+                                <option value="0">--Select--</option>
+                            </select>
+
+                        @*<select class="form-control" id="ddlDesignation">
+                            <option value="Select">---Select---</option>
+                            <option value="Professor">Professor</option>
+                            <option value="Assistant Professor">Assistant Professor </option>
+                            <option value="Medicine Specialist">Medicine Specialist</option>
+                        </select>*@
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input"> Department<span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <select id="ddlDepartment" asp-items="@(new SelectList( ViewBag.Dept,"DepartmentId","Department"))" class="form-control">
+                                <option value="0">--Select--</option>
+                            </select>
+
+                        @*<select class="form-control" id="ddlDepartment">
+                            <option value="Select">---Select---</option>
+                            <option value="Gynecologists">Gynecologists</option>
+                            <option value="Child Psychologist">Child Psychologist </option>
+                            <option value="Neurologist ">Neurologist </option>
+                            <option value="Dermatologist ">Dermatologist </option>
+                            <option value="Cardiologist ">Cardiologist </option>
+                            <option value="Dentist"> Dentist</option>
+                            <option value="Allergist"> Allergist</option>
+                            <option value="Pediatrician"> Pediatrician</option>
+                            <option value="Endocrinologist"> Endocrinologist</option>
+                            <option value="Audiologist"> Audiologist</option>
+
+                        </select>*@
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Hospital Name <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input type="text" id="txtHospitalName" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">RegnNo <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input type="text" id="txtRegnNo" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Mobile <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input type="text" id="txtMobile" class="form-control" onchange="Phonevalidate('txtMobile','lblErrorPhone')" />
+                        <span id="lblErrorPhone" style="color:red"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Fees<span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input type="text" id="txtFees" class="form-control">
+                    </div>
+                </div>
+
+                @*<div class="form-group row">
+                        <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-readonly-input">EDate</label>
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="input-group">
+                                <input type="text" class="form-control datepicker" id="txtEDate" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                                <div class="input-group-append">
+                                    <span class="input-group-text" id="inputGroup-sizing-default"><i class="icon-calendar1"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input"> Status<span class="text-danger">*</span></label>
+                        <div class="col-12 col-md-6 col-xl-4">
+
+                            <select class="form-control" id="ddlStatus">
+                                <option value="Select">---Select---</option>
+                                <option value="Active">Active</option>
+                                <option value="Pending">Pending </option>
+                            </select>
+                        </div>
+                    </div>*@
+
+
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                        <button class="btn btn-danger mb-1" id="btnCancel">Reset</button>
+                    </div>
+                </div>
+            </div>
+            <!--===================================================-->
+            <!-- END BASIC FORM ELEMENTS -->
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        //breadcumb
+        loadNavigation('Add Doctor', 'gldata', 'plsubmission', 'Add Doctor', '', 'Add Doctor');
+        var DoctorID = getUrlVars()["DoctorID"];
+        if (DoctorID != undefined) {
+            $("#btnSubmit").html("Update");
+            $("#btnCancel").html("Cancel");
+            Edit(DoctorID);
+        }
+    });
+    function validate() {
+        if ($('#ddlPrifix').val() == "Select") {
+            alert("Please Select Prifix!");
+            $('#ddlPrifix').focus();
+            return false;
+        }
+        else if ($('#txtDoctorName').val() == "") {
+            alert("Please Enter Doctor Name!");
+            return false;
+            $('#txtDoctorName').focus();
+        }
+        else if ($('#ddlDesignation').val() == "Select") {
+            alert("Please Select Designation");
+            $('#ddlIndicatorType').focus();
+            return false;
+        }
+        else if ($('#ddlDepartment').val() == "Select") {
+            alert("Please Select Department!");
+            $('#ddlDepartment').focus();
+            return false;
+        }
+        else if ($('#txtHospitalName').val() == "") {
+            alert("Please Enter Hospital Name!");
+            return false;
+            $('#txtHospitalName').focus();
+        }
+        else if ($('#txtRegnNo').val() == "") {
+            alert("Please Enter RegnNo !");
+            return false;
+            $('#txtRegnNo').focus();
+        }
+        else if ($('#txtMobile').val() == "") {
+            alert("Please Enter Mobile No!");
+            return false;
+            $('#txtMobile').focus();
+        }
+        else if ($('#txtFees').val() == "") {
+            alert("Please Enter Fees!");
+            return false;
+            $('#txtFees').focus();
+        }
+        else {
+            $("#btnCancel").hide();
+            return true;
+        }
+
+    }
+    $("#btnSubmit").click(function () {
+        if (confirm("Are you sure you want to Submit ?")) {
+
+            var doc = {
+                DoctorID: $("#hdnDoctorId").val(),
+                Prefix: $("#ddlPrifix").val(),
+                DoctorName: $("#txtDoctorName").val(),
+                Designation: $("#ddlDesignation").val(),
+                Department: $("#ddlDepartment").val(),
+                HospitalName: $("#txtHospitalName").val(),
+                RegnNo: $("#txtRegnNo").val(),
+                Mobile: $("#txtMobile").val(),
+                Fees: $("#txtFees").val(),
+
+            };
+            if (validate() /*&& Phonevalidate('txtMobile', 'lblErrorPhone') == true && Namevalidation('txtDoctorsName', 'lblErrorName') == true*/) {
+                $.ajax({
+                    url: "/DoctorMaster/AddDoctor",
+                    data: doc,
+                    type: "POST",
+                    success: function (result) {
+                        alert(result);
+                        reset();
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+            }
+        }
+    });
+    //UPDATE
+    function Edit(DoctorID) {
+
+            $.ajax({
+                url: "/DoctorMaster/DoctorGetById?DoctorID=" + DoctorID,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    $('#hdnDoctorId').val(result.DoctorID);
+                    $("#ddlPrifix").val(result.Prefix);
+                    $("#txtDoctorName").val(result.DoctorName);
+                    $("#ddlDesignation").val(result.Designation);
+                    $("#ddlDepartment").val(result.Department);
+                    $("#txtHospitalName").val(result.HospitalName);
+                    $("#txtRegnNo").val(result.RegnNo);
+                    $("#txtMobile").val(result.Mobile);
+                    $("#txtFees").val(result.Fees);
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+    }
+    function reset() {
+        $('#hdnDoctorId').val("");
+        $("#ddlPrifix").val("");
+        $("#txtDoctorName").val("");
+        $("#ddlDesignation").val("");
+        $("#ddlDepartment").val("");
+        $("#txtHospitalName").val("");
+        $("#txtRegnNo").val("");
+        $("#txtMobile").val("");
+        $("#txtFees").val("");
+    }
+</script>
+

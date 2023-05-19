@@ -1,0 +1,777 @@
+﻿@model PathoLab.Domain.PatientAppointmentMaster.PatientAppointment
+@{
+    ViewData["Title"] = "Home";
+    Layout = "~/Views/Shared/_WebsiteLayout.cshtml";
+}
+<div id="home" class="parallax first-section wow fadeIn" data-stellar-background-ratio="0.4" style="background-image:url('images/slider-bg.png');">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <div class="text-contant">
+                    <h2>
+                        <span class="center"><span class="icon"><img src="~/Website/images/icon-logo.png" alt="#" /></span></span>
+                        <a href="" class="typewrite" data-period="2000" data-type='[ "Welcome to Life Care", "We Care Your Health", "We are Expert!" ]'>
+                            <span class="wrap"></span>
+                        </a>
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- end container -->
+</div>
+<!-- end section -->
+<div id="time-table" class="time-table-section">
+    <div class="container">
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <div class="row">
+                <div class="service-time one" style="background:#2895f1;">
+                    <span class="info-icon"><i class="fa fa-ambulance" aria-hidden="true"></i></span>
+                    <h3>Emergency Case</h3>
+                    <p>Dignissimos ducimus qui blanditii sentium volta tum deleniti atque cori as quos dolores et quas mole.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <div class="row">
+                <div class="service-time middle" style="background:#0071d1;">
+                    <span class="info-icon"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                    <h3>Working Hours</h3>
+                    <div class="time-table-section">
+                        <ul>
+                            <li><span class="left">Monday - Friday</span><span class="right">8.00 – 18.00</span></li>
+                            <li><span class="left">Saturday</span><span class="right">8.00 – 16.00</span></li>
+                            <li><span class="left">Sunday</span><span class="right">8.00 – 13.00</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <div class="row">
+                <div class="service-time three" style="background:#0060b1;">
+                    <span class="info-icon"><i class="fa fa-hospital-o" aria-hidden="true"></i></span>
+                    <h3>Clinic Timetable</h3>
+                    <p>Dignissimos ducimus qui blanditii sentium volta tum deleniti atque cori as quos dolores et quas mole.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="about" class="section wow fadeIn">
+    <div class="container">
+        <div class="heading">
+            <span class="icon-logo"><img src="~/Website/images/icon-logo.png" alt="#"></span>
+            <h2>The Specialist Clinic</h2>
+        </div>
+        <!-- end title -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="message-box">
+                    <h2>Welcome To Life Care</h2>
+                    <h4>What We Do</h4>
+                    <h3>Clinic Service</h3>
+                    <p class="lead">
+                        Life Care Hospital, Chandrasekharpur, Bhubaneswar, is one of the renowned medical centres in Odisha. Located at Prachi Enclave, Chandrasekharpur, Bhubaneswar, Odisha, it is a multi-super speciality hospital offering a wide variety of medical services including Cardiac Sciences, Neuro Sciences, Renal Sciences, Medical and Surgical Gastroenterology and Orthopaedics, as well as high-end Critical Care and Emergency medicine and all major specialities.
+                    </p>
+                    <p>
+                        The hospital is built on 4 acres of picturesque landscape and surrounded by greenery. It is centrally located and well connected through national highways, airports, bus stands and railway stations.
+                    </p>
+                    <p>
+                        Further, the hospital has state-of-the-art infrastructure to keep operations and management running smoothly and efficiently. It has 300-bed facilities to provide treatment to multiple patients at a time. Each ward is created by professionals keeping in intellect the requirements of patients and their comfort. The hospital also has the facilities of operation theatres, diagnostic labs, care units etc. Each of them is highly equipped, having modern technology support to get better results. All these medical units are managed by highly trained medical staff who have years of experience in the field of hospital management. With the availability of diagnostic services within the hospital, patients don't need to rush for the best diagnostic centre.
+                    </p>
+                    <p>
+                        Our doctors are trained in providing minimally invasive treatments in mild and moderate cases. However, they recommend surgeries only when other methods have failed. Besides, we have a trained group of nurses and other medical assistants that help patients right from the beginning of their treatment to post-operative recovery.
+                    </p>
+                    <p>
+                        On top of this, the Life Care Hospital, Bhubaneswar, also provides the facility of health packages. These packages are meant to provide better healthcare facilities at a reasonable cost to the citizens of the country.
+                    </p>
+                    <a href="#services" data-scroll class="btn btn-light btn-radius btn-brd grd1 effect-1">Learn More</a>
+                </div>
+                <!-- end messagebox -->
+            </div>
+            <!-- end col -->
+            <div class="col-md-6">
+                <div class="post-media wow fadeIn">
+                    <img src="~/Website/images/about_03.jpg" alt="" class="img-responsive">
+                    <a href="http://www.youtube.com/watch?v=nrJtHemSPW4" data-rel="prettyPhoto[gal]" class="playbutton"><i class="flaticon-play-button"></i></a>
+                </div>
+                <!-- end media -->
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+        <hr class="hr1">
+        <div class="row">
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="service-widget">
+                    <div class="post-media wow fadeIn">
+                        <a href="~/Website/images/clinic_01.jpg" data-rel="prettyPhoto[gal]" class="hoverbutton global-radius"><i class="flaticon-unlink"></i></a>
+                        <img src="~/Website/images/clinic_01.jpg" alt="" class="img-responsive">
+                    </div>
+                    <h3>Digital Control Center</h3>
+                </div>
+                <!-- end service -->
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="service-widget">
+                    <div class="post-media wow fadeIn">
+                        <a href="~/Website/images/clinic_02.jpg" data-rel="prettyPhoto[gal]" class="hoverbutton global-radius"><i class="flaticon-unlink"></i></a>
+                        <img src="~/Website/images/clinic_02.jpg" alt="" class="img-responsive">
+                    </div>
+                    <h3>Hygienic Operating Room</h3>
+                </div>
+                <!-- end service -->
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="service-widget">
+                    <div class="post-media wow fadeIn">
+                        <a href="~/Website/images/clinic_03.jpg" data-rel="prettyPhoto[gal]" class="hoverbutton global-radius"><i class="flaticon-unlink"></i></a>
+                        <img src="~/Website/images/clinic_03.jpg" alt="" class="img-responsive">
+                    </div>
+                    <h3>Specialist Physicians</h3>
+                </div>
+                <!-- end service -->
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="service-widget">
+                    <div class="post-media wow fadeIn">
+                        <a href="~/Website/images/clinic_01.jpg" data-rel="prettyPhoto[gal]" class="hoverbutton global-radius"><i class="flaticon-unlink"></i></a>
+                        <img src="~/Website/images/clinic_01.jpg" alt="" class="img-responsive">
+                    </div>
+                    <h3>Digital Control Center</h3>
+                </div>
+                <!-- end service -->
+            </div>
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- end container -->
+</div>
+<div id="service" class="services wow fadeIn">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                <div class="inner-services">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        <div class="serv">
+                            <span class="icon-service"><img src="~/Website/images/service-icon1.png" alt="#" /></span>
+                            <h4>PREMIUM FACILITIES</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        <div class="serv">
+                            <span class="icon-service"><img src="~/Website/images/service-icon2.png" alt="#" /></span>
+                            <h4>LARGE LABORATORY</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        <div class="serv">
+                            <span class="icon-service"><img src="~/Website/images/service-icon3.png" alt="#" /></span>
+                            <h4>DETAILED SPECIALIST</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        <div class="serv">
+                            <span class="icon-service"><img src="~/Website/images/service-icon4.png" alt="#" /></span>
+                            <h4>CHILDREN CARE CENTER</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        <div class="serv">
+                            <span class="icon-service"><img src="~/Website/images/service-icon5.png" alt="#" /></span>
+                            <h4>FINE INFRASTRUCTURE</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        <div class="serv">
+                            <span class="icon-service"><img src="~/Website/images/service-icon6.png" alt="#" /></span>
+                            <h4>ANYTIME BLOOD BANK</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                <div class="appointment-form">
+                    <h3><span>+</span> Book Appointment</h3>
+                    <div class="form">
+                        <fieldset>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <input type="date" onchange="GetSlotByHostIdAndDoctIdAndDOA()" name="date" id="txtAppointmentDate" class="form-control" placeholder="DateOfAppointment">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <select id="ddlHospitalName" class="form-control" onchange="GetSlotByHostIdAndDoctIdAndDOA()" asp-items="@(new SelectList(ViewBag.HospitalName,"HospitalID","HospitalName"))" asp-for="HospitalID">
+                                            <option value="0">Hospital Name</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 select-section">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <select id="ddlDepartmentName" class="form-control" onchange="GetDoctorByDepartmentId()" asp-items="@(new SelectList(ViewBag.Department,"DepartmentId","Department"))" asp-for="DepartmentId">
+                                            <option value="0">Department</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <select id="ddlDoctorName" class="form-control" onchange="GetSlotByHostIdAndDoctIdAndDOA()">
+                                            <option value="0">Doctor Name</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <select id="ddlSlot" class="form-control">
+                                            <option value="0">Slots</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <input type="text" id="txtAvailableCapacity" readonly class="form-control" placeholder="AvailableCapacity" />
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <input type="text" id="txtPatientName" placeholder=" Enter Your Name" onchange="Namevalidation('txtPatientName','lblErrorName')" />
+                                        <span id="lblErrorName" style="color:red"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 select-section">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <input type="text" id="txtMobileNo" class="form-control" placeholder=" Enter Your MobileNo" onchange="Phonevalidate('txtMobileNo','lblErrorPhone')" />
+                                        <span id="lblErrorPhone" style="color:red"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <select class="form-control" id="ddlGender">
+                                            <option value="0">Select Gender</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <input type="email" id="email" placeholder=" Enter Your Email " onchange="emailValidate('txtEmail','lblError')" />
+                                        <span id="lblError" style="color:red"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 select-section">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <input type="text" id="txtAge" class="form-control" placeholder=" Enter Your Age " onchange="OnlyNumber('txtAge','lblErrorAgeYear')" />
+                                        <span id="lblErrorAgeYear" style="color:red"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" id="txtCity" class="form-control" placeholder="Enter Your City">
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                                <div class="row">
+
+                                    <div class="form-group">
+                                        <input type="text" id="txtAddress" class="form-control" placeholder="Enter Your Address">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <textarea rows="4" id="textarea_message" class="form-control" placeholder="Your Message..."></textarea>
+                                    </div>
+                                </div>
+                            </div>*@
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="center">
+                                            <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end section -->
+<div id="specialities" class="section wow fadeIn">
+    <div class="container">
+        <div class="heading">
+            <span class="icon-logo"><img src="~/Website/images/icon-logo.png" alt="#"></span>
+            <h2>Specialities & Treatments</h2>
+        </div>
+        <!-- end title -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="message-box">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="right-maincontent">
+                            <div class="rightcomponents all-about-cont-area">
+                                <div class="mb-3">
+                                    <h2 class="specialty-treatheader">Center of Excellence</h2>
+                                    <div class="row">
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Cardiac Sciences</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Gastro Sciences</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Nephrology</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Neurosciences</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Oncology</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Orthopaedics</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Paediatrics</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Pulmonology</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Transplants</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Urology</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Woman &amp; Child Institute</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Vascular &amp; Endovascular Surgery and Interventional Radiology</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <h2 class="specialty-treatheader">Specialities</h2>
+                                    <div class="row">
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Anaesthesiology</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Arthroscopy &amp; Sports Medicine</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Cardiac Surgery</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Cardiology</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Dentistry</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Dermatology</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Dietetics &amp; Nutrition</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Endocrinology</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">ENT</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Gastroenterology Medical</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">General Surgery</a>
+                                        </div>
+
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Haematology</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Medical Oncology</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Nephrology</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Neurology</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Neurosurgery</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Nuclear Medicine</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Ophthalmology</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Orthopaedics</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Paediatrics</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Radiation Oncology</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Radiology</a>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                            <a class="btn specialty-unitbtn">Urology</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end messagebox -->
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+        <hr class="hr1">
+        <!-- end row -->
+    </div>
+    <!-- end container -->
+</div>
+
+<!-- doctor -->
+
+<div id="doctors" class="parallax section db" data-stellar-background-ratio="0.4" style="background:#fff;" data-scroll-id="doctors" tabindex="-1">
+    <div class="container">
+
+        <div class="heading">
+            <span class="icon-logo"><img src="~/Website/images/icon-logo.png" alt="#"></span>
+            <h2>The Specialist Clinic</h2>
+        </div>
+
+        <div class="row dev-list text-center">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 wow fadeIn" data-wow-duration="1s" data-wow-delay="0.2s" style="visibility: visible; animation-duration: 1s; animation-delay: 0.2s; animation-name: fadeIn;">
+                <div class="widget clearfix">
+                    <img src="~/Website/images/doctor_01.jpg" alt="" class="img-responsive img-rounded">
+                    <div class="widget-title">
+                        <h3>Soren Bo Bostian</h3>
+                        <small>Clinic Owner</small>
+                    </div>
+                    <!-- end title -->
+                    <p>Hello guys, I am Soren from Sirbistana. I am senior art director and founder of Violetta.</p>
+
+                    <div class="footer-social">
+                        <a href="#" class="btn grd1"><i class="fa fa-facebook"></i></a>
+                        <a href="#" class="btn grd1"><i class="fa fa-github"></i></a>
+                        <a href="#" class="btn grd1"><i class="fa fa-twitter"></i></a>
+                        <a href="#" class="btn grd1"><i class="fa fa-linkedin"></i></a>
+                    </div>
+                </div><!--widget -->
+            </div><!-- end col -->
+
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 wow fadeIn" data-wow-duration="1s" data-wow-delay="0.4s" style="visibility: visible; animation-duration: 1s; animation-delay: 0.4s; animation-name: fadeIn;">
+                <div class="widget clearfix">
+                    <img src="~/Website/images/doctor_02.jpg" alt="" class="img-responsive img-rounded">
+                    <div class="widget-title">
+                        <h3>Bryan Saftler</h3>
+                        <small>Internal Diseases</small>
+                    </div>
+                    <!-- end title -->
+                    <p>Hello guys, I am Soren from Sirbistana. I am senior art director and founder of Violetta.</p>
+
+                    <div class="footer-social">
+                        <a href="#" class="btn grd1"><i class="fa fa-facebook"></i></a>
+                        <a href="#" class="btn grd1"><i class="fa fa-github"></i></a>
+                        <a href="#" class="btn grd1"><i class="fa fa-twitter"></i></a>
+                        <a href="#" class="btn grd1"><i class="fa fa-linkedin"></i></a>
+                    </div>
+                </div><!--widget -->
+            </div><!-- end col -->
+
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 wow fadeIn">
+                <div class="widget clearfix">
+                    <img src="~/Website/images/doctor_03.jpg" alt="" class="img-responsive img-rounded">
+                    <div class="widget-title">
+                        <h3>Matthew Bayliss</h3>
+                        <small>Orthopedics Expert</small>
+                    </div>
+                    <!-- end title -->
+                    <p>Hello guys, I am Soren from Sirbistana. I am senior art director and founder of Violetta.</p>
+
+                    <div class="footer-social">
+                        <a href="#" class="btn grd1"><i class="fa fa-facebook"></i></a>
+                        <a href="#" class="btn grd1"><i class="fa fa-github"></i></a>
+                        <a href="#" class="btn grd1"><i class="fa fa-twitter"></i></a>
+                        <a href="#" class="btn grd1"><i class="fa fa-linkedin"></i></a>
+                    </div>
+                </div><!--widget -->
+            </div><!-- end col -->
+
+        </div><!-- end row -->
+    </div><!-- end container -->
+</div>
+
+<div id="getintouch" class="section wb wow fadeIn" style="padding-bottom:0;">
+    <div class="container">
+        <div class="heading">
+            <span class="icon-logo"><img src="~/Website/images/icon-logo.png" alt="#"></span>
+            <h2>Get in Touch</h2>
+        </div>
+    </div>
+    <div class="contact-section">
+        <div class="form-contant">
+            <form id="ajax-contact" action="assets/mailer.php" method="post">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group in_name">
+                            <input type="text" class="form-control" placeholder="Name" required="required">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group in_email">
+                            <input type="email" class="form-control" placeholder="E-mail" required="required">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group in_email">
+                            <input type="tel" class="form-control" id="phone" placeholder="Phone" required="required">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group in_email">
+                            <input type="text" class="form-control" id="subject" placeholder="Subject" required="required">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group in_message">
+                            <textarea class="form-control" id="message" rows="5" placeholder="Message" required="required"></textarea>
+                        </div>
+                        <div class="actions">
+                            <input type="submit" value="Send Message" name="submit" id="submitButton" class="btn small" title="Submit Your Message!">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id="googleMap" style="width:100%;height:450px;"></div>
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+        //breadcumb
+        loadNavigation('Add PatientAppointment', 'gldata', 'plsubmission', 'Add PatientAppointment', '', 'Add PatientAppointment');
+        var SlotID = getUrlVars()["SlotID"];
+        var DoctorId = getUrlVars()["DoctorId"];
+        if (SlotID != undefined && DoctorId != undefined) {
+        }
+    });
+
+
+    //Validation
+    function validate() {
+        var currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() - 1);
+        var selectedDate = new Date(Date.parse($('#txtAppointmentDate').val()));
+        if ($('#txtAppointmentDate').val() == "0") {
+            alert("Please Enter Date  !");
+            return false;
+            $('#txtAppointmentDate').focus();
+        }
+        else if (selectedDate < currentDate) {
+            alert("Please Enter Date Greater Then Current Date  !");
+            return false;
+            $('#txtAppointmentDate').focus();
+        }
+        else if ($('#ddlHospitalName').val() == "0") {
+            alert("Please Select Hospital Name !");
+            return false;
+            $('#ddlHospitalName').focus();
+        }
+        else if ($('#ddlDepartmentName').val() == "0") {
+            alert("Please Select Department Name !");
+            $('#ddlDepartmentName').focus();
+            return false;
+        }
+        else if ($('#ddlDoctorName').val() == "0") {
+            alert("Please Select Doctor Name !");
+            $('#ddlDoctorName').focus();
+            return false;
+        }
+        else if ($('#ddlSlot').val() == "0") {
+            alert("Please Select Slot Name !");
+            return false;
+            $('#ddlSlot').focus();
+        }
+        else if ($('#txtPatientName').val() == "") {
+            alert("Enter Patient Name !");
+            return false;
+            $('#txtPatientName').focus();
+        }
+        else if ($('#txtMobileNo').val() == "") {
+            alert("Enter MobileNo  !");
+            return false;
+            $('#txtMobileNo').focus();
+        }
+        else if ($('#txtEmail').val() == "") {
+            alert("Enter Email !");
+            return false;
+            $('#txtEmail').focus();
+        }
+        else if ($('#txtAge').val() == "") {
+            alert("Enter Age  !");
+            return false;
+            $('#txtAge').focus();
+        }
+        else if ($('#ddlGender').val() == "0") {
+            alert("Please Select Gender  !");
+            return false;
+            $('#ddlGender').focus();
+        }
+        else if ($('#txtCity').val() == "") {
+            alert("Enter City  !");
+            return false;
+            $('#txtCity').focus();
+        }
+        else if ($('#txtAddress').val() == "") {
+            alert("Enter Address !");
+            return false;
+            $('#txtAddress').focus();
+        }
+        else {
+            $("#btnReset").hide();
+            return true;
+        }
+    }
+
+    //Create
+    $("#btnSubmit").click(function () {
+        var selected = [];
+        var dign = {
+            AppointmentId: $("#hdnAppointmentId").val(),
+            RegdNo: $("#hdnRegdNo").val(),
+            DateOfAppointment: $("#txtAppointmentDate").val(),
+            HospitalID: $("#ddlHospitalName").val(),
+            DepartmentId: $("#ddlDepartmentName").val(),
+            DoctorId: $("#ddlDoctorName").val(),
+            SlotID: $("#ddlSlot").val(),
+            AvailableCapacity: $("#txtAvailableCapacity").val(),
+            PatientId: $("#txtPatientId").val(),
+            PatientName: $("#txtPatientName").val(),
+            MobileNo: $("#txtMobileNo").val(),
+            Email: $("#txtEmail").val(),
+            Age: $("#txtAge").val(),
+            Gender: $("#ddlGender").val(),
+            City: $("#txtCity").val(),
+            Address: $("#txtAddress").val(),
+        };
+        if (validate()) {
+            if (confirm("Are you sure you want to Submit ?")) {
+                $.ajax({
+                    url: "/Website/AddPatientAppointment",
+                    data: dign,
+                    type: "POST",
+                    success: function (result) {
+                        alert(result);
+
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+
+            }
+        }
+    });
+
+
+    //Cascading Databind
+    //Get  Doctor By Department Id
+    function GetDoctorByDepartmentId() {
+        $.ajax({
+            url: "/Website/GetDoctorByDepartmentId?DepartmentId=" + $('#ddlDepartmentName').val(),
+            type: "GET",
+            success: function (result) {
+                data = JSON.parse(result);
+                var v = "<option value='0'>--Select--</option>";
+                $.each(data, function (i, item) {
+                    v += "<option value=" + item.UserId + ">" + item.UserName + "</option>";
+                });
+                $("#ddlDoctorName").html(v);
+            },
+            error: function (error) {
+                jsonValue = jQuery.parseJSON(error.responseText);
+                alert("Error : " + jsonValue);
+            }
+        });
+    }
+
+    //Cascading Databind
+    //Get Slot Time By Hospital Id And Doctor Id And DateOfAppointment
+    function GetSlotByHostIdAndDoctIdAndDOA() {
+        if ($('#ddlHospitalName').val() != '0' && $('#ddlDoctorName').val() != '0' && $('#txtAppointmentDate').val() != '') {
+            $.ajax({
+                url: "/Website/GetSlotByHostIdAndDoctIdAndDOA?HospitalID=" + $('#ddlHospitalName').val() + "&DoctorId=" + $('#ddlDoctorName').val() + "&DateOfAppointment=" + $('#txtAppointmentDate').val(),
+                type: "GET",
+                success: function (result) {
+                    data = JSON.parse(result);
+                    var v = "<option value='0'>--Select--</option>";
+                    $.each(data, function (i, item) {
+                        v += "<option value=" + item.SlotID + ">" + item.SlotName + ":(" + item.Slot_TimeFrom + " To " + item.Slot_TimeTo + ")</option>";
+                    });
+                    $("#ddlSlot").html(v);
+
+                },
+                error: function (error) {
+                    jsonValue = jQuery.parseJSON(error.responseText);
+                    alert("Error : " + jsonValue);
+                }
+            });
+        }
+    }
+    //Cascading Databind
+    //Get Available Capacity By SlotId And  DateOfAppointment
+    $("#ddlSlot").change(function () {
+        $.ajax({
+            url: "/Website/GetAvlCaptBySIdNDOA?SlotID=" + $('#ddlSlot').val() + "&DateOfAppointment=" + $('#txtAppointmentDate').val(),
+            type: "GET",
+            success: function (result) {
+                data = JSON.parse(result);
+                $("#txtAvailableCapacity").val(data[0].AvailableCapacity);
+            },
+            error: function (error) {
+                jsonValue = jQuery.parseJSON(error.responseText);
+                alert("Error : " + jsonValue);
+            }
+        });
+    });
+
+
+</script>

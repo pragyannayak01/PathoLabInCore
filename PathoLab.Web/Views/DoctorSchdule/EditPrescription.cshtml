@@ -1,0 +1,578 @@
+﻿@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "EditPrescription";
+    Layout = "~/Views/Shared/_LayoutaDoctorDynamic.cshtml";
+}
+
+<style>
+    .logo {
+        flex: 1;
+    }
+
+        .logo img {
+            width: 120px;
+            height: 120px;
+            float: left;
+        }
+
+    table td {
+        border: 1px solid black;
+        padding: 4px 12px;
+    }
+</style>
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    @*<a class="nav-item nav-link active" asp-controller="DoctorSchdule" asp-action="Appointments">Appointments</a>*@
+                    @*<a class="nav-item nav-link active " asp-controller="DoctorSchdule" asp-action="Prescription">Prescription</a>*@
+                    <a class="nav-item nav-link  " asp-controller="DoctorSchdule" asp-action="ViewsPrescription">View Prescription</a>
+                    <a class="nav-item nav-link active " asp-controller="DoctorSchdule" asp-action="EditPrescription">Edit Prescription</a>
+
+                </ul>
+
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            <!--===================================================-->
+            <hr />
+            <!-- BASIC FORM ELEMENTS 1 -->
+            <!--===================================================-->
+            <div class="card-body">
+                <!--Static-->
+                <div class="form-group row">
+                    <input type="hidden" id="hdnPatientID" />
+                    <input type="hidden" id="hdnPrescriptionId" />
+                    @*<input id="txtMedicineName" class="form-control m-input">*@
+                    <div class="col-xs-12 col-md-3 col-xl-3">
+                        <label class="control-label" for="RegdNo"  ><b>Regd No</b></label>
+                        <input id="txtRegdNo" class="form-control" disabled />
+                    </div>
+                    <div class="col-xs-12 col-md-4 col-xl-4">
+                        <input type="hidden" id="hdnHospitalId" value="@HttpContextAccessor.HttpContext.Session.GetInt32("HospitalID")" />
+                        <label class="control-label" for="HospitalName"><b>Hospital Name</b></label>
+                        <input id="txtHospitalName" class="form-control"  disabled value="@HttpContextAccessor.HttpContext.Session.GetString("HospitalName")" />
+                    </div>
+                    <div class="col-xs-12 col-md-3 col-xl-3">
+                        <label class="control-label"><b>Doctor Name</b></label>
+                        <input id="txtDoctorName" class="form-control" disabled value="@HttpContextAccessor.HttpContext.Session.GetString("UserName")" />
+                    </div>
+                    <div class="col-xs-12 col-md-2 col-xl-2">
+                        <label class="control-label" for="DateOfAppointment"><b>Date</b></label>
+                        <input id="txtDate" disabled class="form-control" />
+                    </div>
+                    <div class="col-xs-12 col-md-3 col-xl-3">
+                        <label class="control-label"  for="FullName"><b>Name</b></label>
+                        <input id="txtName" disabled  class="form-control" />
+                    </div>
+                    <div class="col-12 col-md-3 col-xl-3">
+                        <label class=" control-label" for="GuardianName"><b>Husband/Father/Mother   Name</b> </label>
+                        <input id="txtHFMName" class="form-control" />
+                    </div>
+                    <div class="col-12 col-md-2 col-xl-2">
+                        <label class="control-label"  for="Mobile"><b>Mobile No</b> </label>
+                        <input id="txtMobile" disabled class="form-control" />
+                    </div>
+                    <div class="col-12 col-md-2 col-xl-2">
+                        <label class="control-label" for=Email><b>Email</b></label>
+                        <input id="txtEmail" disabled type="email" class="form-control" />
+                    </div>
+                    <div class="col-12 col-md-1 col-xl-1">
+                        <label class="control-label" for="Age"><b>Age</b> </label>
+                        <input id="txtAge" disabled  class="form-control" />
+                    </div> 
+                    <div class="col-12 col-md-1 col-xl-1">
+                        <label class="control-label" for="Gender"><b>Gender</b> </label>
+                        <input id="txtGender" disabled  class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <!--===================================================-->
+            <!-- END BASIC FORM ELEMENTS 1-->
+            <!--==============================================================================================================================================-->
+            <hr />
+            <!-- BASIC FORM ELEMENTS 2 -->
+            <!--===================================================-->
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <label class="control-label" for="BloodPressure"> <b>Blood Pressure</b> </label>
+                        <input type="text" id="txtBloodPressure" class="form-control" />
+                        <label class=" control-label" for="Height"> <b> Height </b></label>
+                        <input type="text" id="txtHeight" class="form-control" />
+                        <label class=" control-label" for="Weight"> <b> Weight </b></label>
+                        <input type="text" id="txtWeight" class="form-control" />
+                        <label class="control-label" for="OxygenLevel"> <b>Oxygen Level</b> </label>
+                        <input type="text" id="txtOxygenLevel" class="form-control" />
+                        <label class=" control-label" for="Pulse"> <b> Pulse </b></label>
+                        <input type="text" id="txtPulse" class="form-control" />
+                        <label class="control-label" for="Temperature"> <b>Temperature </b> </label>
+                        <input type="text" id="txtTemperature" class="form-control" />
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-8">
+                        <label class="control-label" for="Symptoms"><b>Symptoms</b>  </label>
+                        <textarea id="txtSymptoms" cols="40" rows="6" class="form-control"></textarea>
+                        <label class=" control-label" for="PatientHistory"><b>Patient History </b> </label>
+                        <textarea id="txtHistory" cols="40" rows="6" class="form-control"></textarea>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="form-group row">
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <label class=" control-label" for="Dignosis"><b>  Dignosis Test</b> </label>
+                        @*<input type="text" id="txtDignosisTest" class="form-control" />
+                            <div class="input-group m-3">
+                             <input type="text" class="form-control m-input">
+                            <select id="ddlDignosis" class="form-control">
+                                    <option value="0">--Select--</option>
+                                </select>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-danger"
+                                            id="DeleteRow" type="button">
+                                        <i class="fa fa-trash-o"></i>
+                                    </button>
+                                </div>
+                            </div>*@
+                        <div id="newinput"> <input type="hidden" id="hdndignosiscount" /></div>
+                        <button id="rowAdder" type="button" class="btn btn-dark pull-right">
+                            <span class="bi bi-plus-square-dotted">
+                            </span> ADD
+                        </button>
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-8">
+                        <label class=" control-label" id="txtPrescribeMedicine"> <b>Prescribe Medicine </b> </label>
+                        <div>
+                            <table id="tblMedicine">
+                                <tr>
+                                    <td>Medicine Name</td>
+                                    <td>Dosages</td>
+                                    <td>Duration</td>
+                                    <td>Action</td>
+                                </tr>
+                                <tbody id="tbody"></tbody>
+                            </table><br />
+                            <div class="form-group row">
+                                <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <button class="btn btn-md btn-primary pull-right" id="addBtn" type="button"> Add </button>
+                                    @*<button class="btn btn-info active" value="Delete Row" onclick="DeleteTableRow('dataTable')">Delete</button>*@
+                                </div>
+                            </div>
+                        </div><br />
+                        <div class="form-group row">
+                            <div class="col-12 col-md-10 col-xl-12">
+                                <label class="control-label" for="OtherAdvice"><b>Other Advice</b>  </label>
+                                <textarea id="txtOtherAdvice" cols="40" rows="6" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                        <button class="btn btn-danger mb-1" onclick="reset()"id="btnReset">Reset</button>
+                    </div>
+                </div>
+
+
+                <!--===================================================-->
+                <!-- END BASIC FORM ELEMENTS 2 -->
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        //breadcumb
+        var PrescriptionId = getUrlVars()["PrescriptionId"];
+        var PatientID = getUrlVars()["PatientID"];
+        if (PrescriptionId != undefined && PatientID != undefined) {
+            $("#btnSubmit").html("Update");
+            $("#btnReset").html("Cancel");
+            Edit(PrescriptionId, PatientID);
+        }
+    });
+    //< !--=================================================== -->
+    function reset() {
+        window.location.href = "/DoctorSchdule/ViewsPrescription";
+    }
+    //< !--=================================================== -->
+    //< !--=================================================== -->
+    //UPDATE
+    function Edit(PrescriptionId, PatientID) {
+        $.ajax({
+            url: "/DoctorSchdule/GetPrescriptionDetailsByPId?PrescriptionId=" + PrescriptionId + "&PatientID=" + PatientID,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (result) {
+                $('#hdnPatientID').val(result.PatientID);
+                $('#hdnPrescriptionId').val(result.PrescriptionId);
+                $("#txtRegdNo").val(result.RegdNo);
+                $("#hdnHospitalId").val(result.HospitalID);
+                $("#txtHospitalName").val(result.HospitalName);
+                $("#txtDate").val(result.DateOfAppointment);
+                $("#txtName").val(result.FullName);
+                $("#txtHFMName").val(result.GuardianName);
+                $("#txtMobile").val(result.Mobile);
+                $("#txtEmail").val(result.Email);
+                $("#txtAge").val(result.Age);
+                $("#txtGender").val(result.Gender);
+                $('#txtHeight').val(result.Height);
+                $('#txtWeight').val(result.Weight);
+                $('#txtBloodPressure').val(result.BloodPressure);
+                $('#txtOxygenLevel').val(result.OxygenLevel);
+                $("#txtPulse").val(result.Pulse);
+                $("#txtTemperature").val(result.Temperature);
+                $('#txtSymptoms').val(result.Symptoms);
+                $('#txtHistory').val(result.PatientHistory);
+                $('#txtOtherAdvice').val(result.OtherAdvice);
+                $.ajax({
+                    url: "/DoctorSchdule/GetDignosisByPId?PrescriptionId=" + PrescriptionId,
+                    type: "GET",
+                    success: function (result) {
+                        data = JSON.parse(result);
+                        $.each(data, function (i, item) {
+                            DignosisDataBindForEdit(item.DignosisID);
+                        });
+                        $("#" + id).html(v);
+                    },
+                    error: function (error) {
+                        jsonValue = jQuery.parseJSON(error.responseText);
+                        alert("Error : " + jsonValue);
+                    }
+                });
+                $.ajax({
+                    url: "/DoctorSchdule/GetMedicineByPId?PrescriptionId=" + PrescriptionId,
+                    type: "GET",
+                    success: function (result) {
+                        data = JSON.parse(result);
+                        MedicineDataBindForEdit(data);
+                    },
+                    error: function (error) {
+                        jsonValue = jQuery.parseJSON(error.responseText);
+                        alert("Error : " + jsonValue);
+                    }
+                });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+    //< !--=================================================== -->
+
+    //Dignosis Data Bind At The Time Of Edit
+    function DignosisDataBindForEdit(value) {
+        $("#hdndignosiscount").val(parseFloat($("#hdndignosiscount").val() + 1));//Dynamic Id for Dynamic Dropdown
+        newRowAdd =
+            '<div id="row"> <div class="input-group m-3"><select id="ddlDignosis-' + $("#hdndignosiscount").val() + '"  class="form-control" >< option value = "0" > --Select--</option ></select >' +
+            '<div class="input-group-prepend">' +
+            '<button class="btn btn-danger" id="DeleteRow" type="button">' +
+            '<i class="fa fa-trash-o"></i></button> </div>' +
+            '</div> </div>';
+        $('#newinput').append(newRowAdd);
+        GetDignosisOfEachDropdownById('ddlDignosis-' + $("#hdndignosiscount").val(), value);
+    };
+    //< !--=================================================== -->
+    //Adding Add More Option In Dignosis
+    $("#rowAdder").click(function () {
+        $("#hdndignosiscount").val(parseFloat($("#hdndignosiscount").val() + 1));//Dynamic Id for Dynamic Dropdown
+        newRowAdd =
+            '<div id="row"> <div class="input-group m-3"><select id="ddlDignosis-' + $("#hdndignosiscount").val() + '"  class="form-control" >< option value = "0" > --Select--</option ></select >' +
+            '<div class="input-group-prepend">' +
+            '<button class="btn btn-danger" id="DeleteRow" type="button">' +
+            '<i class="fa fa-trash-o"></i></button> </div>' +
+            '</div> </div>';
+        $('#newinput').append(newRowAdd);
+        GetDignosisOfEachDropdownById('ddlDignosis-' + $("#hdndignosiscount").val());
+    });
+
+    $("body").on("click", "#DeleteRow", function () {
+        $(this).parents("#row").remove();
+    })
+    //< !--=================================================== -->
+    //Dropdown data bind
+    function GetDignosisOfEachDropdownById(id, value) {
+        $.ajax({
+            url: "/DoctorSchdule/GetDignosis",
+            type: "GET",
+            success: function (result) {
+                data = JSON.parse(result);
+                var v = "<option value='0'>--Select--</option>";
+                $.each(data, function (i, item) {
+                    if (value != undefined && value == item.DignosisID) {
+                        v += "<option value=" + item.DignosisID + " selected>" + item.Name + " </option>";
+                    }
+                    else {
+                        v += "<option value=" + item.DignosisID + ">" + item.Name + " </option>";
+                    }
+                });
+                $("#" + id).html(v);
+            },
+            error: function (error) {
+                jsonValue = jQuery.parseJSON(error.responseText);
+                alert("Error : " + jsonValue);
+            }
+        });
+    }
+    //Add Textbox Inside The Table Cells
+    // Denotes total number of rows
+    var rowIdx = "";
+    // jQuery button click event to add a row
+    $('#addBtn').on('click', function () {
+        // Adding a row inside the tbody.
+        $('#tbody').append(`<tr id="R${++rowIdx}">
+             <td class="row-index text-center">
+             <input id="txtMedicineName" class="inputs form-control m-input"><input type="hidden" id="hdnMedicineId" class="form-control m-input">
+             </td>
+              <td class="row-index text-center">
+               <select id="txtDoses" class="form-control">
+               <option value="0">--Select--</option>
+               </select>
+             </td>
+              <td class="row-index text-center">
+              <input id="txtDuration" type="text" maxlength = "100" size = "8"class="form-control m-input">
+             </td>
+              <td class="text-center">
+                <button class="btn btn-danger remove"
+                  type="button">Remove</button>
+                </td>
+              </tr>`
+        );
+    });
+
+    //< !--=================================================== -->
+    //Medicine Data Bind At The Time Of Edit
+
+    function MedicineDataBindForEdit(data) {
+        $.each(data, function (i, items) {
+            $.ajax({
+                url: "/Dose/DoseGetByMedId?MedicineId=" + items.Id,
+                type: "GET",
+                success: function (result) {
+                    data = JSON.parse(result);
+                    var DosesElement = "<select id='txtDoses' class='form-control'><select<option value='0'>--Select--</option>";
+                    $.each(data, function (i, item) {
+                        if (item.DoseId == items.DoseId) {
+                            DosesElement += "<option value=" + item.DoseId + " selected>" + item.DoseName + "</option>"; 
+                        }
+                        else {
+                            DosesElement += "<option value=" + item.DoseId + ">" + item.DoseName + "</option>";
+                        }
+                    });
+                    DosesElement += "</select>";
+                    // Denotes total number of rows
+                    var rowIdx = "";
+                    // Adding a row inside the tbody.
+                    $('#tbody').append(`<tr id="${++rowIdx}">
+                     <td class="row-index text-center">
+                     <input id="txtMedicineName" value="${items.MedicineName}" class="inputs form-control m-input"><input type="hidden" value="${items.Id}" id="hdnMedicineId" class="form-control m-input">
+                     </td>
+                     <td class="row-index text-center">
+                     ${DosesElement}
+                     </td>
+                     <td class="row-index text-center">
+                     <input id="txtDuration" value="${items.Duration}" type="text" maxlength = "100" size = "1"class="form-control m-input">
+                     </td>
+                     <td class="text-center">
+                     <button class="btn btn-danger remove" type="button">Remove</button>
+                     </td>
+                     </tr>`
+                    );
+                },
+                error: function (error) {
+                    jsonValue = jQuery.parseJSON(error.responseText);
+                    alert("Error : " + jsonValue);
+                }
+            });
+        });
+
+        // jQuery button click event to remove a row.
+        $('#tbody').on('click', '.remove', function () {
+
+            // Getting all the rows next to the row
+            // containing the clicked button
+            var child = $(this).closest('tr').nextAll();
+
+            // Iterating across all the rows
+            // obtained to change the index
+            child.each(function () {
+                // Getting <tr> id.
+                var id = $(this).attr('id');
+                // Getting the <p> inside the .row-index class.
+                var idx = $(this).children('.row-index').children('p');
+                // Gets the row number from <tr> id.
+                var dig = parseInt(id.substring(1));
+                // Modifying row index.
+                idx.html(`Row ${dig - 1}`);
+                // Modifying row id.
+                $(this).attr('id', `R${dig - 1}`);
+            });
+
+            // Removing the current row.
+            $(this).closest('tr').remove();
+
+            // Decreasing total number of rows by 1.
+            rowIdx--;
+        });
+    }
+
+    //Create
+    $("#btnSubmit").click(function () {
+        var selected = [];
+        $('#newinput option:selected').each(function () {
+            selected.push($(this).attr('value'));
+        });
+        // Array of data we'll retu
+        var Items = []; //array declaring to store the records to send it to controller
+        var entity = {};
+        var tbl = document.getElementById('tbody');
+        for (var i = 0; i < tbl.rows.length; i++) {
+            var item1 = {};
+            item1.Id = tbl.rows[i].children[0].children[1].value;
+            item1.DoseId = tbl.rows[i].children[1].children[0].value;
+            item1.Duration = tbl.rows[i].children[2].children[0].value;
+            //item1.MorningAfterMeal = tbl.rows[i].children[1].children[0].value;
+            //item1.MorningBeforeMeal = tbl.rows[i].children[2].children[0].value;
+            //item1.AfternoonAfterMeal = tbl.rows[i].children[3].children[0].value;
+            //item1.AfternoonBeforeMeal = tbl.rows[i].children[4].children[0].value;
+            //item1.NightAfterMeal = tbl.rows[i].children[5].children[0].value;
+            //item1.NightBeforeMeal = tbl.rows[i].children[6].children[0].value;
+            Items.push(item1);
+        }
+        entity.Medicines = Items;
+        entity.PatientID = $("#hdnPatientID").val();
+        entity.PrescriptionId = $("#hdnPrescriptionId").val();
+        entity.HospitalID = $("#hdnHospitalId").val();
+        entity.GuardianName = $("#txtHFMName").val();
+        entity.Height = $("#txtHeight").val();
+        entity.Weight = $("#txtWeight").val();
+        entity.BloodPressure = $("#txtBloodPressure").val();
+        entity.OxygenLevel = $("#txtOxygenLevel").val();
+        entity.Pulse = $("#txtPulse").val();
+        entity.Temperature = $("#txtTemperature").val();
+        entity.Symptoms = $("#txtSymptoms").val();
+        entity.PatientHistory = $("#txtHistory").val();
+        entity.OtherAdvice = $("#txtOtherAdvice").val();
+       
+        entity.DignosisCommaSepareted = selected.join(", ");
+       
+        if (confirm("Are you sure you want to Submit ?")) {
+            $.ajax({
+                url: "/DoctorSchdule/CreatePrescription",
+                data: entity,
+                type: "POST",
+                success: function (result) {
+                    if (getUrlVars()["PatientID"] != undefined) {
+                        alert(result);
+                        window.location.href = "/DoctorSchdule/ViewsPrescription";
+                    }
+                    else {
+                        alert(result);
+                        reset();
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    });
+    //Medicine AutoFill
+    $(document).on('keypress', '.inputs', function () {
+        $('#tblMedicine tbody tr').each(function (index) {
+            var row = this;
+            $(this).find("td").eq(0).find("#txtMedicineName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '/DoctorSchdule/AutoComplete/',
+                        data: { "prefix": request.term },
+                        type: "POST",
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return item;
+                            }))
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                },
+                select: function (e, i) {
+                    $(row).find('td').find("#hdnMedicineId").val(i.item.val);
+                },
+                minLength: 1
+            });
+        });
+    });
+    //Medicine On Change
+    $(document).on('change', '.inputs', function () {
+        $('#tblMedicine tbody tr').each(function (index) {
+            var row = this;
+            $(this).find("td").eq(0).find("#txtMedicineName").blur(function () {
+                $.ajax({
+                    url: "/Dose/DoseGetByMedId?MedicineId=" + $(row).find('td').eq(0).find("#hdnMedicineId").val(),
+                    type: "GET",
+                    success: function (result) {
+                        data = JSON.parse(result);
+                        var v = "<option value='0'>--Select--</option>";
+                        $.each(data, function (i, item) {
+                            v += "<option value=" + item.DoseId + ">" + item.DoseName + "</option>";
+                        });
+                        $(row).find('td').next('td').find("#txtDoses").html(v);
+                        //$(this).find("td").eq(1).find("#txtDoses").html(v);
+                    },
+                    error: function (error) {
+                        jsonValue = jQuery.parseJSON(error.responseText);
+                        alert("Error : " + jsonValue);
+                    }
+                });
+            });
+        });
+    });
+    //< !--=================================================== -->
+
+    //Cancle
+    $("#btnCancel").click(function () {
+        reset();
+        if (getUrlVars()["PatientID"] != undefined) {
+            window.location.href = "/DoctorSchdule/CreatePrescription";
+        }
+    })
+
+    //Cancle
+    $("#btnReset").click(function () {
+        reset();
+        if (getUrlVars()["AppointmentId"] != undefined) {
+        }
+    })
+</script>   

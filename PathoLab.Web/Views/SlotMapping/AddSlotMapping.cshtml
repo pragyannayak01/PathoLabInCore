@@ -1,0 +1,310 @@
+﻿@model PathoLab.Domain.SlotMappig.SlotMapping
+
+@{
+    ViewData["Title"] = "AddSlotMapping";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+}
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active" asp-controller="SlotMapping" asp-action="AddSlotMapping">Add</a>
+                    <a class="nav-item nav-link " asp-controller="SlotMapping" asp-action="ViewSlotMapping">View</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            <!-- BASIC FORM ELEMENTS -->
+            <!--===================================================-->
+            <div class="card-body">
+                <!--Static-->
+                <div class="form-group row">
+                    <input type="hidden" id="hdnSMId" />
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Hospital Name<span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <select id="HospitalName" class="form-control" onchange="GetAllSlotByHId()" asp-items="@(new SelectList(ViewBag.HospitalName,"HospitalID","HospitalName"))" asp-for="HospitalID">
+                            <option value="Select">--Select--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Slot Name<span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <select id="SlotName" onchange="GetShiftTimeBySlotId()" class="form-control">
+                            <option value="Select">--Select--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Slot Time from <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-3 col-xl-2">
+                        <input type="time" id="TimeFrom" readonly class="form-control">
+                    </div>
+                    <label class="">To <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-3 col-xl-2">
+                        <input type="time" id="TimeTo" readonly class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Doctor Name<span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <select id="DoctorName" class="form-control">
+                            <option value="Select">--Select--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input"> Day<span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4" id="Day">
+                        <input type="checkbox" id="Monday" class="form-control" value="1">
+                        <label for="Monday"> Monday</label>
+                        <input type="checkbox" id="Tuesday" class="form-control" value="2">
+                        <label for="Tuesday"> Tuesday</label>
+                        <input type="checkbox" id="Wednesday" class="form-control" value="3">
+                        <label for="Wednesday"> Wednesday</label>
+                        <input type="checkbox" id="Thursday" class="form-control" value="4">
+                        <label for="Thursday"> Thursday</label>
+                        <input type="checkbox" id="Friday" class="form-control" value="5">
+                        <label for="Friday"> Friday</label>
+                        <input type="checkbox" id="Saturday" class="form-control" value="6">
+                        <label for="Saturday"> Saturday</label>
+                        <input type="checkbox" id="Sunday" class="form-control" value="7">
+                        <label for="Sunday"> Sunday</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                        <button class="btn btn-danger mb-1" id="btnReset">Reset</button>
+                    </div>
+                </div>
+            </div>
+            <!--===================================================-->
+            <!-- END BASIC FORM ELEMENTS -->
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        //breadcumb
+        loadNavigation('Add SlotMapping', 'gldata', 'plsubmission', 'Add SlotMapping', '', 'Add SlotMapping');
+        var SlotID = getUrlVars()["SlotID"];
+        var DoctorId = getUrlVars()["DoctorId"];
+        if (SlotID != undefined && DoctorId != undefined) {
+            $("#btnSubmit").html("Update");
+            $("#btnReset").html("Cancel");
+            Edit(SlotID, DoctorId);
+        }
+    });
+    //Validation
+    function validate() {
+
+        if ($('#HospitalName').val() == "Select") {
+            alert("Please Select Hospital Name !");
+            return false;
+            $('#HospitalName').focus();
+        }
+        else if ($('#SlotName').val() == "Select") {
+            alert("Please Select Slot Name !");
+            return false;
+            $('#SlotName').focus();
+        }
+        else if ($('#DoctorName').val() == "Select") {
+            alert("Please Select Doctor Name !");
+            $('#DoctorName').focus();
+            return false;
+        }
+        else {
+            $("#btnReset").hide();
+            return true;
+        }
+    }
+
+    //Create
+    $("#btnSubmit").click(function () {
+            var selected = [];
+            $('#Day input:checked').each(function () {
+                selected.push($(this).attr('value'));
+            });
+            var dign = {
+                SMId: $("#hdnSMId").val(),
+                HospitalID: $("#HospitalName").val(),
+                SlotID: $("#SlotName").val(),
+                DoctorId: $("#DoctorName").val(),
+                Day: selected.join(", "),
+            };
+        if (validate()) {
+            if (confirm("Are you sure you want to Submit ?")) {
+                $.ajax({
+                    url: "/SlotMapping/AddSlotMapping",
+                    data: dign,
+                    type: "POST",
+                    success: function (result) {
+                        if (getUrlVars()["SMId"] != undefined) {
+                            alert(result);
+                            window.location.href = "/SlotMapping/ViewSlotMapping";
+                        }
+                        else {
+                            alert(result);
+                            window.location.href = "/SlotMapping/ViewSlotMapping";
+                            reset();
+                        }
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+
+            }
+        }
+    });
+
+    //First Delete And Update
+    function Edit(SlotID,DoctorId) {
+            $.ajax({
+                url: "/SlotMapping/SlotMappingGetById?SlotID=" + SlotID + "&DoctorId=" + DoctorId,
+                type: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    $('#hdnSMId').val(result[0].SMId);
+                    $("#HospitalName").val(result[0].HospitalID);
+                    $("#DoctorName").val(result[0].DoctorId);
+                   // Bind Slot Name By Using HospitalId  During Edit
+                    $.ajax({
+                        url: "/Slot/GetSlotByHospitalId?HospitalID=" + result[0].HospitalID,
+                        type: "GET",
+                        success: function (result) {
+                            data = JSON.parse(result);
+                            var v = "<option value='0'>--Select--</option>";
+                            $.each(data, function (i, item) {
+                                v += "<option value=" + item.SlotID + ">" + item.SlotName + "</option>";
+                            });
+                            $("#SlotName").html(v);
+                            $('#SlotName').val(data[0].SlotID);
+                        },
+                        error: function (error) {
+                            jsonValue = jQuery.parseJSON(error.responseText);
+                            alert("Error : " + jsonValue);
+                        }
+                    });
+                    // Bind Slot Time By Using SlotId  During Edit
+                    $.ajax({
+                        url: "/Slot/GetShiftBySlotId?SlotId=" + result[0].SlotID,
+                        type: "GET",
+                        success: function (result) {
+                            data = JSON.parse(result);
+                            $("#TimeFrom").val(data.Slot_TimeFrom);
+                            $("#TimeTo").val(data.Slot_TimeTo);
+                        },
+                        error: function (error) {
+                            jsonValue = jQuery.parseJSON(error.responseText);
+                            alert("Error : " + jsonValue);
+                        }
+                    });
+                    //Bind Checkbox  Data  During Edit
+                    $.each(result, function (i, item) {
+                        $("input[type=checkbox][value=" + item.DaysId+"]").prop("checked", true);
+                    });
+                    $('#Day').find(':checkbox').each(function () {
+                        $(this).attr('checked', $('#' + id).is(':checked'));
+                    });
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        return false;
+    }
+
+    //Reset
+    function reset() {
+        $('#hdnSMId').val("");
+        $("#HospitalName").val("0");
+        $("#SlotName").val("0");
+        $("#TimeFrom").val("");
+        $("#TimeTo").val("");
+        $("#DoctorName").val("0");
+        $("#Day").val("");
+    }
+    
+    //Cancle
+    $("#btnReset").click(function () {
+        reset();
+        if (getUrlVars()["SMId"] != undefined) {
+            window.location.href = "/SlotMapping/ViewSlotMapping";
+        }
+    })
+    //Cascading Databind
+    //Get All Slot By Hospital Id
+    function GetAllSlotByHId() {
+        $.ajax({
+            url: "/Slot/GetSlotByHospitalId?HospitalID=" + $('#HospitalName').val(),
+            type: "GET",
+            success: function (result) {
+                data = JSON.parse(result);
+                var v = "<option value='0'>--Select--</option>";
+                $.each(data, function (i, item) {
+                    v += "<option value=" + item.SlotID + ">" + item.SlotName + "</option>";
+                });
+                $("#SlotName").html(v);
+                GetDoctorByHId();
+            },
+            error: function (error) {
+                jsonValue = jQuery.parseJSON(error.responseText);
+                alert("Error : " + jsonValue);
+            }
+        });
+    }
+
+    //Get Doctor by Hospital Id
+    function GetDoctorByHId() {
+        $.ajax({
+            url: "/SlotMapping/DoctorNameByHId?HospitalID=" + $('#HospitalName').val(),
+            type: "GET",
+            success: function (result) {
+                data = JSON.parse(result);
+                var v = "<option value='0'>--Select--</option>";
+                $.each(data, function (i, item) {
+                    v += "<option value=" + item.UserId + ">" + item.UserName + "</option>";
+                });
+                $("#DoctorName").html(v);
+            },
+            error: function (error) {
+                jsonValue = jQuery.parseJSON(error.responseText);
+                alert("Error : " + jsonValue);
+            }
+        });
+    }
+
+    //Get Shift Time By Slot Id
+    function GetShiftTimeBySlotId() {
+        $.ajax({
+            url: "/Slot/GetShiftBySlotId?SlotId=" + $('#SlotName').val(),
+            type: "GET",
+            success: function (result) {
+                data = JSON.parse(result);
+                $("#TimeFrom").val(data.Slot_TimeFrom);
+                $("#TimeTo").val(data.Slot_TimeTo);
+            },
+            error: function (error) {
+                jsonValue = jQuery.parseJSON(error.responseText);
+                alert("Error : " + jsonValue);
+            }
+        });
+    }
+</script>
+

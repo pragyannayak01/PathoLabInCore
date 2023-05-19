@@ -1,0 +1,165 @@
+﻿@model PathoLab.Domain.LabTestMaster.LabTest
+@{
+    ViewData["Title"] = "ViewLabTest";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+    var ResultData = ViewBag.Result as List<PathoLab.Domain.LabTestMaster.LabTest>;
+}
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link " asp-controller="LabTest" asp-action="AddLabTest">Add</a>
+                    <a class="nav-item nav-link active" asp-controller="LabTest" asp-action="ViewLabTest">View</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            @*//  BASIC FORM ELEMENTS
+        //  ===================================================*@
+            <div class="card-body ">
+                @if (ResultData != null && ResultData.ToList().Count > 0)
+                {
+                    <div class="table-responsive">
+                        <table data-toggle="table" id="tblHospital" class="table">
+                            <thead>
+                                <tr>
+                                    <th width="60px" class="align-top text-center">Sl#</th>
+                                    <th width="150px" class="align-top">
+                                        Test Name
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Diognisis Name
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Price
+                                    </th>
+                                    <th width="150px" class="align-top">Action</th>
+                                </tr>
+                            </thead>
+                           
+                            <tbody>
+                                @{
+                                    int count = 1;
+                                }
+                                @foreach (var list in ResultData)
+                                {
+                                <tr>
+                                    <td class="text-center">@count</td>
+                                    <td>
+                                        @list.LabTestName
+                                    </td>
+                                    <td>
+                                        @list.Name
+                                    </td>
+
+                                    <td>
+                                        @list.Price
+                                    </td>
+                                    <td>
+                                        @*<a href="/HospitalMaster/AddHospital?HospitalID=@Convert.ToString(list.HospitalID)" class="text-primary mr-3" title="" data-original-title="Edit"><i class="icon-edit1"></i></a>*@
+                                        <a onclick="updateDepartment('@list.LabTestId');" class="text-primary mr-3" title="" data-original-title="Edit"><i class="icon-edit1"></i><b>Edit</b></a><br />
+                                        <a onclick="deleteDoctor('@list.LabTestId');" class="text-danger" title="" data-original-title="Delete"><i class="icon-trash-21"></i><b>Delete</b></a>
+                                    </td>
+                                </tr>
+                                    count++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="norecord"> No Record Found</div>
+                }
+                <div class="clearfix col-sm-12"></div>
+            </div>
+            @*//___________________________________________________________________________*@
+
+        </div>
+        </div>
+    </div>
+<script>
+    $(document).ready(function () {
+        getDataTable();
+    })
+
+    function updateDepartment(LabTestId) {
+        if (confirm("Are you sure you want to update ?")) {
+            location.href ="/LabTest/AddLabTest?LabTestId=" + LabTestId;
+        }
+    }
+
+    function deleteDoctor(LabTestId) {
+        if (confirm("Are you sure you want to delete ?")) {
+            $.ajax({
+                url: "/LabTest/Delete?LabTestId=" + LabTestId,
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json;charset=UTF-8",
+                success: function (data) {
+                    if (data == "3") {
+                        alert(" Deleted Successfully");
+
+                      location.href = "/LabTest/ViewLabTest";
+
+                    }
+                    else if (data == "4") {
+                        alert(" Already In Use!");
+
+                       location.href = "/LabTest/ViewLabTest";
+
+
+                    }
+                    else { }
+                },
+                error: function (error) {
+                    jsonValue = jQuery.parseJSON(error.responseText);
+                    bootbox.alert("Error : " + jsonValue);
+                }
+            });
+        }
+    }
+
+    //Pagination
+    function getDataTable() {
+        $('#tblHospital').DataTable({
+            "searching": true,
+            //"bStateSave": true,
+            "dom": 'Bfrtip',
+            "autoWidth": false,
+            "buttons": [
+                //{
+                //    extend: 'print',
+                //    title: 'Manage Block',
+                //    exportOptions: {
+                //        columns: [0, 1, 2, 3, 4]
+                //    },
+                //    customize: function (win) { $(win.document.body).css('font-size', '10pt').prepend('<img src="' + origin + '/images/t5-logo-white.png"  style="position:absolute; top:0; left:0;" />'); $(win.document.body).find('table').addClass('compact').css('font-size', 'inherit'); }
+
+                //}
+
+                {
+                    extend: 'pageLength'
+                }
+            ],
+            "lengthMenu": [
+                [10, 25, 50, 100, 1000 - 1],
+                ['10 rows', '25 rows', '50 rows', '100 rows', '1000 rows', 'Show all']
+            ]
+        });
+    }
+
+</script>

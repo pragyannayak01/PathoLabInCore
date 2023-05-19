@@ -1,0 +1,784 @@
+﻿
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+@model PathoLab.Domain.PatientAppointmentMaster.PatientAppointment
+
+@{
+    ViewData["Title"] = "DoctorDashboard";
+    Layout = "~/Views/Shared/_LayoutaDoctorDynamic.cshtml";
+    var ResultData = ViewBag.Result as List<PathoLab.Domain.PatientAppointmentMaster.PatientAppointment>;
+    var PathoBillResult = ViewBag.PathoBill as List<PathoLab.Domain.PathoBilMasterl.PathoBill>;
+
+}
+<h2>DoctorDashboard</h2>
+
+<style>
+    .wrapper {
+        margin: 15px auto;
+        max-width: 1100px;
+    }
+
+    .container-calendar {
+        background: #ffffff;
+        padding: 15px;
+        max-width: 475px;
+        margin: 0 auto;
+        overflow: auto;
+    }
+
+    .button-container-calendar button {
+        cursor: pointer;
+        display: inline-block;
+        zoom: 1;
+        background: #00a2b7;
+        color: #fff;
+        border: 1px solid #0aa2b5;
+        border-radius: 4px;
+        padding: 5px 10px;
+    }
+
+    .table-calendar {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+        .table-calendar td, .table-calendar th {
+            padding: 5px;
+            border: 1px solid #e2e2e2;
+            text-align: center;
+            vertical-align: top;
+        }
+
+    .date-picker.selected {
+        font-weight: bold;
+        outline: 1px dashed #00BCD4;
+    }
+
+        .date-picker.selected span {
+            border-bottom: 2px solid currentColor;
+        }
+
+    /* sunday */
+    .date-picker:nth-child(1) {
+        color: red;
+    }
+
+    /* friday */
+    .date-picker:nth-child(6) {
+        color: green;
+    }
+
+    #monthAndYear {
+        text-align: center;
+        margin-top: 0;
+    }
+
+    .button-container-calendar {
+        position: relative;
+        margin-bottom: 1em;
+        overflow: hidden;
+        clear: both;
+    }
+
+    #previous {
+        float: left;
+    }
+
+    #next {
+        float: right;
+    }
+
+    .footer-container-calendar {
+        margin-top: 1em;
+        border-top: 1px solid #dadada;
+        padding: 10px 0;
+    }
+
+        .footer-container-calendar select {
+            cursor: pointer;
+            display: inline-block;
+            zoom: 1;
+            background: #ffffff;
+            color: #585858;
+            border: 1px solid #bfc5c5;
+            border-radius: 3px;
+            padding: 5px 1em;
+        }
+</style>
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="top-portlets">
+    <div class="row">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+            <div class="portlets__card ">
+                <div class="portlets__card__content cyan">
+                    <p><i class="icon-user1"></i> New Patients</p>
+                    <h4>590</h4>
+                </div>
+                <div class="portlets__card__charts cyan-dark">
+                    <div class="charts__content" id="newclints">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+            <div class="portlets__card">
+                <div class="portlets__card__content red">
+                    <p><i class="icon-user1"></i> Total Doctors</p>
+                    <h4>60</h4>
+                </div>
+                <div class="portlets__card__charts red-dark">
+                    <div class="charts__content" id="totalsales">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+            <div class="portlets__card">
+                <div class="portlets__card__content orange">
+                    <p><i class="icon-bar-chart1"></i> Year Profit</p>
+                    <h4>566</h4>
+                </div>
+                <div class="portlets__card__charts orange-dark">
+                    <div class="charts__content" id="profit">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-6 col-lg-3 ">
+            <div class="portlets__card">
+                <div class="portlets__card__content green">
+                    <p><i class="icon-edit-document"></i> Total Patients</p>
+                    <h4>1780</h4>
+                </div>
+                <div class="portlets__card__charts green-dark">
+                    <div class="charts__content" id="newinvoices">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-md-7 col-lg-7">
+        <div class="dashboard-portlet">
+            <div class="dashboard-portlet__header">
+                <h5>Calender <a class="float-right more-links" href="javascript:void(0)"><span class="icon-more-vertical1"></span></a></h5>
+                <div class="more-links-list">
+                    <ul>
+                        <li> <a href="javascript:void(0)" class="more-links refresh"><span class="icon-rotate-cw1"></span></a></li>
+                        <li> <a href="javascript:void(0)" class="more-links filter"><span class="icon-filter1"></span></a></li>
+                        <li> <a href="javascript:void(0)" class="more-links maximize"><span class="icon-maximize1"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="dashboard-portlet__content__details">
+                <div class="  wrapper container-calendar">
+                    <h3 id="monthAndYear"></h3>
+                    <div class="button-container-calendar">
+                        <button id="previous" onclick="previous()">&#8249;</button>
+                        <button id="next" onclick="next()">&#8250;</button>
+                    </div>
+                    <table class="table-calendar" id="calendar" data-lang="en">
+                        <thead id="thead-month"></thead>
+                        <tbody id="calendar-body"></tbody>
+                    </table>
+                    <div class="footer-container-calendar">
+                        <label for="month">Jump To: </label>
+                        <select id="month" onchange="jump()">
+                            <option value=0>Jan</option>
+                            <option value=1>Feb</option>
+                            <option value=2>Mar</option>
+                            <option value=3>Apr</option>
+                            <option value=4>May</option>
+                            <option value=5>Jun</option>
+                            <option value=6>Jul</option>
+                            <option value=7>Aug</option>
+                            <option value=8>Sep</option>
+                            <option value=9>Oct</option>
+                            <option value=10>Nov</option>
+                            <option value=11>Dec</option>
+                        </select>
+                        <select id="year" onchange="jump()"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="filter-section">
+                <a href="javascript:void(0)" class="filter__close"><span class="icon-x1"></span></a>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <label>From Date</label>
+                        <input type="text" class="form-control" name="">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <label>To Date</label>
+                        <input type="text" class="form-control" name="">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary btn-sm">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-5 col-lg-5">
+        <div class="dashboard-portlet">
+            <div class="dashboard-portlet__header">
+                <h5>Covid Update  <a class="float-right more-links" href="javascript:void(0)"><span class="icon-more-vertical1"></span></a></h5>
+                <div class="more-links-list">
+                    <ul>
+                        <li> <a class="more-links refresh" href="javascript:void(0)"><span class="icon-rotate-cw1"></span></a></li>
+                        <li> <a class="more-links filter" href="javascript:void(0)"><span class="icon-filter1"></span></a></li>
+                        <li> <a class="more-links maximize" href="javascript:void(0)"><span class="icon-maximize1"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="dashboard-portlet__content">
+                <div class="dashboard-portlet__content__chart">
+                    <canvas id="Chart" style="width:100%;max-width:250px"></canvas>
+                </div>
+            </div>
+            <div class="filter-section">
+                <a href="javascript:void(0)" class="filter__close"><span class="icon-x1"></span></a>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <label>From Date</label>
+                        <input type="text" class="form-control" name="">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <label>To Date</label>
+                        <input type="text" class="form-control" name="">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary btn-sm">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-12 col-md-12 col-lg-12">
+        <div class="dashboard-portlet">
+            <div class="dashboard-portlet__header">
+                <h5>Patient Application <a class="float-right more-links" href="javascript:void(0)"><span class="icon-more-vertical1"></span></a></h5>
+                <div class="more-links-list">
+                    <ul>
+                        <li> <a href="javascript:void(0)" class="more-links refresh"><span class="icon-rotate-cw1"></span></a></li>
+                        <li> <a href="javascript:void(0)" class="more-links filter"><span class="icon-filter1"></span></a></li>
+                        <li> <a href="javascript:void(0)" class="more-links maximize"><span class="icon-maximize1"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="dashboard-portlet__content">
+                <div class="dashboard-portlet__content__details">
+                    @if (ResultData != null && ResultData.ToList().Count > 0)
+                    {
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th width="30px">
+                                            Sl#
+                                        </th>
+                                        <th class="align-top">
+                                            RegdNo
+                                        </th>
+                                        <th class="align-top">
+                                            DateOfAppointment
+                                        </th>
+                                        <th class="align-top">
+                                            HospitalName
+                                        </th>
+                                        <th class="align-top">
+                                            SlotName
+                                        </th>
+                                        <th class="align-top">
+                                            SlotTimeFrom
+                                        </th>
+                                        <th class="align-top">
+                                            SlotTimeTo
+                                        </th>
+                                        <th class="align-top">
+                                            PatientName
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int count = 1;
+                                    }
+                                    @foreach (var list in ResultData)
+                                    {
+                                        <tr>
+                                            <td class="text-center">@count</td>
+                                            <td>
+                                                @list.RegdNo
+                                            </td>
+                                            <td>
+                                                @list.DateOfAppointment.ToString("dd'/'MM'/'yyyy")
+                                            </td>
+                                            <td>
+                                                @list.HospitalName
+                                            </td>
+                                            <td>
+                                                @list.SlotName
+                                            </td>
+                                            <td>
+                                                @list.Slot_TimeFrom
+                                            </td>
+                                            <td>
+                                                @list.Slot_TimeTo
+                                            </td>
+                                            <td>
+                                                @list.FullName
+                                            </td>
+                                        </tr>
+                                        count++;
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="norecord"> No Record Found</div>
+                    }
+                    <div class="clearfix col-sm-12"></div>
+                </div>
+            </div>
+            <div class="filter-section">
+                <a href="javascript:void(0)" class="filter__close"><span class="icon-x1"></span></a>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <label>From Date</label>
+                        <input type="text" class="form-control" name="">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <label>To Date</label>
+                        <input type="text" class="form-control" name="">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary btn-sm">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+        <div class="portlets__card ">
+            <div class="portlets__card__content cyan-dark">
+                <i class='fa fa-facebook-square' style='color: white'></i>
+                Facebook
+            </div>
+            <div class="portlets__card__charts cyan ">
+                <h5 style='color: black'>30k</h5>
+                <p style='color: black'><b>Friends</b></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+        <div class="portlets__card ">
+            <div class="portlets__card__content red-dark">
+                <i class="fa fa-instagram" style='color: white'></i>
+                Instagram
+            </div>
+            <div class="portlets__card__charts red ">
+                <h5 style='color: black'>80k</h5>
+                <p style='color: black'><b>Friends</b></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+        <div class="portlets__card ">
+            <div class="portlets__card__content cyan-dark">
+                <i class='fa fa-twitter-square' style='color: white'></i>
+                Twitter
+            </div>
+            <div class="portlets__card__charts cyan ">
+                <h5 style='color: black'>40k</h5>
+                <p style='color: black'><b>Friends</b></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+        <div class="portlets__card ">
+            <div class="portlets__card__content red-dark">
+                <i class="fa fa-google" style='color: white'></i>
+                Google
+            </div>
+            <div class="portlets__card__charts red ">
+                <h5 style='color: black'>59</h5>
+                <p style='color: black'><b>Visits</b></p>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div class="row">
+    <div class="col-12 col-md-12 col-lg-12">
+        <div class="dashboard-portlet">
+            <div class="dashboard-portlet__header">
+                <h5>PathoLab Report <a class="float-right more-links" href="javascript:void(0)"><span class="icon-more-vertical1"></span></a></h5>
+                <div class="more-links-list">
+                    <ul>
+                        <li> <a href="javascript:void(0)" class="more-links refresh"><span class="icon-rotate-cw1"></span></a></li>
+                        <li> <a href="javascript:void(0)" class="more-links filter"><span class="icon-filter1"></span></a></li>
+                        <li> <a href="javascript:void(0)" class="more-links maximize"><span class="icon-maximize1"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="dashboard-portlet__content">
+                <div class="dashboard-portlet__content__details">
+                    @if (PathoBillResult != null && PathoBillResult.ToList().Count > 0)
+                    {
+                        <div class="table-responsive">
+                            <table data-toggle="table" id="tblPathoBill" class="table">
+                                <thead>
+                                    <tr>
+                                        <th width="60px" class="align-top text-center">
+                                            Sl#
+                                        </th>
+                                        <th width="150px" class="align-top">
+                                            Collection Id
+                                        </th>
+                                        <th width="150px" class="align-top">
+                                            PatientName
+                                        </th>
+                                        <th width="150px" class="align-top">
+                                            Email
+                                        </th>
+                                        <th width="150px" class="align-top">
+                                            Reported On
+                                        </th>
+                                        <th width="150px" class="align-top">
+                                            Mobile
+                                        </th>
+                                        <th width="150px" class="align-top">
+                                            Age
+                                        </th>
+                                        <th width="150px" class="align-top">
+                                            Gender
+                                        </th>
+                                        <th width="150px" class="align-top">
+                                            TestName
+                                        </th>
+                                        <th width="150px" class="align-top">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int count = 1;
+                                    }
+                                    @foreach (var list in PathoBillResult)
+                                    {
+                                        <tr>
+                                            <td class="text-center">@count</td>
+                                            <td>
+                                                @list.CollectionId
+                                            </td>
+                                            <td>
+                                                @list.FullName
+                                            </td>
+                                            <td>
+                                                @list.Email
+                                            </td>
+                                            <td>
+                                                @list.DateOfAppointment
+                                            </td>
+                                            <td>
+                                                @list.Mobile
+                                            </td>
+                                            <td>
+                                                @list.Age
+                                            </td>
+                                            <td>
+                                                @list.Gender
+                                            </td>
+                                            <td>
+                                                @list.LabTestName
+                                            </td>
+                                            <td>
+                                                <a onclick="PrintReport('@list.PathoBillId');" class="text-primary mr-3" title="" data-original-title="Print"><i id="printprescription" class="fa fa-print" aria-hidden="true"></i> <b>Print</b></a><br />
+                                            </td>
+
+                                        </tr>
+                                        count++;
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="norecord"> No Record Found</div>
+                    }
+                    <div class="clearfix col-sm-12"></div>
+                </div>
+            </div>
+            <div class="filter-section">
+                <a href="javascript:void(0)" class="filter__close"><span class="icon-x1"></span></a>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <label>From Date</label>
+                        <input type="text" class="form-control" name="">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <label>To Date</label>
+                        <input type="text" class="form-control" name="">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary btn-sm">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script>
+    $(document).ready(function () {
+        //breadcumb
+        var PathoBillId = getUrlVars()["PathoBillId"];
+        if (PathoBillId != undefined) {
+            PrintReport(PathoBillId);
+        }
+
+    });
+
+    //< !--=================================================== -->
+    //Print Report
+    function PrintReport(PathoBillId) {
+        if (confirm("Are you sure you want to print ?")) {
+            location.href = "/PathoLab/PrintReport?PathoBillId=" + PathoBillId;
+
+        }
+    }
+
+    $('icon').on('click', function () {
+        PrintReport();
+    })
+
+    // Dynamic Calender
+    function generate_year_range(start, end) {
+        var years = "";
+        for (var year = start; year <= end; year++) {
+            years += "<option value='" + year + "'>" + year + "</option>";
+        }
+        return years;
+    }
+
+    today = new Date();
+    currentMonth = today.getMonth();
+    currentYear = today.getFullYear();
+    selectYear = document.getElementById("year");
+    selectMonth = document.getElementById("month");
+
+
+    createYear = generate_year_range(1970, 2050);
+    /** or
+     * createYear = generate_year_range( 1970, currentYear );
+     */
+
+    document.getElementById("year").innerHTML = createYear;
+
+    var calendar = document.getElementById("calendar");
+    var lang = calendar.getAttribute('data-lang');
+
+    var months = "";
+    var days = "";
+
+    var monthDefault = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    var dayDefault = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+    if (lang == "en") {
+        months = monthDefault;
+        days = dayDefault;
+    } else if (lang == "id") {
+        months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        days = ["Ming", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
+    } else if (lang == "fr") {
+        months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+        days = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
+    } else {
+        months = monthDefault;
+        days = dayDefault;
+    }
+
+
+    var $dataHead = "<tr>";
+    for (dhead in days) {
+        $dataHead += "<th data-days='" + days[dhead] + "'>" + days[dhead] + "</th>";
+    }
+    $dataHead += "</tr>";
+
+    //alert($dataHead);
+    document.getElementById("thead-month").innerHTML = $dataHead;
+
+
+    monthAndYear = document.getElementById("monthAndYear");
+    showCalendar(currentMonth, currentYear);
+
+
+
+    function next() {
+        currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
+        currentMonth = (currentMonth + 1) % 12;
+        showCalendar(currentMonth, currentYear);
+    }
+
+    function previous() {
+        currentYear = (currentMonth === 0) ? currentYear - 1 : currentYear;
+        currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
+        showCalendar(currentMonth, currentYear);
+    }
+
+    function jump() {
+        currentYear = parseInt(selectYear.value);
+        currentMonth = parseInt(selectMonth.value);
+        showCalendar(currentMonth, currentYear);
+    }
+
+    function showCalendar(month, year) {
+
+        var firstDay = (new Date(year, month)).getDay();
+
+        tbl = document.getElementById("calendar-body");
+
+
+        tbl.innerHTML = "";
+
+
+        monthAndYear.innerHTML = months[month] + " " + year;
+        selectYear.value = year;
+        selectMonth.value = month;
+
+        // creating all cells
+        var date = 1;
+        for (var i = 0; i < 6; i++) {
+
+            var row = document.createElement("tr");
+
+
+            for (var j = 0; j < 7; j++) {
+                if (i === 0 && j < firstDay) {
+                    cell = document.createElement("td");
+                    cellText = document.createTextNode("");
+                    cell.appendChild(cellText);
+                    row.appendChild(cell);
+                } else if (date > daysInMonth(month, year)) {
+                    break;
+                } else {
+                    cell = document.createElement("td");
+                    cell.setAttribute("data-date", date);
+                    cell.setAttribute("data-month", month + 1);
+                    cell.setAttribute("data-year", year);
+                    cell.setAttribute("data-month_name", months[month]);
+                    cell.className = "date-picker";
+                    cell.innerHTML = "<span>" + date + "</span>";
+
+                    if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
+                        cell.className = "date-picker selected";
+                    }
+                    row.appendChild(cell);
+                    date++;
+                }
+
+
+            }
+
+            tbl.appendChild(row);
+        }
+
+    }
+
+    function daysInMonth(iMonth, iYear) {
+        return 32 - new Date(iYear, iMonth, 32).getDate();
+    }
+
+    //Website Visit(Bar Graph
+    var xValues = ["M", "T", "W", "TH", "F", "S", "S"];
+    var yValues = [42, 55, 49, 24, 28, 20, 15];
+    var barColors = ["grey", "lightgreen", "skyblue", "orange", "pink", "brown", "yellow"];
+
+    new Chart("myChart", {
+        type: "bar",
+        data: {
+            labels: xValues,
+            datasets: [{
+                backgroundColor: barColors,
+                data: yValues
+            }]
+        },
+        options: {
+            legend: { display: false },
+            title: {
+                display: true,
+            }
+        }
+    });
+
+    //Covid Update(Pie Chart)
+
+    var xValues = ["Covid +ve", "Covid -ve"];
+    var yValues = [55, 45];
+    var barColors = [
+        "#b91d47",
+        "#00aba9",
+    ];
+
+    new Chart("Chart", {
+        type: "pie",
+        data: {
+            labels: xValues,
+            datasets: [{
+                backgroundColor: barColors,
+                data: yValues
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+            }
+        }
+    });
+</script>
+
+

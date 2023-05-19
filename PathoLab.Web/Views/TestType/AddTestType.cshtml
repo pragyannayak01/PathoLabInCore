@@ -1,0 +1,133 @@
+﻿
+@{
+    ViewData["Title"] = "AddTestType";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active" asp-controller="TestType" asp-action="AddTestType">Add</a>
+                    <a class="nav-item nav-link " asp-controller="TestType" asp-action="ViewTestType">View</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            <!-- BASIC FORM ELEMENTS -->
+            <!--===================================================-->
+            <div class="card-body">
+                <!--Static-->
+                <div class="form-group row">
+                    <input type="hidden" id="hdnTestTypeID" />  
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="TestType"> Enter TestType <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input type="text" id="txtTestType" class="form-control">
+                    </div>
+                </div>
+
+                @*BUTTON*@
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                        <button class="btn btn-danger mb-1" id="btnCancel">Reset</button>
+                    </div>
+                </div>
+            </div>
+            <!--===================================================
+            <!-- END BASIC FORM ELEMENTS -->
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //breadcumb
+        loadNavigation('AddTestType', 'gldata', 'plsubmission', 'AddTestType', '', 'AddTestType');
+        var TestTypeID = getUrlVars()["TestTypeID"];
+        if (TestTypeID != undefined) {
+            $("#btnSubmit").html("Update");
+            $("#btnCancel").html("Cancel");
+            Edit(TestTypeID)
+        }
+
+    });
+
+
+
+
+    $("#btnSubmit").click(function () {
+        var doc = {
+            TestTypeID: $("#hdnTestTypeID").val(),
+            TestType: $("#txtTestType").val()
+          
+        };
+
+        if (validate()) {
+
+            $.ajax({
+                url: "/TestType/AddTestType",
+                data: doc,
+                type: "POST",
+                success: function (result) {
+                    alert(result);
+                    reset();
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    });
+    //validation
+    function validate() {
+        if ($('#txtTestType').val() == "") {
+        bootbox.alert("Please Enter test type!");
+        return false;
+            $('#txtTestType').focus();
+    }
+        else {
+            $("#btnCancel").hide();
+            return true;
+        }
+
+    }
+    //Reset
+    function reset() {
+        $('#txtTestType').val("");
+       
+
+    }
+
+    //UPDATE
+    function Edit(TestTypeID) {
+
+        $.ajax({
+            url: "/TestType/GetByTestTypeID?TestTypeID=" + TestTypeID,
+            type: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (Result) {
+                $('#hdnTestTypeID').val(Result.TestTypeID);
+                $("#txtTestType").val(Result.TestType);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+        return false;
+    }
+</script>
